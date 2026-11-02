@@ -22,7 +22,7 @@ jobs:
       - run: npm run build
 
   backend:
-    name: Backend validation
+    name: Backend tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -31,3 +31,4 @@ jobs:
           python-version: '3.11'
       - run: pip install -r backend/requirements.txt
       - run: python -m compileall -q backend/app
+      - run: pytest -q backend/tests
