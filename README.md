@@ -50,8 +50,11 @@ fintrack/
 ├── backend/
 │   ├── app/           # FastAPI application and database models
 │   ├── tests/         # API integration tests
+│   ├── migrations/    # Alembic database migrations
+│   ├── alembic.ini
 │   └── requirements.txt
 ├── .github/workflows/ # Continuous integration
+├── render.yaml        # Render deployment blueprint
 └── README.md
 ```
 
@@ -85,6 +88,17 @@ npm run dev
 ```
 
 Open the local URL printed by Vite (normally `http://localhost:5173`). The Vite development server proxies `/api` requests to FastAPI. Create an account or sign in from the FinTrack welcome screen. Access tokens remain in memory and are cleared on sign-out or page reload. For a hosted frontend, set `VITE_API_BASE_URL` to the full API base URL, for example `https://fintrack-api.onrender.com/api`.
+
+## Deploy with Render
+
+1. Push the repository to GitHub (the `main` branch is the configured deployment source).
+2. Sign in to Render and choose **New → Blueprint**.
+3. Connect `matteojose3112-bit/fintrack` and select the root `render.yaml` file.
+4. Review the three resources: `fintrack-api`, `fintrack-web`, and `fintrack-db`, then apply the Blueprint.
+5. Wait for the API migration/build and frontend build to complete. The expected public addresses are `https://fintrack-api.onrender.com` and `https://fintrack-web.onrender.com`.
+6. Open the frontend URL and test registration, login, transactions, budgets, savings goals, CSV export, and account isolation.
+
+The Blueprint generates `FINTRACK_SECRET_KEY`, links the PostgreSQL connection string, configures CORS, and runs Alembic migrations during the API build. If you rename either service, update the corresponding API URL or CORS origin. Free resources are for demonstration only; upgrade PostgreSQL before its 30-day expiration and use a paid service with backups for durable use.
 
 ## Run tests
 
