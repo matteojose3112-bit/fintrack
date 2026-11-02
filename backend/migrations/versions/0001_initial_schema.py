@@ -21,7 +21,7 @@ def upgrade():
         sa.Column("title", sa.String(160), nullable=False),
         sa.Column("amount", sa.Float(), nullable=False),
         sa.Column("type", sa.String(10), nullable=False),
-        sa.Column("category", sa.String(80), nullable=False, server_default="Other"),
+        sa.Column("category", sa.String(80), nullable=False),
         sa.Column("date", sa.Date(), nullable=False))
     op.create_index("ix_transactions_id", "transactions", ["id"])
     op.create_index("ix_transactions_user_id", "transactions", ["user_id"])
@@ -38,7 +38,7 @@ def upgrade():
         sa.Column("user_id", sa.Integer(), sa.ForeignKey("users.id", ondelete="CASCADE"), nullable=False),
         sa.Column("name", sa.String(120), nullable=False),
         sa.Column("target_amount", sa.Float(), nullable=False),
-        sa.Column("saved_amount", sa.Float(), nullable=False, server_default="0"))
+        sa.Column("saved_amount", sa.Float(), nullable=False))
     op.create_index("ix_goals_id", "goals", ["id"])
     op.create_index("ix_goals_user_id", "goals", ["user_id"])
 
