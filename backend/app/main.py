@@ -1,5 +1,6 @@
 import csv
 import io
+import os
 from calendar import month_abbr
 from datetime import date
 
@@ -11,13 +12,27 @@ from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from .auth import create_access_token, get_current_user, hash_password, verify_password
-from .database import Base, engine, get_db
+from .database import get_db
 from .models import Budget, Goal, Transaction, User
 from .schemas import AuthResponse, BudgetCreate, Contribution, GoalCreate, RegisterRequest, TransactionCreate, UserResponse
 
-Base.metadata.create_all(bind=engine)
-app = FastAPI(title="FinTrack API", version="2.0.0", description="Personal finance and budgeting API")
-app.add_middleware(CORSMiddleware, allow_origins=["http://localhost:5173"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
+app = FastAPI(title="FinTrack API", version="2.1.0", description="Personal finance and budgeting API")
+allowed_origins = [origin.strip() for origin in os.getenv(
+    "CORS_ORIGINS", "http://localhost:5173"
+).split(",") if origin.strip()]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=allowed_origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+def month_range(year: int, month: int):
+    start = date(year, month, 1)
+    end = date(year + (month == 12), 1 if month == 12 else month + 1, 1)
+    return start, end
 
 
 def auth_response(user: User):
@@ -29,11 +44,14 @@ def serialize_transaction(t):
 
 
 def serialize_budget(b, db, user_id):
+    today = date.today()
+    start, end = month_range(today.year, today.month)
     spent = db.query(func.coalesce(func.sum(Transaction.amount), 0)).filter(
         Transaction.user_id == user_id,
         Transaction.type == "expense",
         Transaction.category == b.category,
-        func.strftime("%Y-%m", Transaction.date) == date.today().strftime("%Y-%m"),
+        Transaction.date >= start,
+        Transaction.date < end,
     ).scalar()
     return {"id": b.id, "category": b.category, "limit": b.limit, "spent": float(spent or 0)}
 
@@ -80,14 +98,22 @@ def current_account(user: User = Depends(get_current_user)):
 @app.get("/api/summary")
 def summary(db: Session = Depends(get_db), user: User = Depends(get_current_user)):
     today = date.today()
-    month = today.strftime("%Y-%m")
-    base = lambda kind: db.query(func.coalesce(func.sum(Transaction.amount), 0)).filter(
-        Transaction.user_id == user.id, Transaction.type == kind
-    )
-    income = base("income").filter(func.strftime("%Y-%m", Transaction.date) == month).scalar()
-    expenses = base("expense").filter(func.strftime("%Y-%m", Transaction.date) == month).scalar()
-    all_income = base("income").scalar()
-    all_expenses = base("expense").scalar()
+    start, end = month_range(today.year, today.month)
+
+    def totals(kind, lower=None, upper=None):
+        query = db.query(func.coalesce(func.sum(Transaction.amount), 0)).filter(
+            Transaction.user_id == user.id, Transaction.type == kind
+        )
+        if lower is not None:
+            query = query.filter(Transaction.date >= lower)
+        if upper is not None:
+            query = query.filter(Transaction.date < upper)
+        return float(query.scalar() or 0)
+
+    income = totals("income", start, end)
+    expenses = totals("expense", start, end)
+    all_income = totals("income")
+    all_expenses = totals("expense")
     monthly = []
     for offset in range(5, -1, -1):
         month_num = today.month - offset
@@ -95,21 +121,23 @@ def summary(db: Session = Depends(get_db), user: User = Depends(get_current_user
         while month_num <= 0:
             month_num += 12
             year -= 1
-        key = f"{year:04d}-{month_num:02d}"
-        inc = base("income").filter(func.strftime("%Y-%m", Transaction.date) == key).scalar()
-        exp = base("expense").filter(func.strftime("%Y-%m", Transaction.date) == key).scalar()
-        monthly.append({"month": month_abbr[month_num], "income": float(inc or 0), "expenses": float(exp or 0)})
+        month_start, month_end = month_range(year, month_num)
+        monthly.append({
+            "month": month_abbr[month_num],
+            "income": totals("income", month_start, month_end),
+            "expenses": totals("expense", month_start, month_end),
+        })
     categories = db.query(Transaction.category, func.sum(Transaction.amount).label("amount")).filter(
         Transaction.user_id == user.id, Transaction.type == "expense",
-        func.strftime("%Y-%m", Transaction.date) == month,
+        Transaction.date >= start, Transaction.date < end,
     ).group_by(Transaction.category).order_by(func.sum(Transaction.amount).desc()).all()
     return {
-        "balance": float(all_income or 0) - float(all_expenses or 0),
-        "income": float(income or 0),
-        "expenses": float(expenses or 0),
-        "savings_rate": round(max(0, (float(income or 0) - float(expenses or 0)) / float(income) * 100), 1) if income else 0,
+        "balance": all_income - all_expenses,
+        "income": income,
+        "expenses": expenses,
+        "savings_rate": round(max(0, (income - expenses) / income * 100), 1) if income else 0,
         "monthly": monthly,
-        "categories": [{"category": c, "amount": float(a)} for c, a in categories],
+        "categories": [{"category": category, "amount": float(amount)} for category, amount in categories],
     }
 
 
@@ -190,7 +218,7 @@ def export_transactions(db: Session = Depends(get_db), user: User = Depends(get_
     writer = csv.writer(output)
     writer.writerow(["Date", "Description", "Type", "Category", "Amount"])
     items = db.query(Transaction).filter(Transaction.user_id == user.id).order_by(Transaction.date.desc()).all()
-    for t in items:
-        writer.writerow([t.date.isoformat(), t.title, t.type, t.category, t.amount])
+    for transaction in items:
+        writer.writerow([transaction.date.isoformat(), transaction.title, transaction.type, transaction.category, transaction.amount])
     output.seek(0)
     return StreamingResponse(iter([output.getvalue()]), media_type="text/csv", headers={"Content-Disposition": "attachment; filename=fintrack-transactions.csv"})
