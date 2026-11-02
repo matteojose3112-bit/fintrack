@@ -4,7 +4,7 @@
 
 FinTrack brings income, expenses, budgets, savings goals, and financial insights into one clear workspace, with a responsive React interface and Python API.
 
-![Status](https://img.shields.io/badge/status-in%20development-8b5cf6)
+![Status](https://img.shields.io/badge/status-deployment%20ready-16a34a)
 ![Frontend](https://img.shields.io/badge/frontend-React%20%2B%20Vite-61dafb)
 ![Backend](https://img.shields.io/badge/backend-FastAPI-009688)
 ![License](https://img.shields.io/badge/license-MIT-blue)
@@ -31,12 +31,12 @@ FinTrack brings income, expenses, budgets, savings goals, and financial insights
 | Charts | Recharts |
 | Icons | Lucide React |
 | Backend | Python, FastAPI |
-| Database | SQLite, SQLAlchemy |
+| Database | PostgreSQL in production, SQLite locally, SQLAlchemy |
 | Validation | Pydantic, email-validator |
 | Authentication | Argon2 password hashing, JWT (PyJWT) |
 | Frontend tests | Vitest, React Testing Library, jsdom |
 | Backend tests | pytest, FastAPI TestClient, httpx |
-| CI | GitHub Actions |
+| Migrations | Alembic |\n| Hosting | Render Blueprint (API, static frontend, PostgreSQL) |\n| CI | GitHub Actions |
 
 ## Project structure
 
@@ -70,7 +70,7 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
-The API runs at `http://localhost:8000`. Interactive API documentation is available at `http://localhost:8000/docs`. Set a strong, private `FINTRACK_SECRET_KEY` environment variable before running outside local development. The fallback key is for local development only.
+The API runs at `http://localhost:8000`. Interactive API documentation is available at `http://localhost:8000/docs`. Copy `backend/.env.example` as a reference and set a strong, private `FINTRACK_SECRET_KEY` outside local development. Production mode refuses to start without this secret. Database tables are managed with Alembic migrations (`alembic upgrade head`); the Render build runs this command automatically.
 
 ### 2. Start the frontend
 
@@ -82,7 +82,7 @@ npm install
 npm run dev
 ```
 
-Open the local URL printed by Vite (normally `http://localhost:5173`). The Vite development server proxies `/api` requests to FastAPI. Create an account or sign in from the FinTrack welcome screen. Access tokens remain in memory and are cleared on sign-out or page reload.
+Open the local URL printed by Vite (normally `http://localhost:5173`). The Vite development server proxies `/api` requests to FastAPI. Create an account or sign in from the FinTrack welcome screen. Access tokens remain in memory and are cleared on sign-out or page reload. For a hosted frontend, set `VITE_API_BASE_URL` to the full API base URL, for example `https://fintrack-api.onrender.com/api`.
 
 ## Run tests
 
@@ -142,7 +142,7 @@ GitHub Actions runs frontend tests and a production build, plus backend compile 
 
 ## Project principles
 
-FinTrack is designed around clarity, useful financial context, and responsible data handling. It is an educational portfolio project, not financial advice. The initial local setup uses an empty SQLite database; do not enter sensitive real-world financial information into an unreviewed deployment. Version 2.0 introduces required user ownership columns. Back up any database created with an earlier version before upgrading; the current release expects a fresh schema, so do not point it at an older `fintrack.db` until a migration path is provided. For production, configure a high-entropy secret, HTTPS, secure deployment settings, and a managed database before storing sensitive financial records.
+FinTrack is designed around clarity, useful financial context, and responsible data handling. It is an educational portfolio project, not financial advice. The local setup uses SQLite; production uses PostgreSQL. Alembic creates the current schema on a fresh database. The initial migration is not a conversion of an older pre-2.0 SQLite database: back up legacy data and plan a dedicated import before attempting to reuse it. FinTrack is a portfolio project, not financial advice or a bank. Do not enter sensitive real-world financial information until the deployment, access controls, backups, and operational security have been independently reviewed. The Render Blueprint uses free-tier resources for demonstration; Render free PostgreSQL databases expire after their trial period and free web services may sleep. Choose paid persistent hosting and verify backups before relying on the service.
 
 ## License
 
