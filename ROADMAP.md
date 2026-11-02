@@ -4,7 +4,7 @@ Last updated: 2026-11-02
 
 ## Current release: 2.2.0
 
-<badge>Render resources provisioned</badge>
+**Status: Render resources provisioned; live deployment verification pending.**
 
 The Render Blueprint `fintrack` has been created from `matteojose3112-bit/fintrack` on `main` using the root `render.yaml`.
 
