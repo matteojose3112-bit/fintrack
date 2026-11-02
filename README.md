@@ -98,7 +98,7 @@ pip install -r backend/requirements.txt
 pytest -q backend/tests
 ```
 
-Frontend tests use a mocked API and cover dashboard rendering, transaction search, opening the transaction form, and offline feedback. Backend tests use isolated in-memory SQLite and cover core API workflows without touching local finance data.
+Frontend tests use a mocked API and cover dashboard rendering, transaction search, transaction-form launch, budget progress and creation entry, savings-goal progress and contribution entry, and offline feedback. Key navigation, search, dialogs, and progress indicators expose accessible names and semantics. Backend tests use isolated in-memory SQLite and cover core API workflows without touching local finance data.
 
 GitHub Actions runs frontend tests and a production build, plus backend compile and integration checks, on pushes and pull requests targeting `main`.
 
@@ -125,7 +125,9 @@ GitHub Actions runs frontend tests and a production build, plus backend compile 
 - [x] Automated backend API integration tests
 - [x] Frontend interaction test foundation
 - [x] GitHub Actions frontend and backend test integration
-- [ ] Broader frontend component coverage and accessibility review
+- [x] Budget and savings-goal workflow coverage
+- [x] Accessible search, navigation state, dialog controls, and progress indicators
+- [ ] Broader accessibility audit and keyboard-flow review
 - [ ] Authentication and multi-user accounts
 - [ ] Production security, configuration, and database migrations
 - [ ] Deployment and portfolio release
