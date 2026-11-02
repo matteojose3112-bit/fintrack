@@ -36,7 +36,9 @@ FinTrack brings income, expenses, budgets, savings goals, and financial insights
 | Authentication | Argon2 password hashing, JWT (PyJWT) |
 | Frontend tests | Vitest, React Testing Library, jsdom |
 | Backend tests | pytest, FastAPI TestClient, httpx |
-| Migrations | Alembic |\n| Hosting | Render Blueprint (API, static frontend, PostgreSQL) |\n| CI | GitHub Actions |
+| Migrations | Alembic |
+| Hosting | Render Blueprint (API, static frontend, PostgreSQL) |
+| CI | GitHub Actions |
 
 ## Project structure
 
