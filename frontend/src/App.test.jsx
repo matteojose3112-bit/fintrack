@@ -69,7 +69,7 @@ describe('FinTrack application', () => {
   it('shows budget usage with an accessible progress indicator', async () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: 'Budgets' }))
-    expect(await screen.findByText('Food')).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: 'Food' })).toBeInTheDocument()
     expect(screen.getByRole('progressbar', { name: 'Food budget usage' })).toHaveAttribute('aria-valuenow', '70')
     fireEvent.click(screen.getByRole('button', { name: 'Create budget' }))
     expect(screen.getByText('Create monthly budget')).toBeInTheDocument()
