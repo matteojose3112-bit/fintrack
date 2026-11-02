@@ -2,7 +2,7 @@
 
 **A modern personal finance and budgeting platform.**
 
-FinTrack brings income, expenses, budgets, savings goals, and financial insights into one clear workspace. It is being built as a practical, full-stack application with a responsive React interface and a Python API.
+FinTrack brings income, expenses, budgets, savings goals, and financial insights into one clear workspace, with a responsive React interface and Python API.
 
 ![Status](https://img.shields.io/badge/status-in%20development-8b5cf6)
 ![Frontend](https://img.shields.io/badge/frontend-React%20%2B%20Vite-61dafb)
@@ -18,7 +18,7 @@ FinTrack brings income, expenses, budgets, savings goals, and financial insights
 - **Analytics** — monthly cash flow and category spending visualizations.
 - **Data export** — download transaction history as CSV.
 - **Responsive UI** — designed for desktop and mobile screens.
-- **API test suite** — automated integration coverage for core finance workflows.
+- **Automated tests** — frontend interaction tests and backend API integration tests.
 
 ## Technology
 
@@ -31,20 +31,22 @@ FinTrack brings income, expenses, budgets, savings goals, and financial insights
 | Backend | Python, FastAPI |
 | Database | SQLite, SQLAlchemy |
 | Validation | Pydantic |
-| Testing | pytest, FastAPI TestClient, httpx |
+| Frontend tests | Vitest, React Testing Library, jsdom |
+| Backend tests | pytest, FastAPI TestClient, httpx |
 | CI | GitHub Actions |
 
 ## Project structure
 
 ```
 fintrack/
-├── frontend/          # React application
+├── frontend/
+│   ├── src/           # React application and component tests
+│   └── package.json
 ├── backend/
 │   ├── app/           # FastAPI application and database models
 │   ├── tests/         # API integration tests
 │   └── requirements.txt
 ├── .github/workflows/ # Continuous integration
-├── .gitignore
 └── README.md
 ```
 
@@ -59,7 +61,7 @@ fintrack/
 ```bash
 cd backend
 python -m venv .venv
-# Windows: .venv\Scripts\activate
+# Windows: .venv\\Scripts\\activate
 source .venv/bin/activate
 pip install -r requirements.txt
 uvicorn app.main:app --reload
@@ -77,22 +79,28 @@ npm install
 npm run dev
 ```
 
-Open the local URL printed by Vite (normally `http://localhost:5173`).
-
-The Vite development server proxies `/api` requests to the FastAPI service.
+Open the local URL printed by Vite (normally `http://localhost:5173`). The Vite development server proxies `/api` requests to FastAPI.
 
 ## Run tests
 
-From the repository root, install the backend dependencies and run:
+Frontend tests:
+
+```bash
+cd frontend
+npm install
+npm run test -- --run
+```
+
+Backend tests (from the repository root):
 
 ```bash
 pip install -r backend/requirements.txt
 pytest -q backend/tests
 ```
 
-The API tests use an isolated in-memory SQLite database. They cover health checks, transaction creation/listing/deletion and validation, dashboard summaries, budget creation and duplicate protection, savings goals and contributions, and CSV export. They do not use the local `backend/fintrack.db` file.
+Frontend tests use a mocked API and cover dashboard rendering, transaction search, opening the transaction form, and offline feedback. Backend tests use isolated in-memory SQLite and cover core API workflows without touching local finance data.
 
-GitHub Actions runs the frontend production build and backend compile/test checks on pushes and pull requests targeting `main`.
+GitHub Actions runs frontend tests and a production build, plus backend compile and integration checks, on pushes and pull requests targeting `main`.
 
 ## API overview
 
@@ -108,22 +116,23 @@ GitHub Actions runs the frontend production build and backend compile/test check
 
 ## Development roadmap
 
-- [x] Repository structure and application foundation
+- [x] Repository and application foundation
 - [x] FastAPI service and SQLite data layer
-- [x] Responsive dashboard and transaction-entry interface
-- [x] Transaction workflows and budget / savings-goal API endpoints
-- [x] Budget creation and spending progress screens
+- [x] Responsive dashboard and transaction workflows
+- [x] Budget creation and spending progress
 - [x] Savings-goal creation and contribution workflows
 - [x] Analytics and CSV export foundation
 - [x] Automated backend API integration tests
-- [x] GitHub Actions backend test integration
-- [ ] Frontend component tests and accessibility review
+- [x] Frontend interaction test foundation
+- [x] GitHub Actions frontend and backend test integration
+- [ ] Broader frontend component coverage and accessibility review
 - [ ] Authentication and multi-user accounts
-- [ ] Deployment and production configuration
+- [ ] Production security, configuration, and database migrations
+- [ ] Deployment and portfolio release
 
 ## Project principles
 
-FinTrack is designed around clarity, useful financial context, and responsible data handling. It is an educational portfolio project, not financial advice. The initial local setup uses an empty SQLite database; add your own test records while developing. Do not enter sensitive real-world financial information into an unreviewed deployment.
+FinTrack is designed around clarity, useful financial context, and responsible data handling. It is an educational portfolio project, not financial advice. The initial local setup uses an empty SQLite database; do not enter sensitive real-world financial information into an unreviewed deployment.
 
 ## License
 
