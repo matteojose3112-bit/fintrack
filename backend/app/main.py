@@ -8,7 +8,7 @@ from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from fastapi.security import OAuth2PasswordRequestForm
-from sqlalchemy import func
+from sqlalchemy import func, text
 from sqlalchemy.orm import Session
 
 from .auth import create_access_token, get_current_user, hash_password, verify_password
@@ -66,7 +66,8 @@ def root():
 
 
 @app.get("/api/health")
-def health():
+def health(db: Session = Depends(get_db)):
+    db.execute(text("SELECT 1"))
     return {"status": "ok"}
 
 
