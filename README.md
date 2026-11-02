@@ -4,7 +4,7 @@
 
 FinTrack brings income, expenses, budgets, savings goals, and financial insights into one clear workspace, with a responsive React interface and Python API.
 
-![Status](https://img.shields.io/badge/status-deployment%20ready-16a34a)
+![Status](https://img.shields.io/badge/status-Render%20Blueprint%20provisioned-0d9488)
 ![Frontend](https://img.shields.io/badge/frontend-React%20%2B%20Vite-61dafb)
 ![Backend](https://img.shields.io/badge/backend-FastAPI-009688)
 ![License](https://img.shields.io/badge/license-MIT-blue)
@@ -91,12 +91,19 @@ Open the local URL printed by Vite (normally `http://localhost:5173`). The Vite 
 
 ## Deploy with Render
 
-1. Push the repository to GitHub (the `main` branch is the configured deployment source).
-2. Sign in to Render and choose **New → Blueprint**.
-3. Connect `matteojose3112-bit/fintrack` and select the root `render.yaml` file.
-4. Review the three resources: `fintrack-api`, `fintrack-web`, and `fintrack-db`, then apply the Blueprint.
-5. Wait for the API migration/build and frontend build to complete. The expected public addresses are `https://fintrack-api.onrender.com` and `https://fintrack-web.onrender.com`.
-6. Open the frontend URL and test registration, login, transactions, budgets, savings goals, CSV export, and account isolation.
+The Render Blueprint has been created for this repository and its three resources have been provisioned in the Render dashboard:
+
+- Blueprint: `fintrack`
+- Blueprint ID: `exs-dbkhp88m7kps7396um8g`
+- Source: `matteojose3112-bit/fintrack`, branch `main`, Blueprint file `render.yaml`
+- Resources: `fintrack-api` (FastAPI), `fintrack-web` (static React frontend), and `fintrack-db` (PostgreSQL)
+
+**Provisioning is confirmed; public deployment is not considered verified until both services finish deploying and the live checks below pass.** The expected public addresses are `https://fintrack-api.onrender.com` and `https://fintrack-web.onrender.com` (confirm the actual URLs in Render if service names or generated domains differ).
+
+1. In Render, open the `fintrack` Blueprint and check that the database, API, and static site show healthy/available statuses.
+2. Wait for the API build to complete, including `alembic upgrade head`, and for the frontend build to publish.
+3. Open `https://fintrack-api.onrender.com/api/health`; it should return a healthy response with a working database connection.
+4. Open the frontend's actual Render URL and test registration, login, transactions, budgets, savings goals, CSV export, and account isolation.
 
 The Blueprint generates `FINTRACK_SECRET_KEY`, links the PostgreSQL connection string, configures CORS, and runs Alembic migrations during the API build. If you rename either service, update the corresponding API URL or CORS origin. Free resources are for demonstration only; upgrade PostgreSQL before its 30-day expiration and use a paid service with backups for durable use.
 
@@ -152,13 +159,16 @@ GitHub Actions runs frontend tests and a production build, plus backend compile 
 - [ ] Broader accessibility audit and keyboard-flow review
 - [x] Account registration, login, and JWT authentication
 - [x] User-scoped transactions, budgets, goals, summaries, and exports
-- [ ] Database migrations and legacy database upgrade path
-- [ ] Production security, configuration, and database migrations
-- [ ] Deployment and portfolio release
+- [x] PostgreSQL production configuration and Alembic initial migration
+- [x] Production secret enforcement, configurable CORS, and database health check
+- [x] Render Blueprint created and API, static site, and PostgreSQL resources provisioned
+- [ ] Confirm API and frontend builds finish successfully in Render
+- [ ] Verify live API health check and end-to-end frontend workflows
+- [ ] Production security review, persistent paid database, backups, and legacy data import path
 
 ## Project principles
 
-FinTrack is designed around clarity, useful financial context, and responsible data handling. It is an educational portfolio project, not financial advice. The local setup uses SQLite; production uses PostgreSQL. Alembic creates the current schema on a fresh database. The initial migration is not a conversion of an older pre-2.0 SQLite database: back up legacy data and plan a dedicated import before attempting to reuse it. FinTrack is a portfolio project, not financial advice or a bank. Do not enter sensitive real-world financial information until the deployment, access controls, backups, and operational security have been independently reviewed. The Render Blueprint uses free-tier resources for demonstration; Render free PostgreSQL databases expire after their trial period and free web services may sleep. Choose paid persistent hosting and verify backups before relying on the service.
+FinTrack is designed around clarity, useful financial context, and responsible data handling. It is an educational portfolio project, not financial advice. The local setup uses SQLite; production uses PostgreSQL. Alembic creates the current schema on a fresh database. The initial migration is not a conversion of an older pre-2.0 SQLite database: back up legacy data and plan a dedicated import before attempting to reuse it. FinTrack is a portfolio project, not financial advice or a bank. Do not enter sensitive real-world financial information until the deployment, access controls, backups, and operational security have been independently reviewed. The Render Blueprint currently provisions free-tier resources for demonstration; Render free PostgreSQL databases expire after their trial period and free web services may sleep. Choose paid persistent hosting and verify backups before relying on the service.
 
 ## License
 
