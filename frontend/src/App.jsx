@@ -112,7 +112,7 @@ function AuthScreen({ onAuthenticated }) {
     setBusy(true)
     try {
       const registering = mode === 'register'
-      const response = await fetch('/api/auth/' + (registering ? 'register' : 'login'), {
+      const response = await fetch(API_BASE_URL + '/auth/' + (registering ? 'register' : 'login'), {
         method: 'POST',
         headers: registering ? { 'Content-Type': 'application/json' } : { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: registering ? JSON.stringify({ email, password }) : new URLSearchParams({ username: email, password }),
