@@ -2,6 +2,21 @@
 
 All notable project changes are documented here.
 
+## [2.2.0] - 2026-11-02
+
+### Added
+- Render Blueprint `fintrack` created from the `main` branch using the root `render.yaml`.
+- Provisioned the `fintrack-api` FastAPI web service, `fintrack-web` static site, and `fintrack-db` PostgreSQL database resources.
+- Added a dedicated deployment roadmap and documented the Render Blueprint ID and verification checklist.
+
+### Documentation
+- Updated deployment status to distinguish successful resource provisioning from verified live service availability.
+- Added post-deployment checks for the API health endpoint, database connectivity, and frontend account workflows.
+- Clarified that public URLs must be confirmed in Render and that free-tier resources are demonstration-only.
+
+### Status
+- Render Blueprint and resource provisioning are confirmed. Live API/frontend deployment and end-to-end checks remain pending confirmation in the Render service dashboard.
+
 ## [2.1.0] - 2026-11-02
 
 ### Added
