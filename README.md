@@ -17,6 +17,8 @@ FinTrack brings income, expenses, budgets, savings goals, and financial insights
 - **Savings goals** — define targets and track contributions.
 - **Analytics** — monthly cash flow and category spending visualizations.
 - **Data export** — download transaction history as CSV.
+- **Account security** — register and sign in with hashed passwords and expiring JWT access tokens.
+- **Private workspaces** — transactions, budgets, savings goals, summaries, and exports are scoped to the authenticated account.
 - **Responsive UI** — designed for desktop and mobile screens.
 - **Automated tests** — frontend interaction tests and backend API integration tests.
 
@@ -30,7 +32,8 @@ FinTrack brings income, expenses, budgets, savings goals, and financial insights
 | Icons | Lucide React |
 | Backend | Python, FastAPI |
 | Database | SQLite, SQLAlchemy |
-| Validation | Pydantic |
+| Validation | Pydantic, email-validator |
+| Authentication | Argon2 password hashing, JWT (PyJWT) |
 | Frontend tests | Vitest, React Testing Library, jsdom |
 | Backend tests | pytest, FastAPI TestClient, httpx |
 | CI | GitHub Actions |
@@ -67,7 +70,7 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
-The API runs at `http://localhost:8000`. Interactive API documentation is available at `http://localhost:8000/docs`.
+The API runs at `http://localhost:8000`. Interactive API documentation is available at `http://localhost:8000/docs`. Set a strong, private `FINTRACK_SECRET_KEY` environment variable before running outside local development. The fallback key is for local development only.
 
 ### 2. Start the frontend
 
@@ -79,7 +82,7 @@ npm install
 npm run dev
 ```
 
-Open the local URL printed by Vite (normally `http://localhost:5173`). The Vite development server proxies `/api` requests to FastAPI.
+Open the local URL printed by Vite (normally `http://localhost:5173`). The Vite development server proxies `/api` requests to FastAPI. Create an account or sign in from the FinTrack welcome screen. Access tokens remain in memory and are cleared on sign-out or page reload.
 
 ## Run tests
 
@@ -106,7 +109,10 @@ GitHub Actions runs frontend tests and a production build, plus backend compile 
 
 | Method | Endpoint | Purpose |
 | --- | --- | --- |
-| GET | `/api/summary` | Dashboard totals and chart data |
+| POST | `/api/auth/register` | Register and receive an access token |
+| POST | `/api/auth/login` | Sign in with email and password (OAuth2 form fields) |
+| GET | `/api/auth/me` | Current authenticated account |
+| GET | `/api/summary` | Dashboard totals and chart data (authenticated) |
 | GET / POST | `/api/transactions` | List and create transactions |
 | DELETE | `/api/transactions/{id}` | Delete a transaction |
 | GET / POST | `/api/budgets` | List and create budgets |
@@ -128,13 +134,15 @@ GitHub Actions runs frontend tests and a production build, plus backend compile 
 - [x] Budget and savings-goal workflow coverage
 - [x] Accessible search, navigation state, dialog controls, and progress indicators
 - [ ] Broader accessibility audit and keyboard-flow review
-- [ ] Authentication and multi-user accounts
+- [x] Account registration, login, and JWT authentication
+- [x] User-scoped transactions, budgets, goals, summaries, and exports
+- [ ] Database migrations and legacy database upgrade path
 - [ ] Production security, configuration, and database migrations
 - [ ] Deployment and portfolio release
 
 ## Project principles
 
-FinTrack is designed around clarity, useful financial context, and responsible data handling. It is an educational portfolio project, not financial advice. The initial local setup uses an empty SQLite database; do not enter sensitive real-world financial information into an unreviewed deployment.
+FinTrack is designed around clarity, useful financial context, and responsible data handling. It is an educational portfolio project, not financial advice. The initial local setup uses an empty SQLite database; do not enter sensitive real-world financial information into an unreviewed deployment. Version 2.0 introduces required user ownership columns. Back up any database created with an earlier version before upgrading; the current release expects a fresh schema, so do not point it at an older `fintrack.db` until a migration path is provided. For production, configure a high-entropy secret, HTTPS, secure deployment settings, and a managed database before storing sensitive financial records.
 
 ## License
 
