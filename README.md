@@ -94,7 +94,8 @@ The Vite development server proxies `/api` requests to the FastAPI service.
 - [x] FastAPI service and SQLite data layer
 - [x] Responsive dashboard and transaction-entry interface
 - [x] Transaction workflows and budget / savings-goal API endpoints
-- [ ] Budget and savings-goal management screens
+- [x] Budget creation and spending progress screens
+- [x] Savings-goal creation and contribution workflows
 - [x] Analytics and CSV export foundation
 - [ ] Automated tests and accessibility review
 - [ ] Authentication and multi-user accounts
