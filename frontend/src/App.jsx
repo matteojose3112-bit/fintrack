@@ -5,7 +5,8 @@ import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YA
 const money = value => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(value || 0)
 const colors = ['#8b7cff', '#4fc6a5', '#f2b86b', '#e879a9', '#63a8e8', '#9b9eaa']
 const nav = [{ label: 'Overview', icon: LayoutDashboard }, { label: 'Transactions', icon: ReceiptText }, { label: 'Budgets', icon: Wallet }, { label: 'Savings goals', icon: Target }]
-let accessToken = null\nconst api = async (path, options = {}) => { const headers = { ...(options.headers || {}), ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}) }; const r = await fetch('/api' + path, { ...options, headers }); if (!r.ok) throw new Error('API request failed'); return r.json() }
+let accessToken = null
+const api = async (path, options = {}) => { const headers = { ...(options.headers || {}), ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}) }; const r = await fetch('/api' + path, { ...options, headers }); if (!r.ok) throw new Error('API request failed'); return r.json() }
 
 function App() {
   const [page, setPage] = useState('Overview')
@@ -31,7 +32,9 @@ function App() {
       setSummary(s); setTransactions(t); setBudgets(b); setGoals(g); setApiOnline(true)
     } catch { setApiOnline(false) }
   }
-  useEffect(() => { if (user) load() }, [user])\n  const authenticate = data => { accessToken = data.access_token; setUser(data.user) }\n  const logout = () => { accessToken = null; setUser(null); setSummary(null); setTransactions([]); setBudgets([]); setGoals([]); setApiOnline(false) }
+  useEffect(() => { if (user) load() }, [user])
+  const authenticate = data => { accessToken = data.access_token; setUser(data.user) }
+  const logout = () => { accessToken = null; setUser(null); setSummary(null); setTransactions([]); setBudgets([]); setGoals([]); setApiOnline(false) }
   const filtered = useMemo(() => transactions.filter(t => (t.title + t.category).toLowerCase().includes(query.toLowerCase())), [transactions, query])
 
   const addTransaction = async e => {
@@ -49,7 +52,9 @@ function App() {
   const primaryAction = () => page === 'Budgets' ? setBudgetModal(true) : page === 'Savings goals' ? setGoalModal(true) : setModal(true)
   const primaryLabel = page === 'Budgets' ? 'Create budget' : page === 'Savings goals' ? 'New savings goal' : 'Add transaction'
 
-  if (!user) return <AuthScreen onAuthenticated={authenticate}/>\n\n  return <div className="min-h-screen bg-[#0b0d12] text-[#e8eaf0]">
+  if (!user) return <AuthScreen onAuthenticated={authenticate}/>
+
+  return <div className="min-h-screen bg-[#0b0d12] text-[#e8eaf0]">
     <aside className={`fixed inset-y-0 left-0 z-30 flex w-64 flex-col border-r border-[#222633] bg-[#0e1118] px-5 py-6 transition-transform lg:translate-x-0 ${mobileNav ? 'translate-x-0' : '-translate-x-full'}`}>
       <div className="mb-12 flex items-center gap-3 px-2"><div className="grid h-10 w-10 place-items-center rounded-xl bg-violet-500 text-white"><Activity size={22}/></div><div><div className="font-['Manrope'] text-xl font-extrabold tracking-tight">fintrack<span className="text-violet-400">.</span></div><div className="text-[10px] uppercase tracking-[.2em] text-[#777e90]">Personal finance</div></div><button className="ml-auto lg:hidden" onClick={() => setMobileNav(false)}><X size={18}/></button></div>
       <div className="mb-3 px-3 text-[10px] font-bold uppercase tracking-[.18em] text-[#687083]">Workspace</div>
