@@ -2,6 +2,25 @@
 
 All notable project changes are documented here.
 
+## [2.1.0] - 2026-11-02
+
+### Added
+- PostgreSQL-compatible database connection configuration with local SQLite fallback.
+- Alembic schema migration foundation and initial account/finance schema.
+- Render Blueprint for the FastAPI service, static React frontend, and managed PostgreSQL database.
+- Environment-based frontend API URL and deployment environment examples.
+- Production startup guard requiring `FINTRACK_SECRET_KEY`.
+
+### Improved
+- Monthly analytics and budget calculations now use portable date ranges across SQLite and PostgreSQL.
+- CORS origins are configurable for local and hosted frontend domains.
+- API health endpoint verifies database connectivity for hosting health checks.
+- Deployment, migration, and free-tier limitations documented.
+
+### Notes
+- The initial migration provisions a fresh schema; it does not import legacy pre-2.0 SQLite data.
+- Public hosting resources still need to be provisioned through the connected hosting account.
+
 ## [2.0.0] - 2026-11-02
 
 ### Added
