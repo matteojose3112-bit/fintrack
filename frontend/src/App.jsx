@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { API_BASE_URL } from './config'
 import { Activity, ArrowDownLeft, ArrowUpRight, Bell, ChevronDown, CircleHelp, CreditCard, Download, LayoutDashboard, Plus, Search, Settings2, Target, Wallet, X, Menu, PiggyBank, ReceiptText, LogOut } from 'lucide-react'
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis, PieChart, Pie, Cell } from 'recharts'
 
@@ -6,7 +7,7 @@ const money = value => new Intl.NumberFormat('en-US', { style: 'currency', curre
 const colors = ['#8b7cff', '#4fc6a5', '#f2b86b', '#e879a9', '#63a8e8', '#9b9eaa']
 const nav = [{ label: 'Overview', icon: LayoutDashboard }, { label: 'Transactions', icon: ReceiptText }, { label: 'Budgets', icon: Wallet }, { label: 'Savings goals', icon: Target }]
 let accessToken = null
-const api = async (path, options = {}) => { const headers = { ...(options.headers || {}), ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}) }; const r = await fetch('/api' + path, { ...options, headers }); if (!r.ok) throw new Error('API request failed'); return r.json() }
+const api = async (path, options = {}) => { const headers = { ...(options.headers || {}), ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}) }; const r = await fetch(API_BASE_URL + path, { ...options, headers }); if (!r.ok) throw new Error('API request failed'); return r.json() }
 
 function App() {
   const [user, setUser] = useState(null)
@@ -46,7 +47,7 @@ function App() {
     } catch { alert('Could not save transaction. Make sure the API is running.') }
   }
   const removeTransaction = async id => { try { await api('/transactions/' + id, { method: 'DELETE' }); load() } catch { alert('Could not delete transaction.') } }
-  const exportCsv = async () => { try { const response = await fetch('/api/export/transactions', { headers: { Authorization: `Bearer ${accessToken}` } }); if (!response.ok) throw new Error('Export failed'); const blob = await response.blob(); const url = URL.createObjectURL(blob); const link = document.createElement('a'); link.href = url; link.download = 'fintrack-transactions.csv'; link.click(); URL.revokeObjectURL(url) } catch { alert('Could not export transactions. Please sign in again and retry.') } }
+  const exportCsv = async () => { try { const response = await fetch(API_BASE_URL + '/export/transactions', { headers: { Authorization: `Bearer ${accessToken}` } }); if (!response.ok) throw new Error('Export failed'); const blob = await response.blob(); const url = URL.createObjectURL(blob); const link = document.createElement('a'); link.href = url; link.download = 'fintrack-transactions.csv'; link.click(); URL.revokeObjectURL(url) } catch { alert('Could not export transactions. Please sign in again and retry.') } }
   const addBudget = async e => { e.preventDefault(); try { await api('/budgets', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...budgetForm, limit: Number(budgetForm.limit) }) }); setBudgetModal(false); setBudgetForm({ category: 'Food & dining', limit: '' }); load() } catch { alert('Could not save budget. Check for an existing budget in this category.') } }
   const addGoal = async e => { e.preventDefault(); try { await api('/goals', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...goalForm, target_amount: Number(goalForm.target_amount) }) }); setGoalModal(false); setGoalForm({ name: '', target_amount: '' }); load() } catch { alert('Could not create savings goal. Make sure the API is running.') } }
   const addContribution = async e => { e.preventDefault(); try { await api('/goals/' + contributionGoal.id + '/contribute', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ amount: Number(contribution) }) }); setContributionGoal(null); setContribution(''); load() } catch { alert('Could not add contribution.') } }
