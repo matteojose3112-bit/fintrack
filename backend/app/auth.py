@@ -11,7 +11,13 @@ from sqlalchemy.orm import Session
 from .database import get_db
 from .models import User
 
-SECRET_KEY = os.getenv("FINTRACK_SECRET_KEY", "development-only-change-this-secret")
+ENVIRONMENT = os.getenv("ENVIRONMENT", "development").lower()
+SECRET_KEY = os.getenv("FINTRACK_SECRET_KEY")
+if not SECRET_KEY:
+    if ENVIRONMENT == "production":
+        raise RuntimeError("FINTRACK_SECRET_KEY must be configured in production")
+    SECRET_KEY = "development-only-change-this-secret"
+
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 password_hash = PasswordHash.recommended()
