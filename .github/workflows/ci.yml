@@ -32,4 +32,5 @@ jobs:
           python-version: '3.11'
       - run: pip install -r backend/requirements.txt
       - run: python -m compileall -q backend/app
+      - run: DATABASE_URL=sqlite:///./migration-test.db alembic upgrade head
       - run: pytest -q backend/tests
