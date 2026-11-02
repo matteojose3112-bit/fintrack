@@ -18,6 +18,7 @@ FinTrack brings income, expenses, budgets, savings goals, and financial insights
 - **Analytics** — monthly cash flow and category spending visualizations.
 - **Data export** — download transaction history as CSV.
 - **Responsive UI** — designed for desktop and mobile screens.
+- **API test suite** — automated integration coverage for core finance workflows.
 
 ## Technology
 
@@ -30,6 +31,8 @@ FinTrack brings income, expenses, budgets, savings goals, and financial insights
 | Backend | Python, FastAPI |
 | Database | SQLite, SQLAlchemy |
 | Validation | Pydantic |
+| Testing | pytest, FastAPI TestClient, httpx |
+| CI | GitHub Actions |
 
 ## Project structure
 
@@ -38,7 +41,9 @@ fintrack/
 ├── frontend/          # React application
 ├── backend/
 │   ├── app/           # FastAPI application and database models
+│   ├── tests/         # API integration tests
 │   └── requirements.txt
+├── .github/workflows/ # Continuous integration
 ├── .gitignore
 └── README.md
 ```
@@ -76,6 +81,19 @@ Open the local URL printed by Vite (normally `http://localhost:5173`).
 
 The Vite development server proxies `/api` requests to the FastAPI service.
 
+## Run tests
+
+From the repository root, install the backend dependencies and run:
+
+```bash
+pip install -r backend/requirements.txt
+pytest -q backend/tests
+```
+
+The API tests use an isolated in-memory SQLite database. They cover health checks, transaction creation/listing/deletion and validation, dashboard summaries, budget creation and duplicate protection, savings goals and contributions, and CSV export. They do not use the local `backend/fintrack.db` file.
+
+GitHub Actions runs the frontend production build and backend compile/test checks on pushes and pull requests targeting `main`.
+
 ## API overview
 
 | Method | Endpoint | Purpose |
@@ -97,7 +115,9 @@ The Vite development server proxies `/api` requests to the FastAPI service.
 - [x] Budget creation and spending progress screens
 - [x] Savings-goal creation and contribution workflows
 - [x] Analytics and CSV export foundation
-- [ ] Automated tests and accessibility review
+- [x] Automated backend API integration tests
+- [x] GitHub Actions backend test integration
+- [ ] Frontend component tests and accessibility review
 - [ ] Authentication and multi-user accounts
 - [ ] Deployment and production configuration
 
