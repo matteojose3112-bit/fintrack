@@ -2,6 +2,23 @@
 
 All notable project changes are documented here.
 
+## [2.0.0] - 2026-11-02
+
+### Added
+- Account registration and login endpoints with email validation and Argon2 password hashing.
+- Signed JWT access tokens with a 30-minute expiration and an authenticated account endpoint.
+- User ownership on transactions, budgets, and savings goals.
+- Per-account filtering for summaries, budget calculations, goal contributions, and CSV exports.
+- Sign-in and registration screens, authenticated API requests, account display, and sign-out.
+- Backend tests for registration, login, validation, protected routes, and cross-account data isolation.
+
+### Security
+- Passwords are stored as Argon2 hashes rather than plaintext.
+- Financial endpoints require a valid bearer token and return only the authenticated user's records.
+- The frontend keeps access tokens in memory and clears them on sign-out or reload.
+- Production deployments must set a strong `FINTRACK_SECRET_KEY` and use HTTPS.
+- Existing pre-2.0 SQLite databases require a backup and a migration/reset plan before use with this schema.
+
 ## [1.4.0] - 2026-11-02
 
 ### Added
