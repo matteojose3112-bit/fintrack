@@ -32,6 +32,14 @@ function mockApi({ online = true } = {}) {
   return requests
 }
 
+async function renderAuthenticatedApp() {
+  render(<App />)
+  fireEvent.change(screen.getByLabelText('Email address'), { target: { value: 'tester@example.com' } })
+  fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'securepass123' } })
+  fireEvent.click(screen.getByRole('button', { name: 'Sign in' }))
+  expect(await screen.findByText('Good to see you.')).toBeInTheDocument()
+}
+
 describe('FinTrack application', () => {
   beforeEach(() => mockApi())
   afterEach(() => {
@@ -40,7 +48,7 @@ describe('FinTrack application', () => {
   })
 
   it('loads dashboard metrics and recent transactions', async () => {
-    render(<App />)
+    await renderAuthenticatedApp()
     expect(await screen.findByText('Groceries')).toBeInTheDocument()
     expect(screen.getByText('$2,150')).toBeInTheDocument()
     expect(screen.getByText('$2,500')).toBeInTheDocument()
