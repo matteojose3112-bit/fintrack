@@ -92,8 +92,9 @@ The Vite development server proxies `/api` requests to the FastAPI service.
 
 - [x] Repository structure and application foundation
 - [x] FastAPI service and SQLite data layer
-- [x] Responsive dashboard and core finance screens
-- [x] Transaction, budget, and savings-goal workflows
+- [x] Responsive dashboard and transaction-entry interface
+- [x] Transaction workflows and budget / savings-goal API endpoints
+- [ ] Budget and savings-goal management screens
 - [x] Analytics and CSV export foundation
 - [ ] Automated tests and accessibility review
 - [ ] Authentication and multi-user accounts
@@ -101,7 +102,7 @@ The Vite development server proxies `/api` requests to the FastAPI service.
 
 ## Project principles
 
-FinTrack is designed around clarity, useful financial context, and responsible data handling. It is an educational portfolio project, not financial advice. The initial local setup uses SQLite and demo records; do not enter sensitive real-world financial information into an unreviewed deployment.
+FinTrack is designed around clarity, useful financial context, and responsible data handling. It is an educational portfolio project, not financial advice. The initial local setup uses an empty SQLite database; add your own test records while developing. Do not enter sensitive real-world financial information into an unreviewed deployment.
 
 ## License
 
