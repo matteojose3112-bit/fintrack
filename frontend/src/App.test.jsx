@@ -20,7 +20,8 @@ function mockApi({ online = true } = {}) {
   const requests = []
   vi.stubGlobal('fetch', vi.fn(async (url, options = {}) => {
     requests.push({ url, options })
-    if (!online) throw new Error('Network unavailable')
+    if (!online && url !== '/api/auth/login' && url !== '/api/auth/register') throw new Error('Network unavailable')
+    if (url === '/api/auth/login' || url === '/api/auth/register') return { ok: true, json: async () => ({ access_token: 'test-token', token_type: 'bearer', user: { id: 1, email: 'tester@example.com' } }) }
     const data = {
       '/api/summary': summary,
       '/api/transactions': transactions,
@@ -56,7 +57,7 @@ describe('FinTrack application', () => {
   })
 
   it('filters transactions using the accessible search field', async () => {
-    render(<App />)
+    await renderAuthenticatedApp()
     await screen.findByText('Groceries')
     fireEvent.change(screen.getByRole('textbox', { name: 'Search transactions' }), {
       target: { value: 'not found' },
@@ -66,7 +67,7 @@ describe('FinTrack application', () => {
   })
 
   it('opens the transaction form from the primary action', async () => {
-    render(<App />)
+    await renderAuthenticatedApp()
     await screen.findByText('Groceries')
     fireEvent.click(screen.getByRole('button', { name: 'Add transaction' }))
     expect(screen.getByText('New transaction')).toBeInTheDocument()
@@ -75,7 +76,7 @@ describe('FinTrack application', () => {
   })
 
   it('shows budget usage with an accessible progress indicator', async () => {
-    render(<App />)
+    await renderAuthenticatedApp()
     fireEvent.click(screen.getByRole('button', { name: 'Budgets' }))
     expect(await screen.findByRole('heading', { name: 'Food' })).toBeInTheDocument()
     expect(screen.getAllByRole('progressbar', { name: 'Food budget usage' })).toHaveLength(2)
@@ -85,7 +86,7 @@ describe('FinTrack application', () => {
   })
 
   it('opens savings goals and the contribution dialog', async () => {
-    render(<App />)
+    await renderAuthenticatedApp()
     fireEvent.click(screen.getByRole('button', { name: 'Savings goals' }))
     expect(await screen.findByText('Emergency fund')).toBeInTheDocument()
     expect(screen.getByRole('progressbar', { name: 'Emergency fund savings progress' })).toHaveAttribute('aria-valuenow', '25')
@@ -96,7 +97,7 @@ describe('FinTrack application', () => {
 
   it('shows a clear offline message when the API cannot be reached', async () => {
     mockApi({ online: false })
-    render(<App />)
+    await renderAuthenticatedApp()
     expect(await screen.findByText(/Backend is offline/)).toBeInTheDocument()
     expect(screen.getByText('Waiting for API')).toBeInTheDocument()
   })
