@@ -2,6 +2,13 @@
 
 All notable project changes are documented here.
 
+## [1.3.0] - 2026-11-02
+
+### Added
+- Vitest and React Testing Library setup with a jsdom test environment.
+- Frontend interaction tests for dashboard data, transaction search, transaction form launch, and API-offline feedback.
+- GitHub Actions frontend test execution before the production build.
+
 ## [1.2.0] - 2026-11-02
 
 ### Added
