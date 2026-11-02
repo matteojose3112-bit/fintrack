@@ -9,6 +9,7 @@ let accessToken = null
 const api = async (path, options = {}) => { const headers = { ...(options.headers || {}), ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}) }; const r = await fetch('/api' + path, { ...options, headers }); if (!r.ok) throw new Error('API request failed'); return r.json() }
 
 function App() {
+  const [user, setUser] = useState(null)
   const [page, setPage] = useState('Overview')
   const [summary, setSummary] = useState(null)
   const [transactions, setTransactions] = useState([])
