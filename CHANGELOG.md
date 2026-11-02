@@ -2,6 +2,17 @@
 
 All notable project changes are documented here.
 
+## [1.4.0] - 2026-11-02
+
+### Added
+- Expanded frontend tests for budget and savings-goal screens, progress indicators, and modal entry points.
+- Accessible labels for transaction search, mobile navigation, and modal close controls.
+- Semantic progressbar roles and values for budget usage and savings-goal completion.
+
+### Improved
+- Navigation exposes the current page through `aria-current`.
+- Frontend tests now verify the accessible names and progress values used by assistive technology.
+
 ## [1.3.0] - 2026-11-02
 
 ### Added
