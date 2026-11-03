@@ -2,6 +2,25 @@
 
 All notable project changes are documented here.
 
+## [2.2.1] - 2026-11-02
+
+### Fixed
+- Corrected frontend authentication requests to use the configured `VITE_API_BASE_URL`, allowing the hosted static frontend to communicate with the separately deployed API.
+
+### Verified
+- Render API deployment completed successfully and is marked live.
+- Render frontend build and publish completed successfully from merge commit `1549d9641a036cc72cd479b54624289b11fd6dd5`.
+- API health checks returned HTTP 200.
+- Render PostgreSQL database is available and contains the expected application tables.
+- Frontend production build completed successfully.
+
+### Follow-up
+- Live browser registration/login and finance workflow acceptance tests remain outstanding.
+- Frontend dependency audit reported 6 vulnerabilities (3 moderate, 1 high, 2 critical); review before production-grade use.
+- Frontend bundle-size warning remains to be addressed.
+- Current free PostgreSQL database is scheduled to expire on 2026-12-02; upgrade and configure backups before storing real financial data.
+
+
 ## [2.2.0] - 2026-11-02
 
 ### Added
