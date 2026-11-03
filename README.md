@@ -91,6 +91,8 @@ Open the local URL printed by Vite (normally `http://localhost:5173`). The Vite 
 
 ## Deploy with Render
 
+**Live application:** [Open FinTrack](https://fintrack-web-int6.onrender.com)
+
 The Render Blueprint has been provisioned and the live services have completed their initial deployments.
 
 - Blueprint: `fintrack` (ID: `exs-dbkhp88m7kps7396um8g`)
