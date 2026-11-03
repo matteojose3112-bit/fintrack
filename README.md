@@ -91,21 +91,27 @@ Open the local URL printed by Vite (normally `http://localhost:5173`). The Vite 
 
 ## Deploy with Render
 
-The Render Blueprint has been created for this repository and its three resources have been provisioned in the Render dashboard:
+The Render Blueprint has been provisioned and the live services have completed their initial deployments.
 
-- Blueprint: `fintrack`
-- Blueprint ID: `exs-dbkhp88m7kps7396um8g`
-- Source: `matteojose3112-bit/fintrack`, branch `main`, Blueprint file `render.yaml`
-- Resources: `fintrack-api` (FastAPI), `fintrack-web` (static React frontend), and `fintrack-db` (PostgreSQL)
+- Blueprint: `fintrack` (ID: `exs-dbkhp88m7kps7396um8g`)
+- API: [https://fintrack-api-l1wa.onrender.com](https://fintrack-api-l1wa.onrender.com)
+- Frontend: [https://fintrack-web-int6.onrender.com](https://fintrack-web-int6.onrender.com)
+- Database: `fintrack-db` (PostgreSQL 18, Render free tier)
+- Source: `matteojose3112-bit/fintrack`, branch `main`
 
-**Provisioning is confirmed; public deployment is not considered verified until both services finish deploying and the live checks below pass.** The expected public addresses are `https://fintrack-api.onrender.com` and `https://fintrack-web.onrender.com` (confirm the actual URLs in Render if service names or generated domains differ).
+### Verified deployment checks
 
-1. In Render, open the `fintrack` Blueprint and check that the database, API, and static site show healthy/available statuses.
-2. Wait for the API build to complete, including `alembic upgrade head`, and for the frontend build to publish.
-3. Open `https://fintrack-api.onrender.com/api/health`; it should return a healthy response with a working database connection.
-4. Open the frontend's actual Render URL and test registration, login, transactions, budgets, savings goals, CSV export, and account isolation.
+- [x] Render API service deployed successfully.
+- [x] Render frontend build and publish completed successfully after merge commit `1549d9641a036cc72cd479b54624289b11fd6dd5` (authentication API URL fix).
+- [x] API health endpoint returned HTTP 200 in Render service health-check logs.
+- [x] PostgreSQL database is available and contains the expected `users`, `transactions`, `budgets`, `goals`, and `alembic_version` tables.
+- [x] Frontend production build completed successfully.
+- [ ] Manually verify account registration and login in the live browser.
+- [ ] Complete live end-to-end checks for transactions, budgets, savings goals, CSV export, and account isolation.
 
-The Blueprint generates `FINTRACK_SECRET_KEY`, links the PostgreSQL connection string, configures CORS, and runs Alembic migrations during the API build. If you rename either service, update the corresponding API URL or CORS origin. Free resources are for demonstration only; upgrade PostgreSQL before its 30-day expiration and use a paid service with backups for durable use.
+The Blueprint generates `FINTRACK_SECRET_KEY`, links the PostgreSQL connection string, configures CORS, and runs Alembic migrations during the API build. The frontend uses `VITE_API_BASE_URL` to call the separately deployed API. The live deployment is operational at the URLs above; user-facing authentication and finance workflows still require a browser acceptance test.
+
+**Production caution:** the current PostgreSQL database is on Render's free tier and is scheduled to expire on December 2, 2026. Do not rely on it for durable financial records. Upgrade to a paid database and configure backups before using real financial data. The frontend build also reported six npm audit vulnerabilities (three moderate, one high, two critical) and a bundle-size warning; these should be reviewed before a production-grade release.
 
 ## Run tests
 
