@@ -120,3 +120,10 @@ All notable project changes are documented here.
 - Budget and savings-goal API foundations.
 - CSV transaction export.
 - Local development setup and API documentation through FastAPI Swagger UI.
+
+## [2.2.2] - 2026-11-03
+
+### Documentation
+- Refreshed README and roadmap with the current Render deployment, outstanding live acceptance tests, and production-readiness concerns.
+- Reaffirmed the 2026-12-02 expiry date for the free PostgreSQL database and the need for a durable upgrade and backups before storing real financial records.
+- Kept dependency audit findings, bundle-size work, security review, and live workflow verification visible as open items.
