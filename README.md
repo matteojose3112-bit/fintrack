@@ -181,3 +181,7 @@ FinTrack is designed around clarity, useful financial context, and responsible d
 ## License
 
 Released under the [MIT License](LICENSE).
+
+## Documentation review — 2026-11-03
+
+Documentation review — 2026-11-03: FinTrack is deployed on Render with API health and database schema availability previously verified. Live browser acceptance for registration/login and finance workflows remains outstanding. The PostgreSQL free-tier database is scheduled to expire 2026-12-02; do not rely on it for durable financial records. Upgrade, backups, security review, dependency findings, and bundle-size warning remain release concerns.
