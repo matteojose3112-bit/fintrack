@@ -10,11 +10,12 @@ from sqlalchemy.pool import StaticPool
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from app.database import Base, get_db
-from app.main import app
+from app.main import app, limiter
 
 
 @pytest.fixture()
 def client():
+    limiter.reset()
     engine = create_engine(
         "sqlite://",
         connect_args={"check_same_thread": False},
@@ -39,3 +40,4 @@ def client():
     app.dependency_overrides.clear()
     Base.metadata.drop_all(bind=engine)
     engine.dispose()
+    limiter.reset()
