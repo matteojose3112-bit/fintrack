@@ -1,8 +1,8 @@
 # FinTrack Roadmap
 
-Last updated: 2026-11-02
+Last updated: 2026-11-08
 
-## Current release: 2.2.1
+## Current release: 2.2.2
 
 **Status: Deployed on Render; infrastructure and API health verified. Live user-workflow acceptance testing remains.**
 
@@ -49,10 +49,31 @@ Last updated: 2026-11-02
 
 The current Render PostgreSQL database is on the free tier and is scheduled to expire on December 2, 2026. Upgrade to durable paid resources and configure backups before storing real financial information. The live deployment and API health are verified, but browser-based end-to-end workflows and production security review are still outstanding. FinTrack is a portfolio/educational application, not a bank or financial-advice service.
 
+
 ---
 
-Last reviewed: 2026-11-03
+Last reviewed: 2026-11-08
 
-## Current direction — 2026-11-03
+## Current engineering status — 2026-11-08
 
-**Deployed portfolio application · Live acceptance and production-readiness work outstanding.** Next priorities: complete live registration/login and transaction, budget, goal, export, and account-isolation browser tests; review/remediate frontend dependency audit findings; reduce the production bundle; and plan a durable database upgrade with backups before the free PostgreSQL expiry on 2026-12-02. Do not store durable real financial records on the expiring free-tier database. A broader accessibility/keyboard audit and legacy SQLite import path remain open.
+**Main branch: 2.2.2 deployed-MVP baseline; live acceptance and production-readiness work remain open.** The latest recorded `main` CI run passed on 2026-11-04 (commit `481cebb`). PR-branch checks for the draft changes below are recorded as passing at their latest heads, but none is merged.
+
+### Open draft PRs — pending merge and review
+- [ ] [PR #3](https://github.com/matteojose3112-bit/fintrack/pull/3): additional cross-account isolation regression tests.
+- [ ] [PR #4](https://github.com/matteojose3112-bit/fintrack/pull/4): correct Render production API URL and CORS origin; recheck live API health before any Blueprint sync. The PR review recorded HTTP 503 on 2026-11-08; no production configuration change was made.
+- [ ] [PR #5](https://github.com/matteojose3112-bit/fintrack/pull/5): protect CSV exports against spreadsheet formula injection.
+- [ ] [PR #7](https://github.com/matteojose3112-bit/fintrack/pull/7): rate-limit registration/login; review the process-local default and shared-store requirements before production scaling.
+
+### Open follow-up issue
+- [ ] [Issue #6](https://github.com/matteojose3112-bit/fintrack/issues/6): replace floating-point monetary fields/calculations with fixed-precision decimals and define a safe SQLite/PostgreSQL migration plan.
+
+### Additional release gates
+- [ ] Recheck live API health and complete browser registration/login plus transaction, budget, savings-goal, contribution, and CSV-export workflows.
+- [ ] Verify cross-account isolation in live acceptance tests, not only isolated automated tests.
+- [ ] Review current dependency audit results and address the previously reported frontend vulnerabilities.
+- [ ] Review/split the previously oversized frontend production bundle.
+- [ ] Confirm the free PostgreSQL database's current lifecycle/expiry; arrange durable hosting, automated backups, and a restore test before real financial use.
+- [ ] Complete broader keyboard/accessibility and production security reviews.
+- [ ] Define a legacy SQLite import/upgrade strategy before reusing pre-2.0 data.
+
+Do not mark draft PRs or issue #6 complete until changes are merged and the corresponding migration, deployment, and acceptance checks are actually performed. FinTrack remains an educational portfolio application, not a bank or financial-advice service.
