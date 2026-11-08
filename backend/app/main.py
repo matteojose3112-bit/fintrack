@@ -4,11 +4,14 @@ import os
 from calendar import month_abbr
 from datetime import date
 
-from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi import Depends, FastAPI, HTTPException, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from fastapi.security import OAuth2PasswordRequestForm
-from sqlalchemy import func, text, text
+from sqlalchemy import func, text
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from slowapi.util import get_remote_address
 from sqlalchemy.orm import Session
 
 from .auth import create_access_token, get_current_user, hash_password, verify_password
@@ -16,7 +19,13 @@ from .database import get_db
 from .models import Budget, Goal, Transaction, User
 from .schemas import AuthResponse, BudgetCreate, Contribution, GoalCreate, RegisterRequest, TransactionCreate, UserResponse
 
+limiter = Limiter(
+    key_func=get_remote_address,
+    storage_uri=os.getenv("RATE_LIMIT_STORAGE_URI", "memory://"),
+)
 app = FastAPI(title="FinTrack API", version="2.1.0", description="Personal finance and budgeting API")
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 allowed_origins = [origin.strip() for origin in os.getenv(
     "CORS_ORIGINS", "http://localhost:5173"
 ).split(",") if origin.strip()]
@@ -72,7 +81,8 @@ def health(db: Session = Depends(get_db)):
 
 
 @app.post("/api/auth/register", response_model=AuthResponse, status_code=status.HTTP_201_CREATED)
-def register(payload: RegisterRequest, db: Session = Depends(get_db)):
+@limiter.limit("5/minute")
+def register(request: Request, payload: RegisterRequest, db: Session = Depends(get_db)):
     email = payload.email.lower()
     if db.query(User).filter(func.lower(User.email) == email).first():
         raise HTTPException(status_code=409, detail="An account with this email already exists")
@@ -84,7 +94,8 @@ def register(payload: RegisterRequest, db: Session = Depends(get_db)):
 
 
 @app.post("/api/auth/login", response_model=AuthResponse)
-def login(form: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+@limiter.limit("5/minute")
+def login(request: Request, form: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = db.query(User).filter(func.lower(User.email) == form.username.lower()).first()
     if user is None or not verify_password(form.password, user.password_hash):
         raise HTTPException(status_code=401, detail="Incorrect email or password", headers={"WWW-Authenticate": "Bearer"})
