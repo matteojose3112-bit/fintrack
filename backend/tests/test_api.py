@@ -103,3 +103,21 @@ def test_login_is_rate_limited(client):
         data={"username": "tester@example.com", "password": "incorrect-password"},
     )
     assert limited.status_code == 429
+
+
+def test_registration_is_rate_limited(client):
+    for attempt in range(5):
+        response = client.post(
+            "/api/auth/register",
+            json={
+                "email": f"new-user-{attempt}@example.com",
+                "password": "securepass123",
+            },
+        )
+        assert response.status_code == 201
+
+    limited = client.post(
+        "/api/auth/register",
+        json={"email": "sixth-user@example.com", "password": "securepass123"},
+    )
+    assert limited.status_code == 429
