@@ -14,7 +14,7 @@ from app.main import app, limiter
 
 
 @pytest.fixture()
-def client():
+def client(request):
     limiter.reset()
     engine = create_engine(
         "sqlite://",
@@ -32,7 +32,7 @@ def client():
             db.close()
 
     app.dependency_overrides[get_db] = override_get_db
-    with TestClient(app) as test_client:
+    with TestClient(app, client=(f"pytest-{request.node.name}", 50000)) as test_client:
         registered = test_client.post("/api/auth/register", json={"email": "tester@example.com", "password": "securepass123"})
         assert registered.status_code == 201
         test_client.headers["Authorization"] = f"Bearer {registered.json()['access_token']}"
