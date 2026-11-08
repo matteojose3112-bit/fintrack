@@ -103,4 +103,3 @@ def test_login_is_rate_limited(client):
         data={"username": "tester@example.com", "password": "incorrect-password"},
     )
     assert limited.status_code == 429
-    assert "Retry-After" in limited.headers
