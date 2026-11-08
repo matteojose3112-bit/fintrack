@@ -88,3 +88,60 @@ def test_csv_export(client):
     assert "text/csv" in response.headers["content-type"]
     assert "Date,Description,Type,Category,Amount" in response.text
     assert "Consulting" in response.text
+
+
+def test_financial_records_are_isolated_between_accounts(client):
+    # The fixture authenticates the first account before yielding the client.
+    first_transaction = client.post("/api/transactions", json={
+        "title": "Private salary",
+        "amount": 4200,
+        "type": "income",
+        "category": "Salary",
+        "date": date.today().isoformat(),
+    })
+    assert first_transaction.status_code == 201
+    transaction_id = first_transaction.json()["id"]
+
+    first_budget = client.post("/api/budgets", json={"category": "Housing", "limit": 1200})
+    assert first_budget.status_code == 201
+
+    first_goal = client.post("/api/goals", json={"name": "Private goal", "target_amount": 5000})
+    assert first_goal.status_code == 201
+    goal_id = first_goal.json()["id"]
+
+    second_account = client.post("/api/auth/register", json={
+        "email": "second@example.com",
+        "password": "another-secure-pass",
+    })
+    assert second_account.status_code == 201
+    first_token = client.headers["Authorization"]
+    client.headers["Authorization"] = f"Bearer {second_account.json()['access_token']}"
+
+    assert client.get("/api/transactions").json() == []
+    assert client.get("/api/budgets").json() == []
+    assert client.get("/api/goals").json() == []
+
+    summary = client.get("/api/summary")
+    assert summary.status_code == 200
+    assert summary.json()["balance"] == 0
+    assert summary.json()["income"] == 0
+    assert summary.json()["expenses"] == 0
+
+    exported = client.get("/api/export/transactions")
+    assert exported.status_code == 200
+    assert "Private salary" not in exported.text
+
+    # Account two cannot mutate account one's records by guessing their IDs.
+    assert client.delete(f"/api/transactions/{transaction_id}").status_code == 404
+    assert client.post(f"/api/goals/{goal_id}/contribute", json={"amount": 100}).status_code == 404
+
+    # The same budget category is valid in a separate account.
+    second_budget = client.post("/api/budgets", json={"category": "Housing", "limit": 800})
+    assert second_budget.status_code == 201
+
+    # Switching back confirms the original account's records remain intact.
+    client.headers["Authorization"] = first_token
+    assert [item["id"] for item in client.get("/api/transactions").json()] == [transaction_id]
+    assert [item["category"] for item in client.get("/api/budgets").json()] == ["Housing"]
+    assert client.get("/api/goals").json()[0]["id"] == goal_id
+    assert client.get("/api/goals").json()[0]["saved_amount"] == 0
