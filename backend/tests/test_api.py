@@ -88,3 +88,19 @@ def test_csv_export(client):
     assert "text/csv" in response.headers["content-type"]
     assert "Date,Description,Type,Category,Amount" in response.text
     assert "Consulting" in response.text
+
+
+def test_login_is_rate_limited(client):
+    for _ in range(5):
+        response = client.post(
+            "/api/auth/login",
+            data={"username": "tester@example.com", "password": "incorrect-password"},
+        )
+        assert response.status_code == 401
+
+    limited = client.post(
+        "/api/auth/login",
+        data={"username": "tester@example.com", "password": "incorrect-password"},
+    )
+    assert limited.status_code == 429
+    assert "Retry-After" in limited.headers
