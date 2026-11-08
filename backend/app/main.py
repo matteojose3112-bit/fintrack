@@ -39,6 +39,13 @@ def auth_response(user: User):
     return {"access_token": create_access_token(user), "token_type": "bearer", "user": {"id": user.id, "email": user.email}}
 
 
+def csv_safe_text(value: str) -> str:
+    """Prevent spreadsheet applications from evaluating user text as formulas."""
+    if value.lstrip(" \t\r\n")[:1] in {"=", "+", "-", "@"}:
+        return f"'{value}"
+    return value
+
+
 def serialize_transaction(t):
     return {"id": t.id, "title": t.title, "amount": t.amount, "type": t.type, "category": t.category, "date": t.date.isoformat()}
 
@@ -220,6 +227,6 @@ def export_transactions(db: Session = Depends(get_db), user: User = Depends(get_
     writer.writerow(["Date", "Description", "Type", "Category", "Amount"])
     items = db.query(Transaction).filter(Transaction.user_id == user.id).order_by(Transaction.date.desc()).all()
     for transaction in items:
-        writer.writerow([transaction.date.isoformat(), transaction.title, transaction.type, transaction.category, transaction.amount])
+        writer.writerow([transaction.date.isoformat(), csv_safe_text(transaction.title), transaction.type, csv_safe_text(transaction.category), transaction.amount])
     output.seek(0)
     return StreamingResponse(iter([output.getvalue()]), media_type="text/csv", headers={"Content-Disposition": "attachment; filename=fintrack-transactions.csv"})
