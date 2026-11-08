@@ -2,6 +2,23 @@
 
 All notable project changes are documented here.
 
+## [Unreleased] — Engineering review — 2026-11-08
+
+### Pending draft pull requests — not part of the main-branch release
+- PR #3 proposes additional cross-account isolation regression coverage; its latest recorded CI run passed.
+- PR #4 proposes correcting the Render API URL and CORS origin; its latest recorded CI run passed. The PR review observed HTTP 503 from the live API, and no Render Blueprint sync or deployment was performed.
+- PR #5 proposes spreadsheet formula-injection protection for CSV exports; its latest recorded CI run passed.
+- PR #7 proposes registration/login rate limiting; its latest recorded CI run passed. The default limiter backend is process-local memory; shared Redis/Valkey storage is optional and not provisioned by the PR.
+- Issue #6 remains open for fixed-precision decimal monetary values and a reviewed data-migration strategy.
+
+### Main-branch and deployment status
+- The latest recorded `main` CI run succeeded on 2026-11-04 (commit `481cebb`).
+- Current live API availability requires rechecking: PR #4 recorded an HTTP 503 observation on 2026-11-08, despite earlier successful health checks.
+- The PostgreSQL free-tier expiry was documented as 2026-12-02; confirm the live resource status and arrange durable storage/backups before real financial use.
+- Draft PR CI results are not evidence that those changes are merged, deployed, or live-verified.
+
+---
+
 ## [2.2.1] - 2026-11-02
 
 ### Fixed
