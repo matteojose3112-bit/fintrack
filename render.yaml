@@ -25,7 +25,7 @@ services:
           name: fintrack-db
           property: connectionString
       - key: CORS_ORIGINS
-        value: http://localhost:5173,https://fintrack-web-int6.onrender.com
+        value: https://fintrack-web-int6.onrender.com
 
   - type: web
     name: fintrack-web
