@@ -88,3 +88,19 @@ def test_csv_export(client):
     assert "text/csv" in response.headers["content-type"]
     assert "Date,Description,Type,Category,Amount" in response.text
     assert "Consulting" in response.text
+
+
+
+def test_csv_export_escapes_spreadsheet_formulas(client):
+    client.post("/api/transactions", json={
+        "title": "=HYPERLINK(\"https://example.com\",\"open\")",
+        "amount": 25,
+        "type": "expense",
+        "category": "+SUM(1,2)",
+        "date": date.today().isoformat(),
+    })
+
+    response = client.get("/api/export/transactions")
+    assert response.status_code == 200
+    assert "'=HYPERLINK" in response.text
+    assert "'+SUM" in response.text
