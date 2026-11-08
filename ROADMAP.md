@@ -4,7 +4,7 @@ Last updated: 2026-11-08
 
 ## Current release: 2.2.2
 
-**Status: Deployed on Render; infrastructure and API health verified. Live user-workflow acceptance testing remains.**
+**Status: Render MVP previously deployed; current API availability is unconfirmed after an HTTP 503 observation on 2026-11-08. Live user-workflow acceptance testing remains.**
 
 ### Live infrastructure
 
@@ -47,7 +47,7 @@ Last updated: 2026-11-08
 
 ## Production readiness notes
 
-The current Render PostgreSQL database is on the free tier and is scheduled to expire on December 2, 2026. Upgrade to durable paid resources and configure backups before storing real financial information. The live deployment and API health are verified, but browser-based end-to-end workflows and production security review are still outstanding. FinTrack is a portfolio/educational application, not a bank or financial-advice service.
+The current Render PostgreSQL database is on the free tier and is scheduled to expire on December 2, 2026. Upgrade to durable paid resources and configure backups before storing real financial information. The Render resources were previously deployed and an earlier health check passed, but a later PR review observed HTTP 503 on 2026-11-08. Recheck current API health before relying on the deployment; browser-based end-to-end workflows and production security review are still outstanding. FinTrack is a portfolio/educational application, not a bank or financial-advice service.
 
 
 ---
