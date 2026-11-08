@@ -182,6 +182,21 @@ FinTrack is designed around clarity, useful financial context, and responsible d
 
 Released under the [MIT License](LICENSE).
 
-## Documentation review — 2026-11-03
+## Engineering status review — 2026-11-08
 
-Documentation review — 2026-11-03: FinTrack is deployed on Render with API health and database schema availability previously verified. Live browser acceptance for registration/login and finance workflows remains outstanding. The PostgreSQL free-tier database is scheduled to expire 2026-12-02; do not rely on it for durable financial records. Upgrade, backups, security review, dependency findings, and bundle-size warning remain release concerns.
+**Main-branch baseline:** release 2.2.2 documentation and the previously deployed Render MVP. The latest recorded CI run on `main` succeeded on 2026-11-04 (commit `481cebb`). The live Render API had previously returned HTTP 200, but PR #4 records an HTTP 503 observation during its 2026-11-08 deployment review. Treat current API availability as unconfirmed until the health endpoint is checked again; do not infer current health from the older successful deployment.
+
+**Open draft pull requests (not merged into `main`):**
+
+| PR | Proposed change | Current status |
+| --- | --- | --- |
+| [#3](https://github.com/matteojose3112-bit/fintrack/pull/3) | Additional cross-account isolation regression coverage | Draft; latest recorded CI passed |
+| [#4](https://github.com/matteojose3112-bit/fintrack/pull/4) | Correct deployed Render API URL and frontend CORS origin | Draft; latest recorded CI passed; Render Blueprint sync and live health recheck not performed |
+| [#5](https://github.com/matteojose3112-bit/fintrack/pull/5) | Escape spreadsheet-formula-like values in CSV exports | Draft; latest recorded CI passed |
+| [#7](https://github.com/matteojose3112-bit/fintrack/pull/7) | Rate-limit registration and login endpoints | Draft; latest recorded CI passed; default limiter storage is process-local unless shared storage is configured |
+
+[Issue #6](https://github.com/matteojose3112-bit/fintrack/issues/6) remains open to define fixed-precision decimal handling and a safe migration strategy for monetary fields. It is a proposal, not implemented behavior.
+
+These PR checks validate their respective draft branches, not the deployed `main` branch. None of the four proposals should be described as shipped until merged and, where relevant, deployed. The previously reported frontend dependency audit findings (six vulnerabilities: three moderate, one high, two critical) and bundle-size warning need a fresh audit before treating those counts as current.
+
+The Render PostgreSQL free-tier database was documented as scheduled to expire on 2026-12-02. Do not rely on it for durable financial records; confirm its current status, arrange durable hosting, and configure/verify backups before using real financial data. Live registration/login and transaction, budget, goal, export, and account-isolation browser acceptance remain outstanding.
