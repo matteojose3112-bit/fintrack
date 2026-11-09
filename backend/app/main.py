@@ -52,13 +52,14 @@ def serialize_transaction(t):
 def serialize_budget(b, db, user_id):
     today = date.today()
     start, end = month_range(today.year, today.month)
-    spent = db.query(func.coalesce(func.sum(Transaction.amount), 0)).filter(
+    amounts = db.query(Transaction.amount).filter(
         Transaction.user_id == user_id,
         Transaction.type == "expense",
         Transaction.category == b.category,
         Transaction.date >= start,
         Transaction.date < end,
-    ).scalar()
+    ).all()
+    spent = sum((amount for (amount,) in amounts), Decimal("0"))
     return {"id": b.id, "category": b.category, "limit": api_amount(b.limit), "spent": api_amount(spent)}
 
 
@@ -108,14 +109,14 @@ def summary(db: Session = Depends(get_db), user: User = Depends(get_current_user
     start, end = month_range(today.year, today.month)
 
     def totals(kind, lower=None, upper=None):
-        query = db.query(func.coalesce(func.sum(Transaction.amount), 0)).filter(
+        query = db.query(Transaction.amount).filter(
             Transaction.user_id == user.id, Transaction.type == kind
         )
         if lower is not None:
             query = query.filter(Transaction.date >= lower)
         if upper is not None:
             query = query.filter(Transaction.date < upper)
-        return query.scalar() or Decimal("0")
+        return sum((amount for (amount,) in query.all()), Decimal("0"))
 
     income = totals("income", start, end)
     expenses = totals("expense", start, end)
@@ -134,10 +135,14 @@ def summary(db: Session = Depends(get_db), user: User = Depends(get_current_user
             "income": api_amount(totals("income", month_start, month_end)),
             "expenses": api_amount(totals("expense", month_start, month_end)),
         })
-    categories = db.query(Transaction.category, func.sum(Transaction.amount).label("amount")).filter(
+    category_rows = db.query(Transaction.category, Transaction.amount).filter(
         Transaction.user_id == user.id, Transaction.type == "expense",
         Transaction.date >= start, Transaction.date < end,
-    ).group_by(Transaction.category).order_by(func.sum(Transaction.amount).desc()).all()
+    ).all()
+    category_totals = {}
+    for category, amount in category_rows:
+        category_totals[category] = category_totals.get(category, Decimal("0")) + amount
+    categories = sorted(category_totals.items(), key=lambda item: item[1], reverse=True)
     savings_rate = ((income - expenses) / income * Decimal("100")) if income else Decimal("0")
     return {
         "balance": api_amount(all_income - all_expenses),
