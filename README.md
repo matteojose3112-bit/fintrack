@@ -185,3 +185,22 @@ Released under the [MIT License](LICENSE).
 ## Documentation review — 2026-11-03
 
 Documentation review — 2026-11-03: FinTrack is deployed on Render with API health and database schema availability previously verified. Live browser acceptance for registration/login and finance workflows remains outstanding. The PostgreSQL free-tier database is scheduled to expire 2026-12-02; do not rely on it for durable financial records. Upgrade, backups, security review, dependency findings, and bundle-size warning remain release concerns.
+
+
+## Engineering work in review — 2026-11-09
+
+The following focused hardening changes are available as **open draft pull requests**. They are not part of the deployed `main` branch until reviewed and merged:
+
+| PR | Change | Current status |
+| --- | --- | --- |
+| [#3](https://github.com/matteojose3112-bit/fintrack/pull/3) | Account-isolation regression tests | Draft; CI passed |
+| [#4](https://github.com/matteojose3112-bit/fintrack/pull/4) | Production API URL and CORS configuration | Draft; CI passed; no Render Blueprint sync performed |
+| [#5](https://github.com/matteojose3112-bit/fintrack/pull/5) | CSV spreadsheet-formula injection protection | Draft; CI passed |
+| [#7](https://github.com/matteojose3112-bit/fintrack/pull/7) | Login and registration rate limiting | Draft; CI passed; shared rate-limit storage and proxy behavior need deployment planning |
+| [#10](https://github.com/matteojose3112-bit/fintrack/pull/10) | Fixed-precision monetary storage and Decimal calculations | Draft; CI passed; populated-data and PostgreSQL migration validation remain |
+
+These branches have been tested individually; combined integration testing is still required. No PR in this list has been merged or deployed. PR #10's migration must be tested against representative existing data and reviewed for PostgreSQL behavior, with a verified backup before any production migration. Do not treat the live deployment as containing these changes.
+
+## Documentation review — 2026-11-09
+
+Release readiness remains in progress. The immediate engineering focus is integration testing across the draft PRs, followed by live browser acceptance testing, dependency/security review, and a durable database/backup plan before the Render free PostgreSQL expiry on 2026-12-02. No production migration, Render configuration change, or deployment was performed as part of this documentation update.
