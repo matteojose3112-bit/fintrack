@@ -56,3 +56,31 @@ Last reviewed: 2026-11-03
 ## Current direction — 2026-11-03
 
 **Deployed portfolio application · Live acceptance and production-readiness work outstanding.** Next priorities: complete live registration/login and transaction, budget, goal, export, and account-isolation browser tests; review/remediate frontend dependency audit findings; reduce the production bundle; and plan a durable database upgrade with backups before the free PostgreSQL expiry on 2026-12-02. Do not store durable real financial records on the expiring free-tier database. A broader accessibility/keyboard audit and legacy SQLite import path remain open.
+
+
+## Release-readiness update — 2026-11-09
+
+**Current state: five focused hardening PRs are open as drafts; none is merged or deployed.** Their individual CI runs have passed, but this does not establish that the combined changes integrate cleanly.
+
+### Draft pull requests
+
+- [ ] **#3 — Account isolation regression tests:** draft PR; CI passed. Include in combined integration validation.
+- [ ] **#4 — Production API URL and CORS configuration:** draft PR; CI passed. Review configuration before any authorized Render Blueprint sync.
+- [ ] **#5 — CSV formula-injection protection:** draft PR; CI passed. Include in combined integration validation.
+- [ ] **#7 — Authentication rate limiting:** draft PR; CI passed. Plan shared Redis/Valkey storage for multi-instance production and verify trusted-proxy/client-IP behavior before deployment.
+- [ ] **#10 — Fixed-precision monetary amounts:** draft PR; CI passed. Add/perform populated legacy-data migration coverage and verify PostgreSQL conversion behavior before considering production migration.
+
+### Updated next steps
+
+1. Build and test a combined integration branch for PRs #3, #5, #7, and #10; review #4's deployment configuration separately.
+2. Add migration regression coverage using populated pre-migration data and validate the PostgreSQL migration path for PR #10.
+3. Run controlled live browser acceptance tests for registration/login, transactions, budgets, goals, CSV export, and account isolation after an approved deployment.
+4. Review the frontend dependency audit findings and production bundle-size warning.
+5. Arrange a durable PostgreSQL plan, verified backup, and restore procedure before the current free database expires on **2026-12-02**.
+
+### Safety and release gates
+
+- No draft PR has been merged; no production deployment or migration has been initiated.
+- Do not sync Render Blueprint changes, alter infrastructure/secrets, or write production data without explicit approval.
+- Back up production data and verify a restore path before any schema migration.
+- The live app remains a portfolio/educational project, not a bank or financial-advice service.
