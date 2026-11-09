@@ -47,3 +47,18 @@ def test_financial_records_are_isolated_between_users(client):
     client.headers["Authorization"] = original_token
     assert len(client.get("/api/transactions").json()) == 1
     assert client.get("/api/budgets").json() == []
+
+
+def test_login_rejects_excessive_urlencoded_form_fields(client):
+    fields = [
+        ("username", "tester@example.com"),
+        ("password", "incorrect-password"),
+        *((f"extra_{index}", "x") for index in range(999)),
+    ]
+    body = "&".join(f"{key}={value}" for key, value in fields)
+    response = client.post(
+        "/api/auth/login",
+        content=body,
+        headers={"Content-Type": "application/x-www-form-urlencoded"},
+    )
+    assert response.status_code == 400
