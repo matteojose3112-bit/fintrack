@@ -2,6 +2,29 @@
 
 All notable project changes are documented here.
 
+## [Unreleased] - 2026-11-09
+
+### In review — draft pull requests, not yet released
+- **PR #3:** Added account-isolation regression coverage for financial records, summaries, exports, and ownership checks.
+- **PR #4:** Proposed production frontend API URL and restricted CORS configuration; no Render Blueprint sync has been performed.
+- **PR #5:** Added CSV escaping for user-controlled text that could be interpreted as spreadsheet formulas.
+- **PR #7:** Added IP-based rate limits for login and registration, with configurable storage support. Multi-instance shared storage and trusted-proxy behavior still require deployment planning.
+- **PR #10:** Replaced floating-point monetary storage/calculations with `Numeric(14, 2)` and Python `Decimal`, added an Alembic conversion migration, and expanded monetary regression tests.
+
+### Validation
+- Individual CI checks passed for draft PRs #3, #4, #5, #7, and #10.
+- Combined integration testing remains outstanding.
+- PR #10 still requires populated legacy-data migration coverage and PostgreSQL conversion review before any production migration.
+
+### Release status
+- All five pull requests remain open drafts; none is merged or deployed.
+- No production data, Render infrastructure, secrets, or live configuration were changed during this work.
+- The Render free PostgreSQL database is still scheduled to expire on 2026-12-02; durable hosting, backup, and restore planning remain release blockers.
+
+# Changelog
+
+All notable project changes are documented here.
+
 ## [2.2.1] - 2026-11-02
 
 ### Fixed
