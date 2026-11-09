@@ -3,12 +3,13 @@ import io
 import os
 from calendar import month_abbr
 from datetime import date
+from decimal import Decimal
 
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from fastapi.security import OAuth2PasswordRequestForm
-from sqlalchemy import func, text, text
+from sqlalchemy import func, text
 from sqlalchemy.orm import Session
 
 from .auth import create_access_token, get_current_user, hash_password, verify_password
@@ -35,12 +36,17 @@ def month_range(year: int, month: int):
     return start, end
 
 
+def api_amount(value):
+    """Convert exact database decimals to JSON-compatible numbers at the API boundary."""
+    return float(value or Decimal("0"))
+
+
 def auth_response(user: User):
     return {"access_token": create_access_token(user), "token_type": "bearer", "user": {"id": user.id, "email": user.email}}
 
 
 def serialize_transaction(t):
-    return {"id": t.id, "title": t.title, "amount": t.amount, "type": t.type, "category": t.category, "date": t.date.isoformat()}
+    return {"id": t.id, "title": t.title, "amount": api_amount(t.amount), "type": t.type, "category": t.category, "date": t.date.isoformat()}
 
 
 def serialize_budget(b, db, user_id):
@@ -53,11 +59,11 @@ def serialize_budget(b, db, user_id):
         Transaction.date >= start,
         Transaction.date < end,
     ).scalar()
-    return {"id": b.id, "category": b.category, "limit": b.limit, "spent": float(spent or 0)}
+    return {"id": b.id, "category": b.category, "limit": api_amount(b.limit), "spent": api_amount(spent)}
 
 
 def serialize_goal(g):
-    return {"id": g.id, "name": g.name, "target_amount": g.target_amount, "saved_amount": g.saved_amount}
+    return {"id": g.id, "name": g.name, "target_amount": api_amount(g.target_amount), "saved_amount": api_amount(g.saved_amount)}
 
 
 @app.get("/")
@@ -109,7 +115,7 @@ def summary(db: Session = Depends(get_db), user: User = Depends(get_current_user
             query = query.filter(Transaction.date >= lower)
         if upper is not None:
             query = query.filter(Transaction.date < upper)
-        return float(query.scalar() or 0)
+        return query.scalar() or Decimal("0")
 
     income = totals("income", start, end)
     expenses = totals("expense", start, end)
@@ -125,20 +131,21 @@ def summary(db: Session = Depends(get_db), user: User = Depends(get_current_user
         month_start, month_end = month_range(year, month_num)
         monthly.append({
             "month": month_abbr[month_num],
-            "income": totals("income", month_start, month_end),
-            "expenses": totals("expense", month_start, month_end),
+            "income": api_amount(totals("income", month_start, month_end)),
+            "expenses": api_amount(totals("expense", month_start, month_end)),
         })
     categories = db.query(Transaction.category, func.sum(Transaction.amount).label("amount")).filter(
         Transaction.user_id == user.id, Transaction.type == "expense",
         Transaction.date >= start, Transaction.date < end,
     ).group_by(Transaction.category).order_by(func.sum(Transaction.amount).desc()).all()
+    savings_rate = ((income - expenses) / income * Decimal("100")) if income else Decimal("0")
     return {
-        "balance": all_income - all_expenses,
-        "income": income,
-        "expenses": expenses,
-        "savings_rate": round(max(0, (income - expenses) / income * 100), 1) if income else 0,
+        "balance": api_amount(all_income - all_expenses),
+        "income": api_amount(income),
+        "expenses": api_amount(expenses),
+        "savings_rate": round(float(max(Decimal("0"), savings_rate)), 1),
         "monthly": monthly,
-        "categories": [{"category": category, "amount": float(amount)} for category, amount in categories],
+        "categories": [{"category": category, "amount": api_amount(amount)} for category, amount in categories],
     }
 
 
