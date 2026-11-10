@@ -104,3 +104,9 @@ Last reviewed: 2026-11-03
 6. Arrange durable PostgreSQL hosting, a verified backup, and a tested restore before 2026-12-02.
 
 PR #12 is an integration test vehicle, not a merge authorization or a replacement for reviewing the individual draft PRs. No PR has been merged; no Render sync, deployment, production migration, infrastructure/secrets change, or production data write was performed.
+
+
+### Additional migration validation — 2026-11-10
+- [x] Add a PostgreSQL 16 service job to the integration CI workflow.
+- [x] Execute the populated legacy-data migration against disposable PostgreSQL; integration CI run #96 passed.
+- [x] Confirm all three integration CI jobs passed: backend, frontend, and populated PostgreSQL migration.
