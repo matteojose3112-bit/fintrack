@@ -219,3 +219,7 @@ Release readiness remains in progress. The immediate engineering focus is integr
 
 
 - The latest integration CI run [#96](https://github.com/matteojose3112-bit/fintrack/actions/runs/42921838065) passed all three jobs: backend suite, frontend tests/build, and a disposable PostgreSQL service migration test. The PostgreSQL test upgraded seeded legacy Float records to Numeric(14,2) and verified rounded values, retained indexes, foreign keys, and migration revision.
+
+
+### Current frontend audit and bundle review — 2026-11-10
+The integration CI audit reconfirmed **6 dependency vulnerabilities**: 3 moderate, 1 high, and 2 critical. The affected packages are Vitest and its transitive test-tool dependencies (Vitest, tinypool, Vite, esbuild, vite-node, and @vitest/mocker); they are in frontend devDependencies, not runtime dependencies. npm reports a fix path through Vitest 4.1.12, which is a major-version upgrade and needs compatibility testing before adoption. The production build also reports a 617.25 kB minified JavaScript chunk (172.34 kB gzip). Frontend tests emit Recharts zero-width/zero-height chart warnings; tests still pass. These remain engineering follow-ups, not reasons to claim a failed build.
