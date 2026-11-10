@@ -204,3 +204,15 @@ These branches have been tested individually; combined integration testing is st
 ## Documentation review — 2026-11-09
 
 Release readiness remains in progress. The immediate engineering focus is integration testing across the draft PRs, followed by live browser acceptance testing, dependency/security review, and a durable database/backup plan before the Render free PostgreSQL expiry on 2026-12-02. No production migration, Render configuration change, or deployment was performed as part of this documentation update.
+
+
+
+## Release validation update — 2026-11-10
+
+- PR #10 now includes a populated legacy SQLite migration regression test. GitHub Actions run [#91](https://github.com/matteojose3112-bit/fintrack/actions/runs/42920839088) passed both backend and frontend jobs, including the seeded pre-migration database upgrade, data rounding/preservation, index and foreign-key checks.
+- PR #12 is an open draft integration vehicle combining PRs #3, #5, #7, and #10. Its initial combined CI run [#92](https://github.com/matteojose3112-bit/fintrack/actions/runs/42921329034) passed backend tests, Alembic fresh-schema migration, frontend tests, and production build. A small follow-up whitespace-handling correction was committed after that run; the latest head still needs a fresh CI confirmation.
+- PR #4's Render URL/CORS diff was reviewed: the configured frontend API URL matches the deployed API, and production CORS is restricted to the deployed frontend origin. No Blueprint sync or live configuration change was performed.
+- PostgreSQL migration behavior was reviewed statically: Alembic batch operations use native column alteration on PostgreSQL. No non-production PostgreSQL migration execution has yet been performed, so that validation remains open.
+- Rate limiting still defaults to process-local memory. Multi-instance production requires private shared Redis/Valkey storage and verified proxy/client-IP handling.
+- Frontend dependency audit findings and the bundle-size warning have not been re-audited in this pass.
+- All PRs remain drafts; no changes have been merged or deployed. The free PostgreSQL database expiry remains 2026-12-02, with durable hosting, backup, and restore testing still required.
