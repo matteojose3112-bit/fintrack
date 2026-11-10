@@ -216,3 +216,6 @@ Release readiness remains in progress. The immediate engineering focus is integr
 - Rate limiting still defaults to process-local memory. Multi-instance production requires private shared Redis/Valkey storage and verified proxy/client-IP handling.
 - Frontend dependency audit findings and the bundle-size warning have not been re-audited in this pass.
 - All PRs remain drafts; no changes have been merged or deployed. The free PostgreSQL database expiry remains 2026-12-02, with durable hosting, backup, and restore testing still required.
+
+
+- The latest integration CI run [#96](https://github.com/matteojose3112-bit/fintrack/actions/runs/42921838065) passed all three jobs: backend suite, frontend tests/build, and a disposable PostgreSQL service migration test. The PostgreSQL test upgraded seeded legacy Float records to Numeric(14,2) and verified rounded values, retained indexes, foreign keys, and migration revision.
