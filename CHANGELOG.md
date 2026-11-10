@@ -169,3 +169,9 @@ All notable project changes are documented here.
 ### Migration validation
 - Added a disposable PostgreSQL 16 CI service and a populated legacy-data migration regression test to integration PR #12.
 - CI run #96 passed backend tests, frontend tests/build, and populated PostgreSQL migration validation, including data rounding, indexes, foreign keys, and Alembic revision.
+
+
+### Dependency and build review
+- Re-ran npm audit in integration CI: 6 findings (3 moderate, 1 high, 2 critical), all within Vitest/dev-tool dependency paths. npm reports a fix through Vitest 4.1.12, requiring a major-version compatibility review.
+- Confirmed the frontend production build succeeds but emits a 617.25 kB minified JavaScript chunk (172.34 kB gzip).
+- Recorded Recharts chart-dimension warnings from frontend tests and GitHub Actions Node 20 deprecation warnings for follow-up.
