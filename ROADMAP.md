@@ -121,3 +121,13 @@ PR #12 is an integration test vehicle, not a merge authorization or a replacemen
 - [ ] Update GitHub Actions setup-node/checkout usage for the announced Node 20 action deprecation warning.
 
 - [x] Re-run the complete integration pipeline with npm audit reporting enabled; CI run #99 passed all three jobs.
+
+
+## Frontend maintenance update — 2026-11-10
+
+- [x] Upgrade Vitest to 4.1.12; integration CI run #107 reports zero npm audit vulnerabilities.
+- [x] Lazy-load dashboard Recharts panels; initial JS reduced from 617.25 kB to 179.05 kB (54.73 kB gzip), with a separate 438.31 kB charts chunk (118.18 kB gzip).
+- [x] Verify backend tests, frontend tests/build, and populated PostgreSQL migration together; all passed in CI run #107.
+- [ ] Remove or properly simulate Recharts chart dimensions in jsdom tests to eliminate zero-width/zero-height warnings.
+- [ ] Update GitHub Actions checkout/setup-node from v4 to Node 24-compatible action versions to remove Node 20 deprecation warnings.
+- [ ] Add and commit a reproducible frontend package lockfile; current workflow still runs npm install without a committed lockfile.
