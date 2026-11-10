@@ -175,3 +175,5 @@ All notable project changes are documented here.
 - Re-ran npm audit in integration CI: 6 findings (3 moderate, 1 high, 2 critical), all within Vitest/dev-tool dependency paths. npm reports a fix through Vitest 4.1.12, requiring a major-version compatibility review.
 - Confirmed the frontend production build succeeds but emits a 617.25 kB minified JavaScript chunk (172.34 kB gzip).
 - Recorded Recharts chart-dimension warnings from frontend tests and GitHub Actions Node 20 deprecation warnings for follow-up.
+
+- Follow-up integration CI run #99 passed backend, frontend, and disposable PostgreSQL migration jobs while reporting the current dependency audit findings.
