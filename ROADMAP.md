@@ -119,3 +119,5 @@ PR #12 is an integration test vehicle, not a merge authorization or a replacemen
 - [ ] Split the 617.25 kB minified JavaScript chunk (172.34 kB gzip) using route-level lazy loading/manual chunks where appropriate.
 - [ ] Investigate Recharts zero-width/zero-height warnings emitted by frontend tests.
 - [ ] Update GitHub Actions setup-node/checkout usage for the announced Node 20 action deprecation warning.
+
+- [x] Re-run the complete integration pipeline with npm audit reporting enabled; CI run #99 passed all three jobs.
