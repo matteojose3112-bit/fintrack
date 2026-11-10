@@ -110,3 +110,12 @@ PR #12 is an integration test vehicle, not a merge authorization or a replacemen
 - [x] Add a PostgreSQL 16 service job to the integration CI workflow.
 - [x] Execute the populated legacy-data migration against disposable PostgreSQL; integration CI run #96 passed.
 - [x] Confirm all three integration CI jobs passed: backend, frontend, and populated PostgreSQL migration.
+
+
+### Frontend maintenance follow-up — 2026-11-10
+- [x] Re-run npm audit in CI and identify affected packages and severity.
+- [ ] Plan and test the major Vitest upgrade to 4.1.12 (audit's reported fix path); affected packages are dev/test dependencies.
+- [ ] Re-run npm audit after the upgrade and verify the lockfile is committed and reproducible.
+- [ ] Split the 617.25 kB minified JavaScript chunk (172.34 kB gzip) using route-level lazy loading/manual chunks where appropriate.
+- [ ] Investigate Recharts zero-width/zero-height warnings emitted by frontend tests.
+- [ ] Update GitHub Actions setup-node/checkout usage for the announced Node 20 action deprecation warning.
