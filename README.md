@@ -198,8 +198,9 @@ The following focused hardening changes are available as **open draft pull reque
 | [#5](https://github.com/matteojose3112-bit/fintrack/pull/5) | CSV spreadsheet-formula injection protection | Draft; CI passed |
 | [#7](https://github.com/matteojose3112-bit/fintrack/pull/7) | Login and registration rate limiting | Draft; CI passed; shared rate-limit storage and proxy behavior need deployment planning |
 | [#10](https://github.com/matteojose3112-bit/fintrack/pull/10) | Fixed-precision monetary storage and Decimal calculations | Draft; populated SQLite migration test passed; PostgreSQL migration test passed in #12 CI |
+| [#12](https://github.com/matteojose3112-bit/fintrack/pull/12) | Combined release-hardening integration validation | Draft; CI run #99 passed backend, frontend, PostgreSQL migration, and dependency-audit reporting |
 
-These branches have been tested individually; combined integration testing is still required. No PR in this list has been merged or deployed. PR #10's migration must be tested against representative existing data and reviewed for PostgreSQL behavior, with a verified backup before any production migration. Do not treat the live deployment as containing these changes.
+Individual PRs and the combined integration branch have passed their current CI checks. No PR in this list has been merged or deployed. The populated SQLite and disposable PostgreSQL migration tests passed; a verified production backup and restore path are still mandatory before any production migration. Do not treat the live deployment as containing these changes.
 
 ## Documentation review — 2026-11-09
 
