@@ -84,3 +84,23 @@ Last reviewed: 2026-11-03
 - Do not sync Render Blueprint changes, alter infrastructure/secrets, or write production data without explicit approval.
 - Back up production data and verify a restore path before any schema migration.
 - The live app remains a portfolio/educational project, not a bank or financial-advice service.
+
+
+
+## Release-readiness update — 2026-11-10
+
+### Completed validation
+- [x] Add a populated legacy SQLite migration regression to PR #10; CI run #91 passed.
+- [x] Build a combined integration draft PR #12 covering PRs #3, #5, #7, and #10; initial combined CI run #92 passed.
+- [x] Review PR #4's Render API URL and CORS diff; no Blueprint sync or live configuration change.
+- [x] Review the PostgreSQL migration code path statically; no production or non-production PostgreSQL migration was run.
+
+### Remaining release gates
+1. Obtain a fresh CI run for the latest PR #12 head (a small whitespace-handling correction was committed after run #92).
+2. Execute the populated-data migration against a disposable PostgreSQL instance and verify data rounding, indexes, foreign keys, and schema revision.
+3. Confirm trusted-proxy/client-IP behavior and provision private shared Redis/Valkey storage before deploying rate limits to multiple instances.
+4. Re-run the frontend dependency audit, assess remediation, and measure the current production bundle.
+5. Complete live browser acceptance only after an explicitly approved deployment.
+6. Arrange durable PostgreSQL hosting, a verified backup, and a tested restore before 2026-12-02.
+
+PR #12 is an integration test vehicle, not a merge authorization or a replacement for reviewing the individual draft PRs. No PR has been merged; no Render sync, deployment, production migration, infrastructure/secrets change, or production data write was performed.
