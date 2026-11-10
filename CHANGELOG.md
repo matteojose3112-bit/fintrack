@@ -164,3 +164,8 @@ All notable project changes are documented here.
 ### Remaining release requirements
 - PostgreSQL populated-data migration execution, rate-limit shared storage/proxy validation, dependency audit and bundle review, live browser acceptance after approved deployment, and durable database backup/restore remain outstanding.
 - No PR was merged or deployed, and no production data or infrastructure was changed.
+
+
+### Migration validation
+- Added a disposable PostgreSQL 16 CI service and a populated legacy-data migration regression test to integration PR #12.
+- CI run #96 passed backend tests, frontend tests/build, and populated PostgreSQL migration validation, including data rounding, indexes, foreign keys, and Alembic revision.
