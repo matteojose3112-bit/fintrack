@@ -4,7 +4,6 @@ import { API_BASE_URL } from './config'
 import { Activity, ArrowDownLeft, ArrowUpRight, Bell, CircleHelp, CreditCard, Download, LayoutDashboard, Plus, Search, Settings2, Target, Wallet, X, Menu, PiggyBank, ReceiptText, LogOut } from 'lucide-react'
 
 const money = value => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(value || 0)
-const colors = ['#8b7cff', '#4fc6a5', '#f2b86b', '#e879a9', '#63a8e8', '#9b9eaa']
 const nav = [{ label: 'Overview', icon: LayoutDashboard }, { label: 'Transactions', icon: ReceiptText }, { label: 'Budgets', icon: Wallet }, { label: 'Savings goals', icon: Target }]
 let accessToken = null
 const api = async (path, options = {}) => { const headers = { ...(options.headers || {}), ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}) }; const r = await fetch(API_BASE_URL + path, { ...options, headers }); if (!r.ok) throw new Error('API request failed'); return r.json() }
