@@ -197,7 +197,7 @@ The following focused hardening changes are available as **open draft pull reque
 | [#4](https://github.com/matteojose3112-bit/fintrack/pull/4) | Production API URL and CORS configuration | Draft; CI passed; no Render Blueprint sync performed |
 | [#5](https://github.com/matteojose3112-bit/fintrack/pull/5) | CSV spreadsheet-formula injection protection | Draft; CI passed |
 | [#7](https://github.com/matteojose3112-bit/fintrack/pull/7) | Login and registration rate limiting | Draft; CI passed; shared rate-limit storage and proxy behavior need deployment planning |
-| [#10](https://github.com/matteojose3112-bit/fintrack/pull/10) | Fixed-precision monetary storage and Decimal calculations | Draft; CI passed; populated-data and PostgreSQL migration validation remain |
+| [#10](https://github.com/matteojose3112-bit/fintrack/pull/10) | Fixed-precision monetary storage and Decimal calculations | Draft; populated SQLite migration test passed; PostgreSQL migration test passed in #12 CI |
 
 These branches have been tested individually; combined integration testing is still required. No PR in this list has been merged or deployed. PR #10's migration must be tested against representative existing data and reviewed for PostgreSQL behavior, with a verified backup before any production migration. Do not treat the live deployment as containing these changes.
 
