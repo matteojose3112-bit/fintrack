@@ -177,3 +177,14 @@ All notable project changes are documented here.
 - Recorded Recharts chart-dimension warnings from frontend tests and GitHub Actions Node 20 deprecation warnings for follow-up.
 
 - Follow-up integration CI run #99 passed backend, frontend, and disposable PostgreSQL migration jobs while reporting the current dependency audit findings.
+
+
+## [Unreleased] — 2026-11-10
+
+### Frontend
+- Upgraded Vitest from 2.1.8 to 4.1.12; npm audit now reports zero vulnerabilities in integration CI run #107.
+- Split the Recharts dashboard panels into a lazy-loaded component. Initial JavaScript bundle reduced from 617.25 kB to 179.05 kB (54.73 kB gzip), with charts in a separate 438.31 kB chunk (118.18 kB gzip).
+- Verified the full backend, frontend, and populated PostgreSQL migration CI suite; all three jobs passed in run #107.
+
+### Follow-up
+- Recharts still emits jsdom chart-dimension warnings; CI action Node 20 deprecation warnings and a committed frontend lockfile remain maintenance items.
