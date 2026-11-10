@@ -226,3 +226,11 @@ Release readiness remains in progress. The immediate engineering focus is integr
 The integration CI audit reconfirmed **6 dependency vulnerabilities**: 3 moderate, 1 high, and 2 critical. The affected packages are Vitest and its transitive test-tool dependencies (Vitest, tinypool, Vite, esbuild, vite-node, and @vitest/mocker); they are in frontend devDependencies, not runtime dependencies. npm reports a fix path through Vitest 4.1.12, which is a major-version upgrade and needs compatibility testing before adoption. The production build also reports a 617.25 kB minified JavaScript chunk (172.34 kB gzip). Frontend tests emit Recharts zero-width/zero-height chart warnings; tests still pass. These remain engineering follow-ups, not reasons to claim a failed build.
 
 Integration CI run [#99](https://github.com/matteojose3112-bit/fintrack/actions/runs/42922254791) subsequently passed all three jobs again and included the current npm audit summary.
+
+
+## Frontend dependency and bundle improvements — 2026-11-10
+
+- Upgraded Vitest from 2.1.8 to 4.1.12. Latest integration CI [run #107](https://github.com/matteojose3112-bit/fintrack/actions/runs/42924734014) reports **zero npm audit vulnerabilities** (previously 6: 3 moderate, 1 high, 2 critical).
+- Extracted the Recharts dashboard panels into a lazy-loaded DashboardCharts component. The initial application JavaScript bundle dropped from 617.25 kB to **179.05 kB** (54.73 kB gzip); charts are loaded separately in a **438.31 kB** chunk (118.18 kB gzip) when the authenticated dashboard renders.
+- Backend tests, frontend tests, frontend production build, and populated PostgreSQL migration CI all passed in run #107.
+- Frontend tests still emit Recharts zero-width/zero-height warnings in jsdom; this is a test-layout warning and does not fail the suite. GitHub Actions also reports Node 20 deprecation warnings for checkout/setup-node v4, which remains a maintenance follow-up.
