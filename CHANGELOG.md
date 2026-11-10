@@ -150,3 +150,17 @@ All notable project changes are documented here.
 - Refreshed README and roadmap with the current Render deployment, outstanding live acceptance tests, and production-readiness concerns.
 - Reaffirmed the 2026-12-02 expiry date for the free PostgreSQL database and the need for a durable upgrade and backups before storing real financial records.
 - Kept dependency audit findings, bundle-size work, security review, and live workflow verification visible as open items.
+
+
+
+## [Unreleased] - 2026-11-10
+
+### Validation
+- Added populated legacy SQLite migration coverage to PR #10; CI run #91 passed backend and frontend jobs.
+- Opened draft integration PR #12 combining account isolation, CSV formula protection, authentication rate limiting, and fixed-precision money changes. Initial combined CI run #92 passed; a subsequent small whitespace-handling correction awaits fresh CI confirmation.
+- Reviewed PR #4's production API URL and CORS configuration without syncing the Render Blueprint.
+- Reviewed the PostgreSQL migration implementation statically; live PostgreSQL migration validation remains outstanding.
+
+### Remaining release requirements
+- PostgreSQL populated-data migration execution, rate-limit shared storage/proxy validation, dependency audit and bundle review, live browser acceptance after approved deployment, and durable database backup/restore remain outstanding.
+- No PR was merged or deployed, and no production data or infrastructure was changed.
