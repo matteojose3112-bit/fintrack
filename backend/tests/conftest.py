@@ -10,11 +10,12 @@ from sqlalchemy.pool import StaticPool
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from app.database import Base, get_db
-from app.main import app
+from app.main import app, limiter
 
 
 @pytest.fixture()
-def client():
+def client(request):
+    limiter.reset()
     engine = create_engine(
         "sqlite://",
         connect_args={"check_same_thread": False},
@@ -34,8 +35,10 @@ def client():
     with TestClient(app) as test_client:
         registered = test_client.post("/api/auth/register", json={"email": "tester@example.com", "password": "securepass123"})
         assert registered.status_code == 201
+        limiter.reset()  # Exclude fixture authentication from endpoint rate-limit assertions.
         test_client.headers["Authorization"] = f"Bearer {registered.json()['access_token']}"
         yield test_client
     app.dependency_overrides.clear()
     Base.metadata.drop_all(bind=engine)
     engine.dispose()
+    limiter.reset()
