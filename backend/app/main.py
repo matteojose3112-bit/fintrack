@@ -49,7 +49,7 @@ def api_amount(value):
 
 def csv_safe_text(value: str) -> str:
     """Prevent spreadsheet applications from evaluating user text as formulas."""
-    if value.lstrip(" \\t\\r\\n")[:1] in {"=", "+", "-", "@"}:
+    if value.lstrip(" \t\r\n")[:1] in {"=", "+", "-", "@"}:
         return f"'{value}"
     return value
 
