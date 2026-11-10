@@ -110,3 +110,74 @@ def test_csv_export(client):
     assert "Date,Description,Type,Category,Amount" in response.text
     assert "Consulting" in response.text
     assert "800.00" in response.text
+
+
+def test_financial_records_are_isolated_between_accounts(client):
+    first_transaction = client.post("/api/transactions", json={
+        "title": "Private salary", "amount": "4200.00", "type": "income",
+        "category": "Salary", "date": date.today().isoformat(),
+    })
+    assert first_transaction.status_code == 201
+    transaction_id = first_transaction.json()["id"]
+    assert client.post("/api/budgets", json={"category": "Housing", "limit": "1200.00"}).status_code == 201
+    first_goal = client.post("/api/goals", json={"name": "Private goal", "target_amount": "5000.00"})
+    assert first_goal.status_code == 201
+    goal_id = first_goal.json()["id"]
+
+    second = client.post("/api/auth/register", json={
+        "email": "second@example.com", "password": "another-secure-pass",
+    })
+    assert second.status_code == 201
+    first_token = client.headers["Authorization"]
+    client.headers["Authorization"] = f"Bearer {second.json()['access_token']}"
+
+    assert client.get("/api/transactions").json() == []
+    assert client.get("/api/budgets").json() == []
+    assert client.get("/api/goals").json() == []
+    summary = client.get("/api/summary").json()
+    assert summary["balance"] == summary["income"] == summary["expenses"] == 0
+    assert "Private salary" not in client.get("/api/export/transactions").text
+    assert client.delete(f"/api/transactions/{transaction_id}").status_code == 404
+    assert client.post(f"/api/goals/{goal_id}/contribute", json={"amount": "1.00"}).status_code == 404
+    assert client.post("/api/budgets", json={"category": "Housing", "limit": "800.00"}).status_code == 201
+
+    client.headers["Authorization"] = first_token
+    assert [x["id"] for x in client.get("/api/transactions").json()] == [transaction_id]
+    assert client.get("/api/goals").json()[0]["id"] == goal_id
+
+
+def test_csv_export_escapes_spreadsheet_formulas(client):
+    created = client.post("/api/transactions", json={
+        "title": '=HYPERLINK("https://example.com","open")',
+        "amount": "25.00", "type": "expense", "category": "+SUM(1,2)",
+        "date": date.today().isoformat(),
+    })
+    assert created.status_code == 201
+    exported = client.get("/api/export/transactions")
+    assert exported.status_code == 200
+    assert "'=HYPERLINK" in exported.text
+    assert "'+SUM" in exported.text
+
+
+def test_login_is_rate_limited(client):
+    for _ in range(5):
+        response = client.post("/api/auth/login", data={
+            "username": "tester@example.com", "password": "incorrect-password",
+        })
+        assert response.status_code == 401
+    limited = client.post("/api/auth/login", data={
+        "username": "tester@example.com", "password": "incorrect-password",
+    })
+    assert limited.status_code == 429
+
+
+def test_registration_is_rate_limited(client):
+    for attempt in range(5):
+        response = client.post("/api/auth/register", json={
+            "email": f"new-user-{attempt}@example.com", "password": "securepass123",
+        })
+        assert response.status_code == 201
+    limited = client.post("/api/auth/register", json={
+        "email": "sixth-user@example.com", "password": "securepass123",
+    })
+    assert limited.status_code == 429
