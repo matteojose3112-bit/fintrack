@@ -185,3 +185,66 @@ Released under the [MIT License](LICENSE).
 ## Documentation review — 2026-11-03
 
 Documentation review — 2026-11-03: FinTrack is deployed on Render with API health and database schema availability previously verified. Live browser acceptance for registration/login and finance workflows remains outstanding. The PostgreSQL free-tier database is scheduled to expire 2026-12-02; do not rely on it for durable financial records. Upgrade, backups, security review, dependency findings, and bundle-size warning remain release concerns.
+
+
+## Engineering work in review — 2026-11-09
+
+The following focused hardening changes are available as **open draft pull requests**. They are not part of the deployed `main` branch until reviewed and merged:
+
+| PR | Change | Current status |
+| --- | --- | --- |
+| [#3](https://github.com/matteojose3112-bit/fintrack/pull/3) | Account-isolation regression tests | Draft; CI passed |
+| [#4](https://github.com/matteojose3112-bit/fintrack/pull/4) | Production API URL and CORS configuration | Draft; CI passed; no Render Blueprint sync performed |
+| [#5](https://github.com/matteojose3112-bit/fintrack/pull/5) | CSV spreadsheet-formula injection protection | Draft; CI passed |
+| [#7](https://github.com/matteojose3112-bit/fintrack/pull/7) | Login and registration rate limiting | Draft; CI passed; shared rate-limit storage and proxy behavior need deployment planning |
+| [#10](https://github.com/matteojose3112-bit/fintrack/pull/10) | Fixed-precision monetary storage and Decimal calculations | Draft; populated SQLite migration test passed; PostgreSQL migration test passed in #12 CI |
+| [#12](https://github.com/matteojose3112-bit/fintrack/pull/12) | Combined release-hardening integration validation | Draft; CI run #99 passed backend, frontend, PostgreSQL migration, and dependency-audit reporting |
+
+Individual PRs and the combined integration branch have passed their current CI checks. No PR in this list has been merged or deployed. The populated SQLite and disposable PostgreSQL migration tests passed; a verified production backup and restore path are still mandatory before any production migration. Do not treat the live deployment as containing these changes.
+
+## Documentation review — 2026-11-09
+
+Release readiness remains in progress. The immediate engineering focus is integration testing across the draft PRs, followed by live browser acceptance testing, dependency/security review, and a durable database/backup plan before the Render free PostgreSQL expiry on 2026-12-02. No production migration, Render configuration change, or deployment was performed as part of this documentation update.
+
+
+
+## Release validation update — 2026-11-10
+
+- PR #10 now includes a populated legacy SQLite migration regression test. GitHub Actions run [#91](https://github.com/matteojose3112-bit/fintrack/actions/runs/42920839088) passed both backend and frontend jobs, including the seeded pre-migration database upgrade, data rounding/preservation, index and foreign-key checks.
+- PR #12 is an open draft integration vehicle combining PRs #3, #5, #7, and #10. Its initial combined CI run [#92](https://github.com/matteojose3112-bit/fintrack/actions/runs/42921329034) passed backend tests, Alembic fresh-schema migration, frontend tests, and production build. A small follow-up whitespace-handling correction was committed after that run; the latest head still needs a fresh CI confirmation.
+- PR #4's Render URL/CORS diff was reviewed: the configured frontend API URL matches the deployed API, and production CORS is restricted to the deployed frontend origin. No Blueprint sync or live configuration change was performed.
+- PostgreSQL migration behavior was reviewed statically: Alembic batch operations use native column alteration on PostgreSQL. No non-production PostgreSQL migration execution has yet been performed, so that validation remains open.
+- Rate limiting still defaults to process-local memory. Multi-instance production requires private shared Redis/Valkey storage and verified proxy/client-IP handling.
+- Frontend dependency audit findings and the bundle-size warning have not been re-audited in this pass.
+- All PRs remain drafts; no changes have been merged or deployed. The free PostgreSQL database expiry remains 2026-12-02, with durable hosting, backup, and restore testing still required.
+
+
+- The latest integration CI run [#96](https://github.com/matteojose3112-bit/fintrack/actions/runs/42921838065) passed all three jobs: backend suite, frontend tests/build, and a disposable PostgreSQL service migration test. The PostgreSQL test upgraded seeded legacy Float records to Numeric(14,2) and verified rounded values, retained indexes, foreign keys, and migration revision.
+
+
+### Current frontend audit and bundle review — 2026-11-10
+The integration CI audit reconfirmed **6 dependency vulnerabilities**: 3 moderate, 1 high, and 2 critical. The affected packages are Vitest and its transitive test-tool dependencies (Vitest, tinypool, Vite, esbuild, vite-node, and @vitest/mocker); they are in frontend devDependencies, not runtime dependencies. npm reports a fix path through Vitest 4.1.12, which is a major-version upgrade and needs compatibility testing before adoption. The production build also reports a 617.25 kB minified JavaScript chunk (172.34 kB gzip). Frontend tests emit Recharts zero-width/zero-height chart warnings; tests still pass. These remain engineering follow-ups, not reasons to claim a failed build.
+
+Integration CI run [#99](https://github.com/matteojose3112-bit/fintrack/actions/runs/42922254791) subsequently passed all three jobs again and included the current npm audit summary.
+
+
+## Frontend dependency and bundle improvements — 2026-11-10
+
+- Upgraded Vitest from 2.1.8 to 4.1.12. Latest integration CI [run #107](https://github.com/matteojose3112-bit/fintrack/actions/runs/42924734014) reports **zero npm audit vulnerabilities** (previously 6: 3 moderate, 1 high, 2 critical).
+- Extracted the Recharts dashboard panels into a lazy-loaded DashboardCharts component. The initial application JavaScript bundle dropped from 617.25 kB to **179.05 kB** (54.73 kB gzip); charts are loaded separately in a **438.31 kB** chunk (118.18 kB gzip) when the authenticated dashboard renders.
+- Backend tests, frontend tests, frontend production build, and populated PostgreSQL migration CI all passed in run #107.
+- Frontend tests still emit Recharts zero-width/zero-height warnings in jsdom; this is a test-layout warning and does not fail the suite. GitHub Actions also reports Node 20 deprecation warnings for checkout/setup-node v4, which remains a maintenance follow-up.
+
+
+### Reproducible frontend install status — 2026-11-12
+- The frontend still has no committed `package-lock.json`; CI therefore remains on `npm install`. We did **not** switch to `npm ci`, because that would fail without a valid lockfile.
+- Added a temporary artifact-upload step to integration PR #12 so the next successful frontend CI run can preserve the lockfile generated by `npm install`. No CI run or artifact was available for the latest workflow commit at review time.
+- Local lockfile generation was attempted with `npm install --package-lock-only --offline`, but the environment has no cached npm registry metadata; network access to GitHub/npm is unavailable here. No synthetic or incomplete lockfile was committed.
+- Required next action: retrieve the generated CI artifact (or generate the lockfile in a network-enabled Node environment), commit the genuine lockfile, switch CI to `npm ci`, and rerun all jobs.
+
+
+### Reproducible frontend install completed — 2026-11-12
+- Committed the generated npm lockfile at `frontend/package-lock.json` (lockfileVersion 3; 153,615 bytes) to the integration branch through the CI runner. It is a genuine npm-generated lockfile, not a hand-built approximation.
+- Replaced the temporary bootstrap/artifact workflow with standard `npm ci`; removed the workflow's temporary write permission and branch-push logic.
+- Clean-install verification passed in [integration CI run #114](https://github.com/matteojose3112-bit/fintrack/actions/runs/43336240992): `npm ci`, npm audit (zero vulnerabilities), all 6 frontend tests, frontend production build, backend tests, and populated PostgreSQL migration all passed.
+- The frontend build remains split: initial JS 179.05 kB (54.73 kB gzip); dashboard charts 438.31 kB (118.18 kB gzip). Recharts still logs chart-dimension warnings in jsdom, but tests pass.
