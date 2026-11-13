@@ -3,12 +3,16 @@ import io
 import os
 from calendar import month_abbr
 from datetime import date
+from decimal import Decimal
 
-from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi import Depends, FastAPI, HTTPException, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from fastapi.security import OAuth2PasswordRequestForm
-from sqlalchemy import func, text, text
+from sqlalchemy import func, text
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from slowapi.util import get_remote_address
 from sqlalchemy.orm import Session
 
 from .auth import create_access_token, get_current_user, hash_password, verify_password
@@ -16,7 +20,10 @@ from .database import get_db
 from .models import Budget, Goal, Transaction, User
 from .schemas import AuthResponse, BudgetCreate, Contribution, GoalCreate, RegisterRequest, TransactionCreate, UserResponse
 
+limiter = Limiter(key_func=get_remote_address, storage_uri=os.getenv("RATE_LIMIT_STORAGE_URI", "memory://"))
 app = FastAPI(title="FinTrack API", version="2.1.0", description="Personal finance and budgeting API")
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 allowed_origins = [origin.strip() for origin in os.getenv(
     "CORS_ORIGINS", "http://localhost:5173"
 ).split(",") if origin.strip()]
@@ -35,29 +42,42 @@ def month_range(year: int, month: int):
     return start, end
 
 
+def api_amount(value):
+    """Convert exact database decimals to JSON-compatible numbers at the API boundary."""
+    return float(value or Decimal("0"))
+
+
+def csv_safe_text(value: str) -> str:
+    """Prevent spreadsheet applications from evaluating user text as formulas."""
+    if value.lstrip(" \t\r\n")[:1] in {"=", "+", "-", "@"}:
+        return f"'{value}"
+    return value
+
+
 def auth_response(user: User):
     return {"access_token": create_access_token(user), "token_type": "bearer", "user": {"id": user.id, "email": user.email}}
 
 
 def serialize_transaction(t):
-    return {"id": t.id, "title": t.title, "amount": t.amount, "type": t.type, "category": t.category, "date": t.date.isoformat()}
+    return {"id": t.id, "title": t.title, "amount": api_amount(t.amount), "type": t.type, "category": t.category, "date": t.date.isoformat()}
 
 
 def serialize_budget(b, db, user_id):
     today = date.today()
     start, end = month_range(today.year, today.month)
-    spent = db.query(func.coalesce(func.sum(Transaction.amount), 0)).filter(
+    amounts = db.query(Transaction.amount).filter(
         Transaction.user_id == user_id,
         Transaction.type == "expense",
         Transaction.category == b.category,
         Transaction.date >= start,
         Transaction.date < end,
-    ).scalar()
-    return {"id": b.id, "category": b.category, "limit": b.limit, "spent": float(spent or 0)}
+    ).all()
+    spent = sum((amount for (amount,) in amounts), Decimal("0"))
+    return {"id": b.id, "category": b.category, "limit": api_amount(b.limit), "spent": api_amount(spent)}
 
 
 def serialize_goal(g):
-    return {"id": g.id, "name": g.name, "target_amount": g.target_amount, "saved_amount": g.saved_amount}
+    return {"id": g.id, "name": g.name, "target_amount": api_amount(g.target_amount), "saved_amount": api_amount(g.saved_amount)}
 
 
 @app.get("/")
@@ -72,7 +92,8 @@ def health(db: Session = Depends(get_db)):
 
 
 @app.post("/api/auth/register", response_model=AuthResponse, status_code=status.HTTP_201_CREATED)
-def register(payload: RegisterRequest, db: Session = Depends(get_db)):
+@limiter.limit("5/minute")
+def register(request: Request, payload: RegisterRequest, db: Session = Depends(get_db)):
     email = payload.email.lower()
     if db.query(User).filter(func.lower(User.email) == email).first():
         raise HTTPException(status_code=409, detail="An account with this email already exists")
@@ -84,7 +105,8 @@ def register(payload: RegisterRequest, db: Session = Depends(get_db)):
 
 
 @app.post("/api/auth/login", response_model=AuthResponse)
-def login(form: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+@limiter.limit("5/minute")
+def login(request: Request, form: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = db.query(User).filter(func.lower(User.email) == form.username.lower()).first()
     if user is None or not verify_password(form.password, user.password_hash):
         raise HTTPException(status_code=401, detail="Incorrect email or password", headers={"WWW-Authenticate": "Bearer"})
@@ -102,14 +124,14 @@ def summary(db: Session = Depends(get_db), user: User = Depends(get_current_user
     start, end = month_range(today.year, today.month)
 
     def totals(kind, lower=None, upper=None):
-        query = db.query(func.coalesce(func.sum(Transaction.amount), 0)).filter(
+        query = db.query(Transaction.amount).filter(
             Transaction.user_id == user.id, Transaction.type == kind
         )
         if lower is not None:
             query = query.filter(Transaction.date >= lower)
         if upper is not None:
             query = query.filter(Transaction.date < upper)
-        return float(query.scalar() or 0)
+        return sum((amount for (amount,) in query.all()), Decimal("0"))
 
     income = totals("income", start, end)
     expenses = totals("expense", start, end)
@@ -125,20 +147,25 @@ def summary(db: Session = Depends(get_db), user: User = Depends(get_current_user
         month_start, month_end = month_range(year, month_num)
         monthly.append({
             "month": month_abbr[month_num],
-            "income": totals("income", month_start, month_end),
-            "expenses": totals("expense", month_start, month_end),
+            "income": api_amount(totals("income", month_start, month_end)),
+            "expenses": api_amount(totals("expense", month_start, month_end)),
         })
-    categories = db.query(Transaction.category, func.sum(Transaction.amount).label("amount")).filter(
+    category_rows = db.query(Transaction.category, Transaction.amount).filter(
         Transaction.user_id == user.id, Transaction.type == "expense",
         Transaction.date >= start, Transaction.date < end,
-    ).group_by(Transaction.category).order_by(func.sum(Transaction.amount).desc()).all()
+    ).all()
+    category_totals = {}
+    for category, amount in category_rows:
+        category_totals[category] = category_totals.get(category, Decimal("0")) + amount
+    categories = sorted(category_totals.items(), key=lambda item: item[1], reverse=True)
+    savings_rate = ((income - expenses) / income * Decimal("100")) if income else Decimal("0")
     return {
-        "balance": all_income - all_expenses,
-        "income": income,
-        "expenses": expenses,
-        "savings_rate": round(max(0, (income - expenses) / income * 100), 1) if income else 0,
+        "balance": api_amount(all_income - all_expenses),
+        "income": api_amount(income),
+        "expenses": api_amount(expenses),
+        "savings_rate": round(float(max(Decimal("0"), savings_rate)), 1),
         "monthly": monthly,
-        "categories": [{"category": category, "amount": float(amount)} for category, amount in categories],
+        "categories": [{"category": category, "amount": api_amount(amount)} for category, amount in categories],
     }
 
 
@@ -220,6 +247,6 @@ def export_transactions(db: Session = Depends(get_db), user: User = Depends(get_
     writer.writerow(["Date", "Description", "Type", "Category", "Amount"])
     items = db.query(Transaction).filter(Transaction.user_id == user.id).order_by(Transaction.date.desc()).all()
     for transaction in items:
-        writer.writerow([transaction.date.isoformat(), transaction.title, transaction.type, transaction.category, transaction.amount])
+        writer.writerow([transaction.date.isoformat(), csv_safe_text(transaction.title), transaction.type, csv_safe_text(transaction.category), transaction.amount])
     output.seek(0)
     return StreamingResponse(iter([output.getvalue()]), media_type="text/csv", headers={"Content-Disposition": "attachment; filename=fintrack-transactions.csv"})
