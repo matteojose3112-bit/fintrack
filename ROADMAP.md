@@ -140,3 +140,10 @@ PR #12 is an integration test vehicle, not a merge authorization or a replacemen
 - [ ] Change CI to `npm ci` only after the committed lockfile is present.
 - [ ] Verify the lockfile install, Vitest 4.1.12, zero-vulnerability audit, frontend tests/build, backend tests, and PostgreSQL migration in one complete run.
 - **Blocker:** the current execution environment cannot reach GitHub/npm and has no cached npm metadata; offline lockfile generation failed. No fabricated lockfile was added.
+
+
+### Reproducible frontend install — completed 2026-11-12
+- [x] Generate and commit the genuine npm lockfile at `frontend/package-lock.json` (lockfileVersion 3).
+- [x] Replace `npm install` with `npm ci` in frontend CI.
+- [x] Remove temporary lockfile-bootstrap permissions and branch-write logic; CI is read-only again.
+- [x] Verify clean install, Vitest 4.1.12, zero-vulnerability npm audit, frontend tests/build, backend tests, and populated PostgreSQL migration; all passed in CI run #114.
