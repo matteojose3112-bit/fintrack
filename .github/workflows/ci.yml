@@ -19,6 +19,13 @@ jobs:
         with:
           node-version: 20
       - run: npm install
+      - name: Preserve generated frontend lockfile
+        uses: actions/upload-artifact@v4
+        with:
+          name: fintrack-frontend-lockfile
+          path: frontend/package-lock.json
+          if-no-files-found: error
+          retention-days: 1
       - name: Review dependency audit
         run: |
           npm audit --json > npm-audit.json || true
