@@ -1,3 +1,15 @@
+## [Unreleased] — FinTrack reconciliation design and product identity — 2026-11-21
+
+### Added
+- Defined the account-reconciliation contract for immutable canonical CSV evidence, exact minor-unit parsing, deterministic match proposals, discrepancy reporting, and separately approved corrections.
+- Added explicit PostgreSQL acceptance gates for owner isolation, import idempotency, concurrent matching, audit history, and proof that reconciliation never changes posted balances.
+
+### Clarified
+- Restored FinTrack as the product name in the README and roadmap. Internal historical architecture labels are not product renames.
+
+### Boundaries
+- Design only: no parser, persistence migration, reconciliation API, bank connector, credential collection, automatic journal generation, production write, infrastructure change, or deployment.
+
 ## [Unreleased] — Foundation 0.6 Atomic Portfolio Lot Service — 2026-11-17
 
 ### Added
