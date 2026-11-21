@@ -1,5 +1,6 @@
 """PostgreSQL integration tests for atomic portfolio/cash settlement."""
 
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone, timedelta
 from decimal import Decimal
 import os
@@ -211,3 +212,58 @@ def test_outer_rollback_removes_portfolio_fill_and_cash_journal(pg_factory):
         assert verify.scalar(select(JournalEntryModel.id).where(
             JournalEntryModel.description.like(f"%{execution.execution_id}%")
         )) is None
+
+
+
+def test_concurrent_buys_cannot_overdraw_shared_brokerage_cash(pg_factory):
+    owner_id, usd_id, portfolio, accounts, instrument = context(pg_factory)
+    fund_cash(pg_factory, owner_id, usd_id, accounts, 10000)
+
+    # A second portfolio shares the same brokerage cash account but has its
+    # own investment-control account and position lock.
+    with pg_factory() as session:
+        second_portfolio = InvestmentPortfolioModel(
+            id=uuid4(), owner_id=owner_id, name="Second coordinator portfolio",
+            status="ACTIVE",
+        )
+        second_investment = FinancialAccountModel(
+            id=uuid4(), owner_id=owner_id, name="Second investment control",
+            account_type="ASSET",
+            currency_definition_id=usd_id, status="OPEN",
+        )
+        session.add_all([second_portfolio, second_investment])
+        session.flush()
+        session.add(PortfolioLedgerAccountMappingModel(
+            id=uuid4(), owner_id=owner_id, portfolio_id=second_portfolio.id,
+            cash_account_id=accounts["cash"].id,
+            investment_control_account_id=second_investment.id,
+            realized_gain_account_id=accounts["gain"].id,
+            realized_loss_account_id=accounts["loss"].id,
+            currency_definition_id=usd_id,
+        ))
+        session.commit()
+
+    first_trade = trade(portfolio, accounts, instrument, "buy", "6", "10", minute=0)
+    second_trade = trade(
+        second_portfolio, accounts, instrument, "buy", "6", "10", minute=0
+    )
+
+    def attempt(item):
+        try:
+            settle(pg_factory, owner_id, item)
+            return True
+        except SettlementInsufficientCash:
+            return False
+
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        accepted = list(pool.map(attempt, [first_trade, second_trade]))
+
+    assert sum(accepted) == 1
+    with pg_factory() as session:
+        cash_rows = session.scalars(select(JournalPostingModel).where(
+            JournalPostingModel.owner_id == owner_id,
+            JournalPostingModel.account_id == accounts["cash"].id,
+        )).all()
+        debit = sum(int(row.amount_minor) for row in cash_rows if row.side == "DEBIT")
+        credit = sum(int(row.amount_minor) for row in cash_rows if row.side == "CREDIT")
+        assert debit - credit == 4000
