@@ -5,6 +5,7 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from fastapi.responses import JSONResponse
+from pydantic import BaseModel, Field
 from sqlalchemy import select
 from sqlalchemy.exc import DBAPIError, IntegrityError
 from sqlalchemy.orm import Session
@@ -20,6 +21,10 @@ from app.domain.reconciliation_csv import (
 )
 from app.domain.reconciliation_matching import (
     LedgerMatchCandidate,
+    MatchDecision,
+    MatchProposal,
+    MatchStatus,
+    MatchStrategy,
     build_match_proposals,
 )
 from app.persistence.models import (
@@ -35,6 +40,15 @@ from app.persistence.reconciliation_import_service import (
     ReconciliationAccountUnavailable,
     ReconciliationCurrencyMismatch,
     persist_statement_import,
+)
+from app.persistence.reconciliation_match_service import (
+    ReconciliationCandidateUnavailable,
+    ReconciliationMatchConflict,
+    ReconciliationMatchNotFound,
+    confirm_reconciliation_match,
+    persist_match_decisions,
+    reject_reconciliation_match,
+    unmatch_reconciliation_match,
 )
 
 router = APIRouter(prefix="/v1/reconciliation", tags=["FinTrack Reconciliation"])
