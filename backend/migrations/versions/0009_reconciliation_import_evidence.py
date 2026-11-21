@@ -4,7 +4,7 @@ from alembic import op
 import sqlalchemy as sa
 
 
-revision = "0009_reconciliation_import_evidence"
+revision = "0009_reconciliation_import"
 down_revision = "0008_portfolio_precision_version"
 branch_labels = None
 depends_on = None
