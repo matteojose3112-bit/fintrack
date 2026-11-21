@@ -464,3 +464,12 @@ The lot engine now uses the immutable currency snapshot for new precision-policy
 
 
 The lot engine now supports precision-policy version 2 for new persisted executions. It uses the immutable currency snapshot's minor-unit exponent, quantizes acquisition basis, and allocates rounded gross proceeds, sale fees, and cost basis across lots deterministically with exact residuals. A persisted version flag preserves historical version-1 replay/rebuild semantics; historical financial facts are not rewritten. CI run #495 passed: 170 backend tests passed, 49 skipped in the SQLite suite, 49 PostgreSQL 16 integration tests passed, and frontend tests/build passed. Additional partial-disposal, v1 historical replay, and residual stress cases remain a gate before coordinator implementation.
+
+
+## Foundation 0.6 — atomic trade settlement coordinator
+
+The PostgreSQL-only settlement coordinator now records an already-executed BUY/SELL fill and its cash-ledger journal in one caller-owned transaction. It uses explicit owner-scoped account mappings, deterministic account locks, immutable currency precision, execution-derived journal idempotency, BUY fee capitalization, SELL net proceeds/cost basis/realized gain or loss, and an owner-timezone trade date. New BUY fills are rejected unless the locked brokerage cash account can fund principal plus fees.
+
+**Validation:** CI run #536 passed on the coordinator head: backend suite, frontend tests/build, SQLite migration, PostgreSQL 16 migration, and the PostgreSQL integration suite. Coordinator integration tests cover BUY journal posting and replay, SELL basis/proceeds/gain, insufficient cash, caller rollback, and concurrent BUYs sharing a brokerage cash account.
+
+**Boundary:** this records fills that have already executed. It does not submit orders, connect to brokers, transfer money, expose a public trading endpoint, or write production financial data. No production migration or deployment was performed.
