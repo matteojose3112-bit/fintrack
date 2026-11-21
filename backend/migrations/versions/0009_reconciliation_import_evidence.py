@@ -82,8 +82,29 @@ def upgrade():
         "reconciliation_statement_rows", ["owner_id", "booking_date"],
     )
 
+    if op.get_bind().dialect.name == "postgresql":
+        op.execute("""
+        CREATE FUNCTION fintrack_reconciliation_evidence_immutable()
+        RETURNS trigger AS $
+        BEGIN
+            RAISE EXCEPTION 'reconciliation source evidence is append-only'
+                USING ERRCODE = '55000';
+        END;
+        $ LANGUAGE plpgsql
+        """)
+        for table in ("reconciliation_import_batches", "reconciliation_statement_rows"):
+            op.execute(f"""
+            CREATE TRIGGER trg_{table}_immutable
+            BEFORE UPDATE OR DELETE ON {table}
+            FOR EACH ROW EXECUTE FUNCTION fintrack_reconciliation_evidence_immutable()
+            """)
+
 
 def downgrade():
+    if op.get_bind().dialect.name == "postgresql":
+        for table in ("reconciliation_import_batches", "reconciliation_statement_rows"):
+            op.execute(f"DROP TRIGGER IF EXISTS trg_{table}_immutable ON {table}")
+        op.execute("DROP FUNCTION IF EXISTS fintrack_reconciliation_evidence_immutable()")
     op.drop_index(
         "ix_reconciliation_statement_rows_owner_date",
         table_name="reconciliation_statement_rows",
