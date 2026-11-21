@@ -67,13 +67,13 @@ class TradeSettlementResult:
 
 
 def _currency_snapshot(
-    session: Session, execution: TradeExecution
+    session: Session, owner_id: int, execution: TradeExecution
 ) -> CurrencyDefinitionModel:
     """Resolve the same position snapshot policy used by portfolio persistence."""
     prior = session.scalars(
         select(TradeExecutionModel)
         .where(
-            TradeExecutionModel.owner_id == session.info.get("settlement_owner_id"),
+            TradeExecutionModel.owner_id == owner_id,
             TradeExecutionModel.portfolio_id == execution.portfolio_id,
             TradeExecutionModel.account_id == execution.account_id,
             TradeExecutionModel.instrument_id == execution.instrument_id,
@@ -219,8 +219,7 @@ def settle_portfolio_execution_in_session(
     if actor_id != owner_id:
         raise TradeSettlementError("actor must match the authenticated owner in v1")
 
-    session.info["settlement_owner_id"] = owner_id
-    currency = _currency_snapshot(session, execution)
+    currency = _currency_snapshot(session, owner_id, execution)
     if currency.minor_unit_exponent is None:
         raise SettlementCurrencyUnavailable("currency snapshot has no minor-unit exponent")
 
