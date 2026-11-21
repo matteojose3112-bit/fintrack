@@ -126,3 +126,13 @@ def test_bom_and_blank_lines_are_supported_deterministically():
     result = parse_statement_csv(raw, currency_exponent=2)
     assert result.is_valid
     assert result.rows[0].row_number == 3
+
+
+
+def test_header_only_csv_is_rejected_as_empty_statement():
+    with pytest.raises(StatementCsvError) as exc:
+        parse_statement_csv(
+            b"booking_date,amount,currency,description\\n",
+            currency_exponent=2,
+        )
+    assert exc.value.code == "no_data_rows"
