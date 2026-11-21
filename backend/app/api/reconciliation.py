@@ -33,6 +33,7 @@ from app.persistence.models import (
     JournalEntryModel,
     JournalPostingModel,
     ReconciliationImportBatchModel,
+    ReconciliationMatchModel,
     ReconciliationStatementRowModel,
 )
 from app.persistence.reconciliation_import_service import (
