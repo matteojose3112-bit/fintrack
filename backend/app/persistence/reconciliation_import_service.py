@@ -19,6 +19,7 @@ from app.domain.reconciliation_csv import CsvParseResult
 from app.persistence.models import (
     CurrencyDefinitionModel,
     FinancialAccountModel,
+    AuditEventModel,
     ReconciliationImportBatchModel,
     ReconciliationStatementRowModel,
 )
@@ -157,8 +158,7 @@ def persist_statement_import(
             parser_version=existing.parser_version,
         )
 
-    session.add_all([
-        ReconciliationStatementRowModel(
+    session.add(AuditEventModel(\n        id=uuid4(),\n        owner_id=owner_id,\n        actor_id=owner_id,\n        event_type="RECONCILIATION_IMPORT_CREATED",\n        aggregate_type="RECONCILIATION_IMPORT_BATCH",\n        aggregate_id=batch_id,\n        reason=None,\n        payload={\n            "account_id": str(account_id),\n            "file_sha256": parsed.file_sha256,\n            "parser_version": parser_version,\n            "row_count": len(parsed.rows),\n        },\n    ))\n    session.add_all([\n        ReconciliationStatementRowModel(
             id=uuid4(),
             batch_id=batch_id,
             owner_id=owner_id,
