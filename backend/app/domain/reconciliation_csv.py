@@ -25,7 +25,7 @@ MAX_COLUMNS: Final = 32
 MAX_FIELD_CHARS: Final = 4_096
 MAX_AMOUNT_DIGITS: Final = 38
 _DATE_PATTERN: Final = re.compile(r"^[0-9]{4}-[0-9]{2}-[0-9]{2}$")
-_AMOUNT_PATTERN: Final = re.compile(r"^-?[0-9]+(?:\\.[0-9]+)?$")
+_AMOUNT_PATTERN: Final = re.compile(r"^-?[0-9]+(?:\.[0-9]+)?$")
 
 
 @dataclass(frozen=True, slots=True)
