@@ -536,3 +536,17 @@ All notable project changes are documented here.
 - Historical v1 executions retain their prior exact-Decimal rebuild semantics; no historical lot facts are rewritten.
 - CI run #495 passed: 170 backend tests passed, 49 skipped in the SQLite suite, 49 PostgreSQL 16 integration tests passed, and frontend tests/build passed. Additional multi-lot partial-disposal and historical v1 replay stress cases remain follow-up coverage.
 - No cash journal, settlement coordinator, production migration, broker integration, or cash movement is included.
+
+
+## [Unreleased] — Foundation 0.6 Atomic Trade Settlement Coordinator — 2026-11-21
+
+### Added
+- Added a PostgreSQL-only coordinator that composes already-executed portfolio fills and cash-ledger journals inside one caller-owned transaction.
+- Reused the owner-scoped settlement mapping resolver, session-bound portfolio execution, and session-bound ledger posting primitives.
+- Added deterministic execution-derived journal idempotency, immutable currency-exponent conversion, BUY fee capitalization, SELL net-proceeds/cost-basis/gain/loss postings, and owner-timezone trade dates.
+- Added a locked brokerage cash-balance check before new BUY fills.
+- Added pure accounting tests for BUY, SELL gain/loss, fee bounds, and zero-value BUY rejection.
+
+### Validation and boundaries
+- CI and PostgreSQL cross-domain acceptance are pending on draft PR #38; do not treat the coordinator as release-ready until those checks pass.
+- The coordinator records fills that have already executed. No broker connection, order submission, cash transfer, public trade API, production data write, or deployment is included.
