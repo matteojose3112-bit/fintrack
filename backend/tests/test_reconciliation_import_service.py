@@ -74,7 +74,10 @@ def test_valid_statement_import_persists_immutable_evidence_and_is_idempotent():
         assert replay.batch_id == first.batch_id
         assert session.scalar(select(func.count()).select_from(ReconciliationImportBatchModel)) == 1
         assert session.scalar(select(func.count()).select_from(ReconciliationStatementRowModel)) == 2
-        assert session.scalar(select(func.count()).select_from(JournalEntryModel)) == 0\n        audit = session.scalars(select(AuditEventModel)).one()\n        assert audit.event_type == "RECONCILIATION_IMPORT_CREATED"\n        assert audit.aggregate_id == first.batch_id
+        assert session.scalar(select(func.count()).select_from(JournalEntryModel)) == 0
+        audit = session.scalars(select(AuditEventModel)).one()
+        assert audit.event_type == "RECONCILIATION_IMPORT_CREATED"
+        assert audit.aggregate_id == first.batch_id
 
         batch = session.get(ReconciliationImportBatchModel, first.batch_id)
         assert batch.original_filename == "bank.csv"
