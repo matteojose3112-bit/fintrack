@@ -251,6 +251,18 @@ def get_statement_import(
                 "counterparty": row.counterparty,
                 "reference": row.reference,
                 "source_payload": row.source_payload,
+                "match": (
+                    {
+                        "match_id": str(match_by_row[row.id].id),
+                        "status": match_by_row[row.id].status,
+                        "strategy": match_by_row[row.id].strategy,
+                        "journal_posting_id": (
+                            str(match_by_row[row.id].journal_posting_id)
+                            if match_by_row[row.id].journal_posting_id else None
+                        ),
+                    }
+                    if row.id in match_by_row else None
+                ),
             }
             for row in rows
         ],
