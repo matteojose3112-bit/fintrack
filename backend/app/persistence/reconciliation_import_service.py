@@ -175,7 +175,8 @@ def persist_statement_import(
             "row_count": len(parsed.rows),
         },
     ))
-    session.add_all([\n        ReconciliationStatementRowModel(
+    session.add_all([
+        ReconciliationStatementRowModel(
             id=uuid4(),
             batch_id=batch_id,
             owner_id=owner_id,
