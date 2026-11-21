@@ -150,3 +150,90 @@ def test_concurrent_replay_creates_only_one_batch_and_row_set(pg_factory):
         assert session.scalar(select(func.count()).select_from(ReconciliationStatementRowModel).where(
             ReconciliationStatementRowModel.batch_id == results[0].batch_id
         )) == 2
+
+
+def test_postgres_explicit_match_confirmation_is_audited_and_read_only(pg_factory):
+    owner_id, account_id = setup_account(pg_factory)
+    parsed = parse_statement_csv(STATEMENT, currency_exponent=2, expected_currency="USD")
+    batch_result = persist(pg_factory, owner_id, account_id, parsed)
+
+    with pg_factory() as session:
+        cash = session.get(FinancialAccountModel, account_id)
+        expense = FinancialAccountModel(
+            id=uuid4(), owner_id=owner_id, name="Card purchases",
+            account_type="EXPENSE",
+            currency_definition_id=cash.currency_definition_id,
+            status="OPEN",
+        )
+        session.add(expense)
+        journal = JournalEntryModel(
+            id=uuid4(), owner_id=owner_id, effective_date=date(2026, 11, 21),
+            description="Card purchase", currency_definition_id=cash.currency_definition_id,
+            status="POSTED", created_by=owner_id,
+        )
+        session.add(journal)
+        session.flush()
+        cash_posting = JournalPostingModel(
+            id=uuid4(), journal_entry_id=journal.id, owner_id=owner_id,
+            account_id=account_id, currency_definition_id=cash.currency_definition_id,
+            side="CREDIT", amount_minor=2550,
+        )
+        expense_posting = JournalPostingModel(
+            id=uuid4(), journal_entry_id=journal.id, owner_id=owner_id,
+            account_id=expense.id, currency_definition_id=cash.currency_definition_id,
+            side="DEBIT", amount_minor=2550,
+        )
+        session.add_all([cash_posting, expense_posting])
+        session.commit()
+        row = session.scalar(select(ReconciliationStatementRowModel).where(
+            ReconciliationStatementRowModel.batch_id == batch_result.batch_id,
+            ReconciliationStatementRowModel.row_number == 2,
+        ))
+        journal_id = journal.id
+        posting_id = cash_posting.id
+        session.commit()
+
+    decisions = (
+        MatchDecision(
+            row_number=2,
+            status=MatchStatus.PROPOSED,
+            proposal=MatchProposal(
+                row_number=2,
+                candidate_id=posting_id,
+                journal_id=journal_id,
+                strategy=MatchStrategy.EXACT_AMOUNT_DATE_WINDOW,
+                date_difference_days=0,
+            ),
+            candidate_ids=(posting_id,),
+        ),
+        MatchDecision(row_number=3, status=MatchStatus.UNMATCHED),
+    )
+    with pg_factory() as session, session.begin():
+        persist_match_decisions(
+            session, owner_id=owner_id, actor_id=owner_id,
+            batch_id=batch_result.batch_id, decisions=decisions,
+        )
+
+    with pg_factory() as session:
+        match = session.scalar(select(ReconciliationMatchModel).where(
+            ReconciliationMatchModel.statement_row_id == row.id
+        ))
+        match_id = match.id
+
+    with pg_factory() as session, session.begin():
+        confirmed = confirm_reconciliation_match(
+            session, owner_id=owner_id, actor_id=owner_id, match_id=match_id,
+        )
+        assert confirmed.status == "CONFIRMED"
+
+    with pg_factory() as session:
+        assert session.scalar(select(func.count()).select_from(JournalEntryModel).where(
+            JournalEntryModel.id == journal_id
+        )) == 1
+        assert session.scalar(select(func.count()).select_from(JournalPostingModel).where(
+            JournalPostingModel.id == posting_id
+        )) == 1
+        assert session.scalar(select(func.count()).select_from(AuditEventModel).where(
+            AuditEventModel.aggregate_id == match_id,
+            AuditEventModel.event_type == "RECONCILIATION_MATCH_CONFIRMED",
+        )) == 1
