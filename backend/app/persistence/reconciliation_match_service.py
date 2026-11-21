@@ -11,6 +11,7 @@ from sqlalchemy.orm import Session
 from app.domain.reconciliation_matching import MatchDecision, MatchStatus
 from app.persistence.models import (
     AuditEventModel,
+    JournalEntryModel,
     JournalPostingModel,
     ReconciliationImportBatchModel,
     ReconciliationMatchModel,
@@ -116,21 +117,58 @@ def persist_match_decisions(
         for decision in decisions
         if decision.status is MatchStatus.PROPOSED and decision.proposal is not None
     }
+    candidate_by_id = {}
     if proposed_candidate_ids:
-        valid_ids = set(session.scalars(
-            select(JournalPostingModel.id)
+        candidate_rows = session.execute(
+            select(JournalPostingModel, JournalEntryModel)
+            .join(
+                JournalEntryModel,
+                JournalEntryModel.id == JournalPostingModel.journal_entry_id,
+            )
             .where(
                 JournalPostingModel.id.in_(proposed_candidate_ids),
                 JournalPostingModel.owner_id == owner_id,
                 JournalPostingModel.account_id == batch.account_id,
                 JournalPostingModel.currency_definition_id == batch.currency_definition_id,
+                JournalEntryModel.owner_id == owner_id,
             )
             .with_for_update()
-        ).all())
-        if valid_ids != proposed_candidate_ids:
+        ).all()
+        candidate_by_id = {
+            posting.id: (posting, journal)
+            for posting, journal in candidate_rows
+        }
+        if set(candidate_by_id) != proposed_candidate_ids:
             raise ReconciliationCandidateUnavailable(
                 "one or more proposed ledger postings are outside the account scope"
             )
+
+        for decision in decisions:
+            if decision.status is not MatchStatus.PROPOSED or decision.proposal is None:
+                continue
+            if decision.proposal.strategy.value != "EXACT_AMOUNT_DATE_WINDOW":
+                raise ReconciliationCandidateUnavailable(
+                    "this ledger schema supports only exact amount/date proposals"
+                )
+            row_model = row_by_number[decision.row_number]
+            posting, journal = candidate_by_id[decision.proposal.candidate_id]
+            signed_amount = (
+                int(posting.amount_minor)
+                if posting.side == "DEBIT"
+                else -int(posting.amount_minor)
+            )
+            date_difference = abs((row_model.booking_date - journal.effective_date).days)
+            if signed_amount != int(row_model.amount_minor):
+                raise ReconciliationCandidateUnavailable(
+                    "proposed posting amount does not equal the statement row"
+                )
+            if (
+                date_difference != decision.proposal.date_difference_days
+                or date_difference > 31
+            ):
+                raise ReconciliationCandidateUnavailable(
+                    "proposed posting date difference is inconsistent or outside the allowed window"
+                )
 
     created = updated = unchanged = protected = 0
     for decision in decisions:
