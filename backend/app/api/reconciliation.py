@@ -377,3 +377,154 @@ def preview_statement_match_proposals(
             for decision in decisions
         ],
     }
+
+
+class MatchActionRequest(BaseModel):
+    reason: str = Field(min_length=1, max_length=500)
+
+
+@router.post("/imports/{batch_id}/proposals")
+def create_statement_match_proposals(
+    batch_id: UUID,
+    date_window_days: int = 3,
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user),
+):
+    """Compute and persist deterministic suggestions; no match is auto-confirmed."""
+    preview = preview_statement_match_proposals(
+        batch_id=batch_id,
+        date_window_days=date_window_days,
+        db=db,
+        user=user,
+    )
+    decisions = []
+    for item in preview["proposals"]:
+        status_value = MatchStatus(item["status"])
+        proposal_data = item["proposal"]
+        proposal = None
+        if proposal_data is not None:
+            proposal = MatchProposal(
+                row_number=item["row_number"],
+                candidate_id=UUID(proposal_data["candidate_posting_id"]),
+                journal_id=UUID(proposal_data["journal_id"]),
+                strategy=MatchStrategy(proposal_data["strategy"]),
+                date_difference_days=proposal_data["date_difference_days"],
+            )
+        decisions.append(MatchDecision(
+            row_number=item["row_number"],
+            status=status_value,
+            proposal=proposal,
+            candidate_ids=tuple(UUID(value) for value in item["candidate_posting_ids"]),
+        ))
+    try:
+        result = persist_match_decisions(
+            db,
+            owner_id=user.id,
+            actor_id=user.id,
+            batch_id=batch_id,
+            decisions=tuple(decisions),
+        )
+        db.commit()
+    except ReconciliationMatchNotFound as exc:
+        db.rollback()
+        raise HTTPException(status_code=404, detail=str(exc))
+    except (ReconciliationCandidateUnavailable, ReconciliationMatchConflict, ValueError) as exc:
+        db.rollback()
+        raise HTTPException(status_code=409, detail=str(exc))
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(status_code=409, detail="Proposal persistence conflicted with existing reconciliation state.")
+    except DBAPIError:
+        db.rollback()
+        raise HTTPException(status_code=503, detail="Reconciliation storage is temporarily unavailable.")
+    return {
+        "batch_id": str(batch_id),
+        "created": result.created,
+        "updated": result.updated,
+        "unchanged": result.unchanged,
+        "protected": result.protected,
+        "confirmed_automatically": 0,
+    }
+
+
+@router.post("/matches/{match_id}/confirm")
+def confirm_statement_match(
+    match_id: UUID,
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user),
+):
+    """Explicitly confirm one proposal after user review."""
+    if engine.dialect.name != "postgresql":
+        raise HTTPException(status_code=503, detail="Reconciliation writes require PostgreSQL.")
+    try:
+        match = confirm_reconciliation_match(
+            db, owner_id=user.id, actor_id=user.id, match_id=match_id,
+        )
+        db.commit()
+    except ReconciliationMatchNotFound as exc:
+        db.rollback()
+        raise HTTPException(status_code=404, detail=str(exc))
+    except (ReconciliationMatchConflict, ReconciliationCandidateUnavailable) as exc:
+        db.rollback()
+        raise HTTPException(status_code=409, detail=str(exc))
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(status_code=409, detail="This ledger posting is already confirmed against another statement row.")
+    except DBAPIError:
+        db.rollback()
+        raise HTTPException(status_code=503, detail="Reconciliation storage is temporarily unavailable.")
+    return {"match_id": str(match.id), "status": match.status}
+
+
+@router.post("/matches/{match_id}/reject")
+def reject_statement_match(
+    match_id: UUID,
+    payload: MatchActionRequest,
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user),
+):
+    if engine.dialect.name != "postgresql":
+        raise HTTPException(status_code=503, detail="Reconciliation writes require PostgreSQL.")
+    try:
+        match = reject_reconciliation_match(
+            db, owner_id=user.id, actor_id=user.id,
+            match_id=match_id, reason=payload.reason,
+        )
+        db.commit()
+    except ReconciliationMatchNotFound as exc:
+        db.rollback()
+        raise HTTPException(status_code=404, detail=str(exc))
+    except (ReconciliationMatchConflict, ValueError) as exc:
+        db.rollback()
+        raise HTTPException(status_code=409, detail=str(exc))
+    except DBAPIError:
+        db.rollback()
+        raise HTTPException(status_code=503, detail="Reconciliation storage is temporarily unavailable.")
+    return {"match_id": str(match.id), "status": match.status}
+
+
+@router.post("/matches/{match_id}/unmatch")
+def unmatch_statement_match(
+    match_id: UUID,
+    payload: MatchActionRequest,
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user),
+):
+    if engine.dialect.name != "postgresql":
+        raise HTTPException(status_code=503, detail="Reconciliation writes require PostgreSQL.")
+    try:
+        match = unmatch_reconciliation_match(
+            db, owner_id=user.id, actor_id=user.id,
+            match_id=match_id, reason=payload.reason,
+        )
+        db.commit()
+    except ReconciliationMatchNotFound as exc:
+        db.rollback()
+        raise HTTPException(status_code=404, detail=str(exc))
+    except (ReconciliationMatchConflict, ValueError) as exc:
+        db.rollback()
+        raise HTTPException(status_code=409, detail=str(exc))
+    except DBAPIError:
+        db.rollback()
+        raise HTTPException(status_code=503, detail="Reconciliation storage is temporarily unavailable.")
+    return {"match_id": str(match.id), "status": match.status}
