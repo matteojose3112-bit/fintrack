@@ -39,6 +39,7 @@ class StatementRow:
     value_date: date | None = None
     counterparty: str | None = None
     reference: str | None = None
+    source_payload: tuple[tuple[str, str], ...] = ()
 
 
 @dataclass(frozen=True, slots=True)
@@ -232,6 +233,7 @@ def parse_statement_csv(
                 value_date=value_date,
                 counterparty=_optional(record.get("counterparty", "")),
                 reference=_optional(record.get("reference", "")),
+                source_payload=tuple((header, record[header]) for header in headers),
             ))
     except csv.Error as exc:
         raise StatementCsvError("malformed_csv", "CSV structure is malformed") from exc
