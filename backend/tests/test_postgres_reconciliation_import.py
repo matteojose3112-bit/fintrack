@@ -2,6 +2,7 @@
 
 from concurrent.futures import ThreadPoolExecutor
 import os
+from datetime import date
 from uuid import uuid4
 
 import pytest
@@ -10,15 +11,26 @@ from sqlalchemy.orm import sessionmaker
 
 from app.models import User
 from app.domain.reconciliation_csv import parse_statement_csv
+from app.domain.reconciliation_matching import (
+    MatchDecision, MatchProposal, MatchStatus, MatchStrategy,
+)
 from app.persistence.currency_registry_seed import seed_currency_registry
 from app.persistence.models import (
     AuditEventModel,
     CurrencyDefinitionModel,
     FinancialAccountModel,
+    JournalEntryModel,
+    JournalPostingModel,
     ReconciliationImportBatchModel,
+    ReconciliationMatchModel,
     ReconciliationStatementRowModel,
 )
 from app.persistence.reconciliation_import_service import persist_statement_import
+from app.persistence.reconciliation_match_service import (
+    confirm_reconciliation_match,
+    persist_match_decisions,
+    unmatch_reconciliation_match,
+)
 
 
 POSTGRES_TEST_URL = os.getenv("POSTGRES_TEST_URL")
