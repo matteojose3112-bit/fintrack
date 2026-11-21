@@ -1,14 +1,18 @@
-## [Unreleased] — FinTrack reconciliation design and product identity — 2026-11-21
+## [Unreleased] — FinTrack reconciliation implementation — 2026-11-21
 
 ### Added
-- Defined the account-reconciliation contract for immutable canonical CSV evidence, exact minor-unit parsing, deterministic match proposals, discrepancy reporting, and separately approved corrections.
-- Added explicit PostgreSQL acceptance gates for owner isolation, import idempotency, concurrent matching, audit history, and proof that reconciliation never changes posted balances.
+- Added a bounded UTF-8 CSV statement parser with strict ISO dates, canonical decimal strings, registry-supplied currency precision, exact integer minor units, SHA-256 file digests, row-level validation errors, and explicit size/row/field limits.
+- Preserved original statement row payloads as untrusted source evidence; imports never infer journal entries or mutate posted ledger balances.
+- Added owner/account/currency-scoped PostgreSQL import batches and statement rows, idempotent by owner + account + file digest + parser version.
+- Added PostgreSQL append-only triggers for original import evidence and same-transaction audit events.
+- Added authenticated upload, import-list/detail, and read-only proposal-preview APIs.
+- Added deterministic source-ID/reference/amount-date matching, strict one-to-one uniqueness, ambiguity handling, and safeguards against weaker matching when stable references conflict.
+- Added persisted proposal states with explicit confirm, reject, and unmatch operations; confirmed postings are unique across statement rows and every transition is audited.
 
-### Clarified
-- Restored FinTrack as the product name in the README and roadmap. Internal historical architecture labels are not product renames.
-
-### Boundaries
-- Design only: no parser, persistence migration, reconciliation API, bank connector, credential collection, automatic journal generation, production write, infrastructure change, or deployment.
+### Validation and boundaries
+- Backend compile, SQLite Alembic migration, and full backend tests passed on the latest validated run; PostgreSQL 16 migration and reconciliation integration validation are tracked separately in CI.
+- Matching never auto-confirms. Confirmation only links a statement row to an existing ledger posting; it does not create, edit, reverse, or delete journal entries.
+- No bank credentials/open-banking connection, brokerage statement import, FX conversion, automated journal generation, production migration, Render change, or deployment.
 
 ## [Unreleased] — Foundation 0.6 Atomic Portfolio Lot Service — 2026-11-17
 
