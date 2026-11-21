@@ -16,6 +16,7 @@ from sqlalchemy import (
     UniqueConstraint,
     Uuid,
     func,
+    text,
 )
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -156,6 +157,7 @@ class JournalPostingModel(Base):
             "amount_minor > 0",
             name="ck_journal_postings_positive_minor_units",
         ),
+        UniqueConstraint("id", "owner_id", name="uq_journal_postings_id_owner"),
         ForeignKeyConstraint(
             ["journal_entry_id", "owner_id", "currency_definition_id"],
             [
@@ -347,6 +349,7 @@ class ReconciliationStatementRowModel(Base):
 
     __tablename__ = "reconciliation_statement_rows"
     __table_args__ = (
+        UniqueConstraint("id", "owner_id", name="uq_reconciliation_statement_rows_id_owner"),
         UniqueConstraint(
             "batch_id", "owner_id", "row_number",
             name="uq_reconciliation_statement_row_number",
@@ -383,5 +386,73 @@ class ReconciliationStatementRowModel(Base):
     reference: Mapped[str | None] = mapped_column(String(1024), nullable=True)
     source_payload: Mapped[dict] = mapped_column(JSON, nullable=False)
     created_at: Mapped[object] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+
+
+class ReconciliationMatchModel(Base):
+    """One mutable proposal/confirmation state for an immutable statement row."""
+
+    __tablename__ = "reconciliation_matches"
+    __table_args__ = (
+        UniqueConstraint("id", "owner_id", name="uq_reconciliation_matches_id_owner"),
+        UniqueConstraint("statement_row_id", name="uq_reconciliation_match_statement_row"),
+        ForeignKeyConstraint(
+            ["batch_id", "owner_id"],
+            ["reconciliation_import_batches.id", "reconciliation_import_batches.owner_id"],
+            ondelete="RESTRICT",
+            name="fk_reconciliation_match_batch_owner",
+        ),
+        ForeignKeyConstraint(
+            ["statement_row_id", "owner_id"],
+            ["reconciliation_statement_rows.id", "reconciliation_statement_rows.owner_id"],
+            ondelete="RESTRICT",
+            name="fk_reconciliation_match_statement_row_owner",
+        ),
+        ForeignKeyConstraint(
+            ["journal_posting_id", "owner_id"],
+            ["journal_postings.id", "journal_postings.owner_id"],
+            ondelete="RESTRICT",
+            name="fk_reconciliation_match_posting_owner",
+        ),
+        CheckConstraint(
+            "status IN ('PROPOSED', 'AMBIGUOUS', 'UNMATCHED', 'CONFIRMED', 'REJECTED')",
+            name="ck_reconciliation_match_status",
+        ),
+        CheckConstraint(
+            "date_difference_days IS NULL OR date_difference_days BETWEEN 0 AND 31",
+            name="ck_reconciliation_match_date_difference",
+        ),
+        Index(
+            "uq_reconciliation_confirmed_posting",
+            "journal_posting_id",
+            unique=True,
+            postgresql_where=text("status = 'CONFIRMED' AND journal_posting_id IS NOT NULL"),
+            sqlite_where=text("status = 'CONFIRMED' AND journal_posting_id IS NOT NULL"),
+        ),
+        Index(
+            "ix_reconciliation_matches_owner_status",
+            "owner_id", "status", "last_action_at",
+        ),
+    )
+
+    id: Mapped[object] = mapped_column(Uuid(as_uuid=True), primary_key=True)
+    owner_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("users.id", ondelete="RESTRICT"), nullable=False
+    )
+    batch_id: Mapped[object] = mapped_column(Uuid(as_uuid=True), nullable=False)
+    statement_row_id: Mapped[object] = mapped_column(Uuid(as_uuid=True), nullable=False)
+    journal_posting_id: Mapped[object | None] = mapped_column(Uuid(as_uuid=True), nullable=True)
+    status: Mapped[str] = mapped_column(String(12), nullable=False)
+    strategy: Mapped[str | None] = mapped_column(String(40), nullable=True)
+    date_difference_days: Mapped[int | None] = mapped_column(SmallInteger, nullable=True)
+    confirmed_by: Mapped[int | None] = mapped_column(
+        Integer, ForeignKey("users.id", ondelete="RESTRICT"), nullable=True
+    )
+    proposed_at: Mapped[object] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+    confirmed_at: Mapped[object | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    last_action_at: Mapped[object] = mapped_column(
         DateTime(timezone=True), nullable=False, server_default=func.now()
     )
