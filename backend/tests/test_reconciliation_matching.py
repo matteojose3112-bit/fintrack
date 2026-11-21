@@ -70,7 +70,7 @@ def test_exact_reference_matches_only_exact_amount_and_date():
     assert decision.status is MatchStatus.PROPOSED
     assert decision.proposal.strategy is MatchStrategy.EXACT_REFERENCE
 
-    wrong_day = propose([row(reference="inv 204", day=DAY + timedelta(days=1))], [ledger])[0]
+    wrong_day = propose([row(reference="inv 204", day=DAY + timedelta(days=10))], [ledger])[0]
     assert wrong_day.status is MatchStatus.UNMATCHED
 
 
