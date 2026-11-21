@@ -1,12 +1,12 @@
-# Aurelius Roadmap — FinTrack Transformation
+# FinTrack Roadmap — Financial Platform
 
-Last updated: 2026-11-18
+Last updated: 2026-11-21
 
 ## Product direction
 
-**Aurelius** is the planned AI financial intelligence and investment operating system evolving from the FinTrack personal-finance MVP.
+**FinTrack** is evolving from a personal-finance MVP into a reliable financial management, investment, and evidence-led intelligence platform.
 
-**Current status: Foundations 0.3–0.6 in active development.** The versioned ISO 4217 registry, ledger persistence, PostgreSQL constraints, atomic posting/reversals, and authenticated v1 ledger API have been implemented and CI-tested on stacked branches. The global asset/instrument ontology and persistence, provider adapter framework, market-observation ingestion, and long-only portfolio-lot accounting are the next implementation layers. PR #25 merged the provider-neutral adapter framework; PRs #26–#27 and the portfolio-lot persistence branch remain under review. No brokerage execution, paid market-data subscription, hosted database migration, or deployment is authorized.
+**Current status: Foundations 0.3–0.6 in active development.** The versioned ISO 4217 registry, ledger persistence, PostgreSQL constraints, atomic posting/reversals, and authenticated v1 ledger API have been implemented and CI-tested on stacked branches. The global asset/instrument ontology and persistence, provider adapter framework, market-observation ingestion, long-only portfolio-lot accounting, and first reconciliation workflow are implemented across the reviewed feature stack; the remaining work is integration, read-model polish, and release validation. PR #25 merged the provider-neutral adapter framework; PRs #26–#27 and the portfolio-lot persistence branch remain under review. No brokerage execution, paid market-data subscription, hosted database migration, or deployment is authorized.
 
 **Guiding principle:** evidence, exact calculations, transparency, and downside protection over confident-sounding answers.
 
@@ -15,7 +15,7 @@ Last updated: 2026-11-18
 ### Repository baseline and release coordination
 - [x] Inspect the default-branch repository structure, backend/frontend implementation, tests, Render Blueprint, branches, open PRs, and open issue.
 - [x] Identify the difference between deployed/main code and the more advanced integration/documentation draft branches.
-- [x] Produce the Aurelius transformation assessment and initial architecture recommendation.
+- [x] Produce the FinTrack transformation assessment and initial architecture recommendation.
 - [x] Record preliminary provider options and licensing/cost caveats.
 - [ ] Reconcile overlapping documentation PRs #8 and #11; do not merge automatically.
 - [ ] Review PR #9 (FastAPI form-parser security fix) independently; it is not included in integration PR #12.
@@ -23,7 +23,7 @@ Last updated: 2026-11-18
 - [ ] Complete a clean, reviewed integration plan for PRs #3, #4, #5, #7, #9, and #10. PR #12 currently integrates #3/#5/#7/#10, but is not a substitute for reviewing each source PR.
 - [ ] Keep all PRs draft until security, data migration, and deployment gates are satisfied.
 
-### Aurelius Foundation 0.1 — active work
+### FinTrack Foundation 0.1 — active work
 - [x] Add an infrastructure-independent `Money` value object using Python `Decimal`.
 - [x] Replace the initial eight-code exponent allowlist with the versioned SIX ISO 4217 registry (178 current codes, 165 with published exponents).
 - [x] Add fixed-scale decimal-string serialization, exact construction from integer minor units, minor-unit conversion, canonical zero, same-currency arithmetic, and cross-currency rejection.
@@ -37,14 +37,18 @@ Last updated: 2026-11-18
 
 ### Financial correctness and data model
 - [x] Establish the versioned global money contract: ISO 4217 currency definitions, explicit minor-unit exponents, Decimal/integer calculations, exact NUMERIC persistence, and string-based API serialization. See `docs/finance/MONEY_CONTRACT.md`.
-- [ ] Migrate legacy FinTrack transaction/budget/goal endpoints away from binary-float monetary fields; the new Aurelius v1 ledger API already uses integer minor-unit strings.
+- [ ] Migrate legacy FinTrack transaction/budget/goal endpoints away from binary-float monetary fields; the new FinTrack v1 ledger API already uses integer minor-unit strings.
 - [x] Define and persist financial account identity, owner scope, currency, account types, and derived normal-side balances.
 - [x] Persist balanced journal postings, same-currency account constraints, and reversal-based corrections; opening-balance workflows remain to be exposed.
-- [x] Model and persist owner-scoped financial accounts and liability account types in the Aurelius ledger schema; net-worth reporting and valuation are still pending.
+- [x] Model and persist owner-scoped financial accounts and liability account types in the FinTrack ledger schema; net-worth reporting and valuation are still pending.
 - [x] Support multiple native account currencies and an independent owner reporting-currency preference in the persistence model.
 - [ ] Add timestamped FX observations and reproducible functional/reporting-currency valuation.
 - [x] Implement balanced immutable journal postings, idempotency, audit events, and reversal-based corrections.
-- [ ] Add reconciliation status, immutable statement-import history, and correction workflows.
+- [x] Add bounded strict CSV statement parsing with exact currency minor units, row-level errors, file digest, and parser-version evidence.
+- [x] Persist owner-scoped immutable statement import batches and rows with file/parser idempotency, account/currency constraints, and PostgreSQL append-only triggers.
+- [x] Add authenticated upload, import-list/detail, and read-only deterministic match-preview APIs.
+- [x] Add deterministic one-to-one match proposals, ambiguity handling, explicit confirmation/rejection/unmatch transitions, partial uniqueness for confirmed ledger postings, and append-only audit events.
+- [ ] Add separately approved correction/adjustment request workflow; reconciliation must never silently post journal entries.
 - [ ] Add golden-case tests for rounding, aggregation, negative balances, refunds, transfers, FX conversion, leap/month boundaries, and currency precision.
 - [ ] Preserve account isolation across every new table, endpoint, report, export, and background task.
 
@@ -120,7 +124,7 @@ The first lot implementation is long-only and is not a tax engine. FIFO/LIFO/spe
 - Add role-based permissions, retention/export/delete workflows, observability, cost controls, and incident procedures.
 - Review licensing and jurisdiction-specific legal obligations before external distribution or commercial use.
 
-## First practical development milestone: Aurelius Foundation 0.1
+## First practical development milestone: FinTrack Foundation 0.1
 
 **Scope:** documentation + architecture contract + financial-core risk register; no AI framework, provider subscription, or external integration yet.
 
@@ -129,7 +133,7 @@ The first lot implementation is long-only and is not a tax engine. FIFO/LIFO/spe
 3. Draft domain boundaries and initial PostgreSQL entities for accounts, currencies, ledger entries, instruments, source observations, theses, decisions, and predictions—without implementing all tables at once.
 4. Define a canonical evidence schema and provider adapter interface.
 5. Add a small set of deterministic accounting golden tests before any AI feature.
-6. Establish CI coverage and documentation conventions for the Aurelius branch.
+6. Establish CI coverage and documentation conventions for the FinTrack branch.
 
 **Milestone acceptance:** architecture decision records are reviewed; financial correctness tests pass; no external data or AI calls are required for CI; all proposed agent tools are read-only; the existing FinTrack workflows remain intact.
 
@@ -464,7 +468,7 @@ Implementation branch: feat/aurelius-foundation-0.3-ledger-persistence-models. N
 - [ ] Add provider adapters with provenance, licensing, freshness, coverage, and jurisdiction checks.
 - [ ] Add portfolio holdings, lots, corporate actions, risk analytics, research, and prediction calibration.
 
-The legacy FinTrack transaction/budget/goal API remains in place and continues to use float-backed legacy models. It must be migrated separately; the new Aurelius v1 ledger API does not silently reinterpret legacy rows.
+The legacy transaction/budget/goal API remains in place and continues to use float-backed legacy models. It must be migrated separately; the new FinTrack v1 ledger API does not silently reinterpret legacy rows.
 
 
 ## Foundation 0.4 — global instrument master
@@ -534,3 +538,36 @@ The legacy FinTrack transaction/budget/goal API remains in place and continues t
 - [x] Refactor portfolio execution to expose a caller-owned-session primitive while preserving the existing transaction-owning wrapper.
 - [x] Prove portfolio execution, acquisition lot, and audit event all roll back with the caller's outer transaction in PostgreSQL.
 - [ ] Build the transaction coordinator that invokes both session-bound primitives and writes the investment and cash sides atomically.
+
+
+## Foundation 0.6 — atomic trade settlement coordinator
+
+**Integrated:** PR #38 — `feat/aurelius-foundation-0.6-atomic-settlement-coordinator` (CI run #536 passed; merge into main follows dependency integration).
+
+- [x] Define BUY/SELL trade-date journal policy, fee treatment, account roles, and transaction/idempotency contract.
+- [x] Add explicit owner-scoped portfolio-to-ledger account mappings (PR #33).
+- [x] Add transaction-bound mapping resolution and deterministic account locks (PR #34).
+- [x] Add currency-exponent-aware minor-unit conversion and deterministic lot allocation (PR #35).
+- [x] Expose caller-owned-session primitives for portfolio execution and ledger posting (PRs #30–#31).
+- [x] Add the first coordinator composing both services inside one caller-owned PostgreSQL transaction (PR #38).
+- [x] Enforce a locked brokerage cash-balance check before a new BUY settlement.
+- [x] Add PostgreSQL integration coverage for BUY/SELL journals, idempotent replay, insufficient-cash rejection, concurrent BUY serialization, and caller-owned rollback.
+- [x] Verify the full CI suite on the coordinator head (run #536: backend, frontend, migrations, and PostgreSQL 16 integration all passed).
+- [x] Verify mapping/account lock order against session-bound portfolio and ledger services; preserve the historical precision-policy snapshot during settlement.
+
+**Boundary:** the coordinator records already-executed fills only. It does not submit orders, connect to brokers, move money, expose a public trade endpoint, or perform production writes. The caller owns the transaction and its commit/rollback.
+
+
+## Next milestone — FinTrack account reconciliation
+
+- [x] Define a read-only reconciliation contract for canonical CSV statement evidence, exact minor-unit amounts, owner/currency isolation, deterministic match proposals, and separately approved corrections.
+- [ ] Implement canonical CSV parsing with strict dates, string-only decimal parsing, bounded input, row-level errors, and pure tests.
+- [ ] Persist immutable owner-scoped import batches and statement rows with file/parser idempotency.
+- [ ] Add deterministic exact-reference and amount/date match proposals; ambiguous candidates must remain unresolved.
+- [ ] Add confirmed/revoked match history with append-only audit and PostgreSQL concurrency tests.
+- [ ] Add read-only reconciliation summaries and discrepancy reporting.
+- [ ] Only then design separately approved adjustment workflows; importing or matching must never write journals.
+
+Design contract: `docs/architecture/FINTRACK_ACCOUNT_RECONCILIATION_CONTRACT.md`.
+
+**Acceptance rule:** reconciliation explains differences without silently changing posted accounting facts. No bank credentials, open-banking connections, brokerage statement imports, automatic journal generation, production migration, or deployment are included.

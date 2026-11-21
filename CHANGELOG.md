@@ -1,3 +1,19 @@
+## [Unreleased] — FinTrack reconciliation implementation — 2026-11-21
+
+### Added
+- Added a bounded UTF-8 CSV statement parser with strict ISO dates, canonical decimal strings, registry-supplied currency precision, exact integer minor units, SHA-256 file digests, row-level validation errors, and explicit size/row/field limits.
+- Preserved original statement row payloads as untrusted source evidence; imports never infer journal entries or mutate posted ledger balances.
+- Added owner/account/currency-scoped PostgreSQL import batches and statement rows, idempotent by owner + account + file digest + parser version.
+- Added PostgreSQL append-only triggers for original import evidence and same-transaction audit events.
+- Added authenticated upload, import-list/detail, and read-only proposal-preview APIs.
+- Added deterministic source-ID/reference/amount-date matching, strict one-to-one uniqueness, ambiguity handling, and safeguards against weaker matching when stable references conflict.
+- Added persisted proposal states with explicit confirm, reject, and unmatch operations; confirmed postings are unique across statement rows and every transition is audited.
+
+### Validation and boundaries
+- GitHub Actions run [#651](https://github.com/matteojose3112-bit/fintrack/actions/runs/44961199013) passed all three jobs: backend compile + SQLite Alembic + full pytest suite; PostgreSQL 16 migration + ledger/reconciliation integration tests; frontend tests + production build.
+- Matching never auto-confirms. Confirmation only links a statement row to an existing ledger posting; it does not create, edit, reverse, or delete journal entries.
+- No bank credentials/open-banking connection, brokerage statement import, FX conversion, automated journal generation, production migration, Render change, or deployment.
+
 ## [Unreleased] — Foundation 0.6 Atomic Portfolio Lot Service — 2026-11-17
 
 ### Added
@@ -536,3 +552,18 @@ All notable project changes are documented here.
 - Historical v1 executions retain their prior exact-Decimal rebuild semantics; no historical lot facts are rewritten.
 - CI run #495 passed: 170 backend tests passed, 49 skipped in the SQLite suite, 49 PostgreSQL 16 integration tests passed, and frontend tests/build passed. Additional multi-lot partial-disposal and historical v1 replay stress cases remain follow-up coverage.
 - No cash journal, settlement coordinator, production migration, broker integration, or cash movement is included.
+
+
+## [Unreleased] — Foundation 0.6 Atomic Trade Settlement Coordinator — 2026-11-21
+
+### Added
+- Added a PostgreSQL-only coordinator that composes already-executed portfolio fills and cash-ledger journals inside one caller-owned transaction.
+- Reused the owner-scoped settlement mapping resolver, session-bound portfolio execution, and session-bound ledger posting primitives.
+- Added deterministic execution-derived journal idempotency, immutable currency-exponent conversion, BUY fee capitalization, SELL net-proceeds/cost-basis/gain/loss postings, and owner-timezone trade dates.
+- Added a locked brokerage cash-balance check before new BUY fills.
+- Added pure accounting tests for BUY, SELL gain/loss, fee bounds, and zero-value BUY rejection.
+- Added PostgreSQL integration tests for BUY posting/replay, SELL proceeds/basis/gain, insufficient cash, outer-transaction rollback, and concurrent BUY serialization against a shared brokerage cash account.
+
+### Validation and boundaries
+- CI run #536 passed: backend tests, frontend tests/build, SQLite and PostgreSQL migrations, and the PostgreSQL 16 integration suite including all five coordinator scenarios.
+- The coordinator records fills that have already executed. No broker connection, order submission, cash transfer, public trade API, production data write, or deployment is included.
