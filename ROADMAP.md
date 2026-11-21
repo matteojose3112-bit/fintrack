@@ -1,10 +1,10 @@
-# Aurelius Roadmap — FinTrack Transformation
+# FinTrack Roadmap — Financial Platform
 
 Last updated: 2026-11-18
 
 ## Product direction
 
-**Aurelius** is the planned AI financial intelligence and investment operating system evolving from the FinTrack personal-finance MVP.
+**FinTrack** is evolving from a personal-finance MVP into a reliable financial management, investment, and evidence-led intelligence platform.
 
 **Current status: Foundations 0.3–0.6 in active development.** The versioned ISO 4217 registry, ledger persistence, PostgreSQL constraints, atomic posting/reversals, and authenticated v1 ledger API have been implemented and CI-tested on stacked branches. The global asset/instrument ontology and persistence, provider adapter framework, market-observation ingestion, and long-only portfolio-lot accounting are the next implementation layers. PR #25 merged the provider-neutral adapter framework; PRs #26–#27 and the portfolio-lot persistence branch remain under review. No brokerage execution, paid market-data subscription, hosted database migration, or deployment is authorized.
 
@@ -464,7 +464,7 @@ Implementation branch: feat/aurelius-foundation-0.3-ledger-persistence-models. N
 - [ ] Add provider adapters with provenance, licensing, freshness, coverage, and jurisdiction checks.
 - [ ] Add portfolio holdings, lots, corporate actions, risk analytics, research, and prediction calibration.
 
-The legacy FinTrack transaction/budget/goal API remains in place and continues to use float-backed legacy models. It must be migrated separately; the new Aurelius v1 ledger API does not silently reinterpret legacy rows.
+The legacy transaction/budget/goal API remains in place and continues to use float-backed legacy models. It must be migrated separately; the new Aurelius v1 ledger API does not silently reinterpret legacy rows.
 
 
 ## Foundation 0.4 — global instrument master
@@ -552,3 +552,18 @@ The legacy FinTrack transaction/budget/goal API remains in place and continues t
 - [x] Verify mapping/account lock order against session-bound portfolio and ledger services; preserve the historical precision-policy snapshot during settlement.
 
 **Boundary:** the coordinator records already-executed fills only. It does not submit orders, connect to brokers, move money, expose a public trade endpoint, or perform production writes. The caller owns the transaction and its commit/rollback.
+
+
+## Next milestone — FinTrack account reconciliation
+
+- [x] Define a read-only reconciliation contract for canonical CSV statement evidence, exact minor-unit amounts, owner/currency isolation, deterministic match proposals, and separately approved corrections.
+- [ ] Implement canonical CSV parsing with strict dates, string-only decimal parsing, bounded input, row-level errors, and pure tests.
+- [ ] Persist immutable owner-scoped import batches and statement rows with file/parser idempotency.
+- [ ] Add deterministic exact-reference and amount/date match proposals; ambiguous candidates must remain unresolved.
+- [ ] Add confirmed/revoked match history with append-only audit and PostgreSQL concurrency tests.
+- [ ] Add read-only reconciliation summaries and discrepancy reporting.
+- [ ] Only then design separately approved adjustment workflows; importing or matching must never write journals.
+
+Design contract: `docs/architecture/FINTRACK_ACCOUNT_RECONCILIATION_CONTRACT.md`.
+
+**Acceptance rule:** reconciliation explains differences without silently changing posted accounting facts. No bank credentials, open-banking connections, brokerage statement imports, automatic journal generation, production migration, or deployment are included.
