@@ -10,7 +10,7 @@
 - Added persisted proposal states with explicit confirm, reject, and unmatch operations; confirmed postings are unique across statement rows and every transition is audited.
 
 ### Validation and boundaries
-- Backend compile, SQLite Alembic migration, and full backend tests passed on the latest validated run; PostgreSQL 16 migration and reconciliation integration validation are tracked separately in CI.
+- GitHub Actions run [#651](https://github.com/matteojose3112-bit/fintrack/actions/runs/44961199013) passed all three jobs: backend compile + SQLite Alembic + full pytest suite; PostgreSQL 16 migration + ledger/reconciliation integration tests; frontend tests + production build.
 - Matching never auto-confirms. Confirmation only links a statement row to an existing ledger posting; it does not create, edit, reverse, or delete journal entries.
 - No bank credentials/open-banking connection, brokerage statement import, FX conversion, automated journal generation, production migration, Render change, or deployment.
 
