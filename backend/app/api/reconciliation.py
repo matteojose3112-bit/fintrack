@@ -15,7 +15,7 @@ from app.domain.reconciliation_csv import (
     StatementCsvError,
     parse_statement_csv,
 )
-from app.persistence.models import CurrencyDefinitionModel, FinancialAccountModel
+from app.persistence.models import (\n    CurrencyDefinitionModel,\n    FinancialAccountModel,\n    ReconciliationImportBatchModel,\n    ReconciliationStatementRowModel,\n)
 from app.persistence.reconciliation_import_service import (
     InvalidStatementEvidence,
     ReconciliationAccountUnavailable,
@@ -122,3 +122,100 @@ async def import_statement(
             "status": "VALIDATED",
         },
     )
+
+
+
+@router.get("/imports")
+def list_statement_imports(
+    account_id: UUID | None = None,
+    limit: int = 50,
+    offset: int = 0,
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user),
+):
+    """List only the authenticated owner's statement import batches."""
+    if engine.dialect.name != "postgresql":
+        raise HTTPException(status_code=503, detail="Reconciliation reads require PostgreSQL.")
+    if limit < 1 or limit > 100 or offset < 0:
+        raise HTTPException(status_code=422, detail="limit must be 1..100 and offset non-negative.")
+    query = select(ReconciliationImportBatchModel).where(
+        ReconciliationImportBatchModel.owner_id == user.id
+    )
+    if account_id is not None:
+        query = query.where(ReconciliationImportBatchModel.account_id == account_id)
+    batches = db.scalars(
+        query.order_by(
+            ReconciliationImportBatchModel.imported_at.desc(),
+            ReconciliationImportBatchModel.id,
+        ).limit(limit).offset(offset)
+    ).all()
+    return [
+        {
+            "batch_id": str(batch.id),
+            "account_id": str(batch.account_id),
+            "file_sha256": batch.file_sha256,
+            "parser_version": batch.parser_version,
+            "status": batch.status,
+            "row_count": batch.row_count,
+            "imported_at": batch.imported_at.isoformat(),
+            "original_filename": batch.original_filename,
+        }
+        for batch in batches
+    ]
+
+
+@router.get("/imports/{batch_id}")
+def get_statement_import(
+    batch_id: UUID,
+    limit: int = 100,
+    offset: int = 0,
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user),
+):
+    """Read a paginated slice of the owner's immutable statement evidence."""
+    if engine.dialect.name != "postgresql":
+        raise HTTPException(status_code=503, detail="Reconciliation reads require PostgreSQL.")
+    if limit < 1 or limit > 200 or offset < 0:
+        raise HTTPException(status_code=422, detail="limit must be 1..200 and offset non-negative.")
+    batch = db.scalar(
+        select(ReconciliationImportBatchModel).where(
+            ReconciliationImportBatchModel.id == batch_id,
+            ReconciliationImportBatchModel.owner_id == user.id,
+        )
+    )
+    if batch is None:
+        raise HTTPException(status_code=404, detail="Statement import not found")
+    rows = db.scalars(
+        select(ReconciliationStatementRowModel)
+        .where(
+            ReconciliationStatementRowModel.batch_id == batch.id,
+            ReconciliationStatementRowModel.owner_id == user.id,
+        )
+        .order_by(ReconciliationStatementRowModel.row_number)
+        .limit(limit)
+        .offset(offset)
+    ).all()
+    return {
+        "batch_id": str(batch.id),
+        "account_id": str(batch.account_id),
+        "file_sha256": batch.file_sha256,
+        "parser_version": batch.parser_version,
+        "status": batch.status,
+        "row_count": batch.row_count,
+        "imported_at": batch.imported_at.isoformat(),
+        "rows": [
+            {
+                "row_number": row.row_number,
+                "booking_date": row.booking_date.isoformat(),
+                "value_date": row.value_date.isoformat() if row.value_date else None,
+                "amount_minor": str(row.amount_minor),
+                "currency": row.currency_code,
+                "description": row.description,
+                "source_transaction_id": row.source_transaction_id,
+                "counterparty": row.counterparty,
+                "reference": row.reference,
+                "source_payload": row.source_payload,
+            }
+            for row in rows
+        ],
+    }
