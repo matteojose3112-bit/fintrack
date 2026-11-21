@@ -15,7 +15,12 @@ from app.domain.reconciliation_csv import (
     StatementCsvError,
     parse_statement_csv,
 )
-from app.persistence.models import (\n    CurrencyDefinitionModel,\n    FinancialAccountModel,\n    ReconciliationImportBatchModel,\n    ReconciliationStatementRowModel,\n)
+from app.persistence.models import (
+    CurrencyDefinitionModel,
+    FinancialAccountModel,
+    ReconciliationImportBatchModel,
+    ReconciliationStatementRowModel,
+)
 from app.persistence.reconciliation_import_service import (
     InvalidStatementEvidence,
     ReconciliationAccountUnavailable,
