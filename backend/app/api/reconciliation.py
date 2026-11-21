@@ -223,6 +223,14 @@ def get_statement_import(
         .limit(limit)
         .offset(offset)
     ).all()
+    matches = db.scalars(
+        select(ReconciliationMatchModel).where(
+            ReconciliationMatchModel.owner_id == user.id,
+            ReconciliationMatchModel.batch_id == batch.id,
+            ReconciliationMatchModel.statement_row_id.in_([row.id for row in rows]),
+        )
+    ).all() if rows else []
+    match_by_row = {match.statement_row_id: match for match in matches}
     return {
         "batch_id": str(batch.id),
         "account_id": str(batch.account_id),
