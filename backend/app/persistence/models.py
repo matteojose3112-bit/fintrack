@@ -77,6 +77,7 @@ class FinancialAccountModel(Base):
             "currency_definition_id",
             name="uq_financial_accounts_owner_currency",
         ),
+        UniqueConstraint("id", "owner_id", name="uq_financial_accounts_id_owner"),
         Index("ix_financial_accounts_owner_status", "owner_id", "status"),
     )
 

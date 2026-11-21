@@ -1,3 +1,17 @@
+## [Unreleased] — Foundation 0.6 Portfolio Lot Persistence — 2026-11-17
+
+### Added
+- Added owner-scoped investment portfolio, immutable trade execution, acquisition lot, disposal allocation, and position-lock SQLAlchemy models.
+- Added Alembic revision 0005 with composite owner/account/portfolio/instrument/currency references, exact unscaled NUMERIC values, PostgreSQL finite-value guards, and append-only triggers.
+- Added PostgreSQL integration coverage for exact decimal persistence, cross-owner account rejection, immutable lot/disposal facts, scoped allocations, and mutable operational lock rows.
+- Updated CI to execute the new PostgreSQL portfolio-lot integration test module.
+- Documented the persistence invariants and next gates in FOUNDATION_0.6_PORTFOLIO_LOT_PERSISTENCE.md.
+
+### Validation and boundaries
+- CI validation for this feature branch is pending; do not treat the migration or PostgreSQL tests as passed until the new head run completes.
+- Schema/domain only: no portfolio application service, public portfolio API, cash-ledger settlement coupling, tax engine, broker connection, order placement, hosted database migration, Render change, or deployment.
+- The in-memory lot domain remains the deterministic calculation reference; remaining balances are derived from immutable acquisition lots and disposal allocations.
+
 ## [Unreleased] — Foundation 0.2 Accounts & Ledger — 2026-11-17\n\n### Added\n- Added immutable FinancialAccount domain identities with owner scope, account classification, currency validation, lifecycle status, and accounting normal-side rules.\n- Added immutable balanced single-currency journal entries and strictly positive debit/credit postings.\n- Added append-only in-memory ledger posting, derived account balances, same-owner same-currency asset transfers, and exact one-time reversal entries.\n- Added accounting golden-case tests for opening balances, income, expenses, transfers, reversals, ownership isolation, currency matching, and invalid postings.\n- Added the Account and Ledger Contract, including persistence design gates and explicit FX exclusions.\n\n### Validation and boundaries\n- Foundation 0.2 code and tests are committed on feat/aurelius-foundation-0.2-accounts-ledger; GitHub Actions run [#136](https://github.com/matteojose3112-bit/aurelius/actions/runs/44185872151) passed both backend and frontend jobs for this branch. Backend compile, Alembic SQLite upgrade, full pytest suite, frontend tests, and production build completed successfully.\n- Domain-only implementation: no API, SQLAlchemy model, Alembic migration, frontend, Render configuration, production data, or deployment changed.\n- The in-memory ledger is not a durable audit store or concurrency-safe persistence implementation.\n\n## [Unreleased] — Money primitive hardening — 2026-11-17
 
 ### Added

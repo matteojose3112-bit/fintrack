@@ -64,4 +64,4 @@ jobs:
       - run: pip install -r backend/requirements.txt
       - run: python -m compileall -q backend/app backend/migrations
       - run: cd backend && alembic upgrade head
-      - run: pytest -q backend/tests/test_postgres_ledger_constraints.py
+      - run: pytest -q backend/tests/test_postgres_ledger_constraints.py backend/tests/test_postgres_portfolio_lots.py

@@ -6,7 +6,7 @@ Last updated: 2026-11-17
 
 **Aurelius** is the planned AI financial intelligence and investment operating system evolving from the FinTrack personal-finance MVP.
 
-**Current status: Foundation 0.3 in progress.** The versioned ISO currency registry, SQLAlchemy persistence schema, PostgreSQL 16 guards, atomic posting/reversal service, and first authenticated v1 ledger API are implemented on stacked draft PRs. PostgreSQL integration and full CI are passing. Global instrument master, market-data providers, FX valuation, portfolio analytics, AI research, forecasting, and paper trading remain future milestones. The existing FinTrack endpoints remain the legacy MVP.
+**Current status: Foundations 0.3–0.6 in active development.** The versioned ISO 4217 registry, ledger persistence, PostgreSQL constraints, atomic posting/reversals, and authenticated v1 ledger API have been implemented and CI-tested on stacked branches. The global asset/instrument ontology and persistence, provider adapter framework, market-observation ingestion, and long-only portfolio-lot accounting are the next implementation layers. PR #25 merged the provider-neutral adapter framework; PRs #26–#27 and the portfolio-lot persistence branch remain under review. No brokerage execution, paid market-data subscription, hosted database migration, or deployment is authorized.
 
 **Guiding principle:** evidence, exact calculations, transparency, and downside protection over confident-sounding answers.
 
@@ -56,6 +56,20 @@ Last updated: 2026-11-17
 - [ ] Establish a privacy/data-retention policy before storing brokerage statements, tax documents, or AI conversation context.
 
 **Phase 0 exit criteria:** clean integration CI; reviewed security fixes; exact money/currency contract; passing accounting golden tests; explicit deployment/backup plan; no unresolved critical security or data-loss risks.
+
+## Foundation 0.6 — Portfolio lots and execution history
+
+- [x] Add deterministic long-only trade/lot domain with FIFO, LIFO, and specific-lot disposal methods.
+- [x] Add exact Decimal quantities, prices, fees, acquisition costs, disposal proceeds, and realized gain/loss calculations.
+- [x] Add execution-ID replay protection and atomic in-memory validation.
+- [ ] Persist owner-scoped portfolios, immutable trade executions, acquisition lots, and disposal allocations (draft branch: feat/aurelius-foundation-0.6-portfolio-lot-persistence).
+- [ ] Validate Alembic revision 0005 and PostgreSQL append-only/owner-scope constraints in CI.
+- [ ] Implement the PostgreSQL application service with per-position locking, idempotency, deterministic replay, and rollback safety.
+- [ ] Test oversell races, duplicate execution races, specific-lot isolation, and out-of-order/backdated fill policy.
+- [ ] Define atomic cash-ledger settlement/fee/FX integration before any portfolio trade API.
+- [ ] Add owner-scoped portfolio read APIs only after persistence and concurrency gates pass.
+
+The first lot implementation is long-only and is not a tax engine. FIFO/LIFO/specific selection is a configurable accounting method, not a universal tax-law determination. Derivatives lifecycle, corporate actions, dividends, short positions, and tax-jurisdiction policies remain separate work.
 
 ## Phase 1 — Financial Core
 - Expand the current transaction/budget/goal MVP into account-based personal finance.
