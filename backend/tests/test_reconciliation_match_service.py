@@ -149,6 +149,11 @@ def test_confirm_unmatch_and_reconfirm_are_audited_without_ledger_mutation():
             )
             assert unmatched.status == "UNMATCHED"
         with session.begin():
+            persist_match_decisions(
+                session, owner_id=owner.id, actor_id=owner.id, batch_id=batch.id,
+                decisions=(proposal(2, posting, journal), MatchDecision(3, MatchStatus.UNMATCHED)),
+            )
+        with session.begin():
             confirm_reconciliation_match(
                 session, owner_id=owner.id, actor_id=owner.id, match_id=match.id,
             )
@@ -176,6 +181,7 @@ def test_confirmed_posting_cannot_be_assigned_to_two_statement_rows():
         first = session.scalar(select(ReconciliationMatchModel).where(
             ReconciliationMatchModel.statement_row_id == rows[0].id
         ))
+        session.commit()
         with session.begin():
             confirm_reconciliation_match(
                 session, owner_id=owner.id, actor_id=owner.id, match_id=first.id,
@@ -210,6 +216,7 @@ def test_rejection_is_preserved_when_proposals_are_regenerated():
         match = session.scalar(select(ReconciliationMatchModel).where(
             ReconciliationMatchModel.statement_row_id == rows[0].id
         ))
+        session.commit()
         with session.begin():
             reject_reconciliation_match(
                 session, owner_id=owner.id, actor_id=owner.id, match_id=match.id,
