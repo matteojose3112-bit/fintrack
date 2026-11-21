@@ -546,7 +546,8 @@ All notable project changes are documented here.
 - Added deterministic execution-derived journal idempotency, immutable currency-exponent conversion, BUY fee capitalization, SELL net-proceeds/cost-basis/gain/loss postings, and owner-timezone trade dates.
 - Added a locked brokerage cash-balance check before new BUY fills.
 - Added pure accounting tests for BUY, SELL gain/loss, fee bounds, and zero-value BUY rejection.
+- Added PostgreSQL integration tests for BUY posting/replay, SELL proceeds/basis/gain, insufficient cash, outer-transaction rollback, and concurrent BUY serialization against a shared brokerage cash account.
 
 ### Validation and boundaries
-- CI and PostgreSQL cross-domain acceptance are pending on draft PR #38; do not treat the coordinator as release-ready until those checks pass.
+- CI run #536 passed: backend tests, frontend tests/build, SQLite and PostgreSQL migrations, and the PostgreSQL 16 integration suite including all five coordinator scenarios.
 - The coordinator records fills that have already executed. No broker connection, order submission, cash transfer, public trade API, production data write, or deployment is included.
