@@ -18,7 +18,6 @@ from app.domain.portfolio_lots import CostBasisMethod, TradeExecution, TradeSide
 from app.domain.portfolio_money import to_minor_units
 from app.persistence.models import (
     CurrencyDefinitionModel,
-    FinancialAccountModel,
     FinancialOwnerPreferenceModel,
     JournalEntryModel,
     JournalPostingModel,
@@ -72,6 +71,10 @@ def _currency_snapshot(
     """Resolve the same position snapshot policy used by portfolio persistence."""
     prior = session.scalars(
         select(TradeExecutionModel)
+        .join(
+            CurrencyDefinitionModel,
+            TradeExecutionModel.quote_currency_definition_id == CurrencyDefinitionModel.id,
+        )
         .where(
             TradeExecutionModel.owner_id == owner_id,
             TradeExecutionModel.portfolio_id == execution.portfolio_id,
