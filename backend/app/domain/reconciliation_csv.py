@@ -209,6 +209,17 @@ def parse_statement_csv(
             elif normalized_expected and currency != normalized_expected:
                 row_errors.append(RowError(line_number, "currency", "currency_mismatch", "statement currency does not match the account currency"))
 
+            for field, maximum in (
+                ("source_transaction_id", 512),
+                ("counterparty", 1024),
+                ("reference", 1024),
+            ):
+                if field in record and len(record[field]) > maximum:
+                    row_errors.append(RowError(
+                        line_number, field, "field_too_large",
+                        f"{field} exceeds the {maximum}-character limit",
+                    ))
+
             description = record["description"]
             if not description.strip():
                 row_errors.append(RowError(line_number, "description", "required", "description cannot be blank"))
