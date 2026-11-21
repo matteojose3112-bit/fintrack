@@ -289,3 +289,99 @@ class FinancialOwnerPreferenceModel(Base):
     reporting_calendar: Mapped[str] = mapped_column(
         String(24), nullable=False, default="GREGORIAN"
     )
+
+
+
+class ReconciliationImportBatchModel(Base):
+    """Immutable statement-file evidence scoped to one owned ledger account."""
+
+    __tablename__ = "reconciliation_import_batches"
+    __table_args__ = (
+        UniqueConstraint(
+            "id", "owner_id", name="uq_reconciliation_batches_id_owner"
+        ),
+        UniqueConstraint(
+            "owner_id", "account_id", "file_sha256", "parser_version",
+            name="uq_reconciliation_batch_file_replay",
+        ),
+        ForeignKeyConstraint(
+            ["account_id", "owner_id", "currency_definition_id"],
+            [
+                "financial_accounts.id",
+                "financial_accounts.owner_id",
+                "financial_accounts.currency_definition_id",
+            ],
+            ondelete="RESTRICT",
+            name="fk_reconciliation_batch_account_owner_currency",
+        ),
+        CheckConstraint(
+            "status IN ('VALIDATED', 'HAS_ERRORS')",
+            name="ck_reconciliation_batch_status",
+        ),
+        CheckConstraint("row_count >= 0", name="ck_reconciliation_batch_row_count"),
+        Index(
+            "ix_reconciliation_batches_owner_account_imported",
+            "owner_id", "account_id", "imported_at",
+        ),
+    )
+
+    id: Mapped[object] = mapped_column(Uuid(as_uuid=True), primary_key=True)
+    owner_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("users.id", ondelete="RESTRICT"), nullable=False
+    )
+    account_id: Mapped[object] = mapped_column(Uuid(as_uuid=True), nullable=False)
+    currency_definition_id: Mapped[object] = mapped_column(Uuid(as_uuid=True), nullable=False)
+    file_sha256: Mapped[str] = mapped_column(String(64), nullable=False)
+    parser_version: Mapped[str] = mapped_column(String(32), nullable=False)
+    original_filename: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    status: Mapped[str] = mapped_column(String(16), nullable=False)
+    row_count: Mapped[int] = mapped_column(Integer, nullable=False)
+    error_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    imported_at: Mapped[object] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+
+
+class ReconciliationStatementRowModel(Base):
+    """Append-only normalized row and original source fields from a statement."""
+
+    __tablename__ = "reconciliation_statement_rows"
+    __table_args__ = (
+        UniqueConstraint(
+            "batch_id", "owner_id", "row_number",
+            name="uq_reconciliation_statement_row_number",
+        ),
+        ForeignKeyConstraint(
+            ["batch_id", "owner_id"],
+            ["reconciliation_import_batches.id", "reconciliation_import_batches.owner_id"],
+            ondelete="RESTRICT",
+            name="fk_reconciliation_statement_row_batch_owner",
+        ),
+        CheckConstraint("row_number > 0", name="ck_reconciliation_statement_row_number"),
+        CheckConstraint(
+            "amount_minor BETWEEN -99999999999999999999999999999999999999 "
+            "AND 99999999999999999999999999999999999999",
+            name="ck_reconciliation_statement_amount_range",
+        ),
+        Index(
+            "ix_reconciliation_statement_rows_owner_date",
+            "owner_id", "booking_date",
+        ),
+    )
+
+    id: Mapped[object] = mapped_column(Uuid(as_uuid=True), primary_key=True)
+    batch_id: Mapped[object] = mapped_column(Uuid(as_uuid=True), nullable=False)
+    owner_id: Mapped[int] = mapped_column(Integer, nullable=False)
+    row_number: Mapped[int] = mapped_column(Integer, nullable=False)
+    booking_date: Mapped[object] = mapped_column(Date, nullable=False)
+    value_date: Mapped[object | None] = mapped_column(Date, nullable=True)
+    amount_minor: Mapped[object] = mapped_column(Numeric(38, 0, asdecimal=True), nullable=False)
+    currency_code: Mapped[str] = mapped_column(String(3), nullable=False)
+    description: Mapped[str] = mapped_column(String(4096), nullable=False)
+    source_transaction_id: Mapped[str | None] = mapped_column(String(512), nullable=True)
+    counterparty: Mapped[str | None] = mapped_column(String(1024), nullable=True)
+    reference: Mapped[str | None] = mapped_column(String(1024), nullable=True)
+    source_payload: Mapped[dict] = mapped_column(JSON, nullable=False)
+    created_at: Mapped[object] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
