@@ -188,10 +188,15 @@ def build_match_proposals(
 
     resolve_pass(
         MatchStrategy.EXACT_REFERENCE,
-        lambda row, candidate: bool(_normalize_reference(row.reference))
-        and _normalize_reference(candidate.reference) == _normalize_reference(row.reference)
-        and candidate.amount_minor == row.amount_minor_units
-        and candidate.effective_date == row.booking_date,
+        lambda row, candidate: (
+            not row.source_transaction_id
+            and not candidate.source_transaction_id
+            and bool(_normalize_reference(row.reference))
+            and _normalize_reference(candidate.reference) == _normalize_reference(row.reference)
+            and candidate.amount_minor == row.amount_minor_units
+            and candidate.effective_date == row.booking_date
+        ),
+        row_subset=set(remaining_rows) - blocked_rows,
     )
 
     resolve_pass(
@@ -199,6 +204,7 @@ def build_match_proposals(
         lambda row, candidate: (
             candidate.amount_minor == row.amount_minor_units
             and abs((row.booking_date - candidate.effective_date).days) <= date_window_days
+            and not candidate.source_transaction_id
             and not (
                 _normalize_reference(row.reference)
                 and _normalize_reference(candidate.reference)
