@@ -12,6 +12,7 @@ from app.persistence.models import (
     CurrencyDefinitionModel,
     FinancialAccountModel,
     JournalEntryModel,
+    AuditEventModel,
     ReconciliationImportBatchModel,
     ReconciliationStatementRowModel,
 )
@@ -73,7 +74,7 @@ def test_valid_statement_import_persists_immutable_evidence_and_is_idempotent():
         assert replay.batch_id == first.batch_id
         assert session.scalar(select(func.count()).select_from(ReconciliationImportBatchModel)) == 1
         assert session.scalar(select(func.count()).select_from(ReconciliationStatementRowModel)) == 2
-        assert session.scalar(select(func.count()).select_from(JournalEntryModel)) == 0
+        assert session.scalar(select(func.count()).select_from(JournalEntryModel)) == 0\n        audit = session.scalars(select(AuditEventModel)).one()\n        assert audit.event_type == "RECONCILIATION_IMPORT_CREATED"\n        assert audit.aggregate_id == first.batch_id
 
         batch = session.get(ReconciliationImportBatchModel, first.batch_id)
         assert batch.original_filename == "bank.csv"
@@ -149,6 +150,24 @@ def test_import_rejects_non_asset_or_closed_accounts():
         session.commit()
         parsed = parse_statement_csv(CSV, currency_exponent=2, expected_currency="USD")
         with session.begin(), pytest.raises(ReconciliationAccountUnavailable):
+            persist_statement_import(
+                session, owner_id=owner.id, account_id=account.id, parsed=parsed,
+            )
+        assert session.scalar(select(func.count()).select_from(ReconciliationImportBatchModel)) == 0
+    finally:
+        session.close()
+        engine.dispose()
+
+
+
+def test_import_rejects_parser_precision_that_disagrees_with_account_currency():
+    engine, session, owner, _, _, account = make_fixture()
+    try:
+        # USD's trusted registry exponent is 2; this parse was deliberately
+        # produced with exponent 3 and must not be persisted as USD minor units.
+        parsed = parse_statement_csv(CSV, currency_exponent=3, expected_currency="USD")
+        from app.persistence.reconciliation_import_service import ReconciliationCurrencyMismatch
+        with session.begin(), pytest.raises(ReconciliationCurrencyMismatch):
             persist_statement_import(
                 session, owner_id=owner.id, account_id=account.id, parsed=parsed,
             )
