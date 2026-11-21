@@ -85,12 +85,12 @@ def upgrade():
     if op.get_bind().dialect.name == "postgresql":
         op.execute("""
         CREATE FUNCTION fintrack_reconciliation_evidence_immutable()
-        RETURNS trigger AS $
-        BEGIN
-            RAISE EXCEPTION 'reconciliation source evidence is append-only'
-                USING ERRCODE = '55000';
-        END;
-        $ LANGUAGE plpgsql
+        RETURNS trigger
+        LANGUAGE plpgsql
+        AS 'BEGIN
+            RAISE EXCEPTION ''reconciliation source evidence is append-only''
+                USING ERRCODE = ''55000'';
+        END;'
         """)
         for table in ("reconciliation_import_batches", "reconciliation_statement_rows"):
             op.execute(f"""
