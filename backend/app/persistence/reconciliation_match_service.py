@@ -292,19 +292,55 @@ def confirm_reconciliation_match(
     if batch is None:
         raise ReconciliationMatchNotFound("statement import was not found")
 
-    posting = session.execute(
-        select(JournalPostingModel)
+    statement_row = session.execute(
+        select(ReconciliationStatementRowModel)
+        .where(
+            ReconciliationStatementRowModel.id == match.statement_row_id,
+            ReconciliationStatementRowModel.owner_id == owner_id,
+            ReconciliationStatementRowModel.batch_id == batch.id,
+        )
+        .with_for_update()
+    ).scalar_one_or_none()
+    if statement_row is None:
+        raise ReconciliationMatchNotFound("statement row was not found")
+
+    posting_and_journal = session.execute(
+        select(JournalPostingModel, JournalEntryModel)
+        .join(
+            JournalEntryModel,
+            JournalEntryModel.id == JournalPostingModel.journal_entry_id,
+        )
         .where(
             JournalPostingModel.id == match.journal_posting_id,
             JournalPostingModel.owner_id == owner_id,
             JournalPostingModel.account_id == batch.account_id,
             JournalPostingModel.currency_definition_id == batch.currency_definition_id,
+            JournalEntryModel.owner_id == owner_id,
         )
         .with_for_update()
-    ).scalar_one_or_none()
-    if posting is None:
+    ).one_or_none()
+    if posting_and_journal is None:
         raise ReconciliationCandidateUnavailable(
             "proposed ledger posting no longer belongs to this account scope"
+        )
+    posting, journal = posting_and_journal
+    if match.strategy != "EXACT_AMOUNT_DATE_WINDOW":
+        raise ReconciliationCandidateUnavailable(
+            "this ledger schema supports only exact amount/date confirmations"
+        )
+    signed_amount = (
+        int(posting.amount_minor)
+        if posting.side == "DEBIT"
+        else -int(posting.amount_minor)
+    )
+    date_difference = abs((statement_row.booking_date - journal.effective_date).days)
+    if signed_amount != int(statement_row.amount_minor):
+        raise ReconciliationCandidateUnavailable(
+            "proposed posting amount no longer equals the statement row"
+        )
+    if date_difference != match.date_difference_days or date_difference > 31:
+        raise ReconciliationCandidateUnavailable(
+            "proposed posting date no longer matches the recorded proposal"
         )
 
     match.status = "CONFIRMED"
