@@ -194,7 +194,7 @@ def test_sell_posts_net_proceeds_basis_and_realized_gain(pg_factory):
             JournalPostingModel.journal_entry_id == journal.id
         )).all()
         assert sorted((row.side, int(row.amount_minor)) for row in rows) == [
-            ("CREDIT", 4040), ("CREDIT", 1900), ("DEBIT", 5940)
+            ("CREDIT", 1900), ("CREDIT", 4040), ("DEBIT", 5940)
         ]
 
 
