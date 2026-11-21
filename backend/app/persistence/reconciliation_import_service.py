@@ -160,7 +160,22 @@ def persist_statement_import(
             parser_version=existing.parser_version,
         )
 
-    session.add(AuditEventModel(\n        id=uuid4(),\n        owner_id=owner_id,\n        actor_id=owner_id,\n        event_type="RECONCILIATION_IMPORT_CREATED",\n        aggregate_type="RECONCILIATION_IMPORT_BATCH",\n        aggregate_id=batch_id,\n        reason=None,\n        payload={\n            "account_id": str(account_id),\n            "file_sha256": parsed.file_sha256,\n            "parser_version": parser_version,\n            "row_count": len(parsed.rows),\n        },\n    ))\n    session.add_all([\n        ReconciliationStatementRowModel(
+    session.add(AuditEventModel(
+        id=uuid4(),
+        owner_id=owner_id,
+        actor_id=owner_id,
+        event_type="RECONCILIATION_IMPORT_CREATED",
+        aggregate_type="RECONCILIATION_IMPORT_BATCH",
+        aggregate_id=batch_id,
+        reason=None,
+        payload={
+            "account_id": str(account_id),
+            "file_sha256": parsed.file_sha256,
+            "parser_version": parser_version,
+            "row_count": len(parsed.rows),
+        },
+    ))
+    session.add_all([\n        ReconciliationStatementRowModel(
             id=uuid4(),
             batch_id=batch_id,
             owner_id=owner_id,
