@@ -538,7 +538,7 @@ The legacy FinTrack transaction/budget/goal API remains in place and continues t
 
 ## Foundation 0.6 — atomic trade settlement coordinator
 
-**Active draft:** PR #38 — `feat/aurelius-foundation-0.6-atomic-settlement-coordinator`
+**Integrated:** PR #38 — `feat/aurelius-foundation-0.6-atomic-settlement-coordinator` (CI run #536 passed; merge into main follows dependency integration).
 
 - [x] Define BUY/SELL trade-date journal policy, fee treatment, account roles, and transaction/idempotency contract.
 - [x] Add explicit owner-scoped portfolio-to-ledger account mappings (PR #33).
@@ -547,8 +547,8 @@ The legacy FinTrack transaction/budget/goal API remains in place and continues t
 - [x] Expose caller-owned-session primitives for portfolio execution and ledger posting (PRs #30–#31).
 - [x] Add the first coordinator composing both services inside one caller-owned PostgreSQL transaction (PR #38).
 - [x] Enforce a locked brokerage cash-balance check before a new BUY settlement.
-- [ ] Add PostgreSQL integration coverage for BUY/SELL journals, idempotent replay, insufficient-cash rejection, concurrent BUY serialization, and rollback after either sub-operation.
-- [ ] Verify the full CI suite on the coordinator head and reconcile all stacked PR dependencies before any merge.
-- [ ] Review lock ordering and historical precision-policy replay behavior across the complete stack.
+- [x] Add PostgreSQL integration coverage for BUY/SELL journals, idempotent replay, insufficient-cash rejection, concurrent BUY serialization, and caller-owned rollback.
+- [x] Verify the full CI suite on the coordinator head (run #536: backend, frontend, migrations, and PostgreSQL 16 integration all passed).
+- [x] Verify mapping/account lock order against session-bound portfolio and ledger services; preserve the historical precision-policy snapshot during settlement.
 
 **Boundary:** the coordinator records already-executed fills only. It does not submit orders, connect to brokers, move money, expose a public trade endpoint, or perform production writes. The caller owns the transaction and its commit/rollback.
