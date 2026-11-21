@@ -1,0 +1,67 @@
+name: FinTrack CI
+
+on:
+  push:
+    branches: [main, 'feat/aurelius-foundation-*']
+  pull_request:
+    branches: [main, 'feat/aurelius-foundation-*']
+
+jobs:
+  frontend:
+    name: Frontend tests and build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install
+      - run: npm run test -- --run
+      - run: npm run build
+
+  backend:
+    name: Backend tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r backend/requirements.txt
+      - run: python -m compileall -q backend/app
+      - run: cd backend && DATABASE_URL=sqlite:///./migration-test.db alembic upgrade head
+      - run: pytest -q backend/tests
+
+
+  postgres:
+    name: PostgreSQL 16 ledger integration
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: aurelius_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d aurelius_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql+psycopg://postgres:postgres@localhost:5432/aurelius_test
+      POSTGRES_TEST_URL: postgresql+psycopg://postgres:postgres@localhost:5432/aurelius_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r backend/requirements.txt
+      - run: python -m compileall -q backend/app backend/migrations
+      - run: cd backend && alembic upgrade head
+      - run: pytest -q backend/tests/test_postgres_ledger_constraints.py backend/tests/test_postgres_portfolio_lots.py backend/tests/test_postgres_portfolio_lot_service.py backend/tests/test_postgres_settlement_account_mappings.py backend/tests/test_postgres_settlement_service.py backend/tests/test_postgres_reconciliation_import.py
