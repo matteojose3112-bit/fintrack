@@ -105,6 +105,12 @@ def persist_match_decisions(
     if {decision.row_number for decision in decisions} != set(row_by_number):
         raise ValueError("match decisions must cover every statement row exactly once")
 
+    for decision in decisions:
+        if decision.status is MatchStatus.PROPOSED and decision.proposal is None:
+            raise ValueError("PROPOSED decisions require a concrete ledger candidate")
+        if decision.proposal is not None and decision.proposal.row_number != decision.row_number:
+            raise ValueError("proposal row number must match its statement decision")
+
     proposed_candidate_ids = {
         decision.proposal.candidate_id
         for decision in decisions
