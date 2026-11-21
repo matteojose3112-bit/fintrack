@@ -136,3 +136,16 @@ def test_header_only_csv_is_rejected_as_empty_statement():
             currency_exponent=2,
         )
     assert exc.value.code == "no_data_rows"
+
+
+
+def test_optional_source_fields_obey_database_storage_limits():
+    raw = (
+        b"booking_date,amount,currency,description,source_transaction_id\n"
+        + b"2026-01-01,1.00,USD,ok,"
+        + b"x" * 513 + b"\n"
+    )
+    result = parse_statement_csv(raw, currency_exponent=2)
+    assert not result.is_valid
+    assert result.errors[0].field == "source_transaction_id"
+    assert result.errors[0].code == "field_too_large"
