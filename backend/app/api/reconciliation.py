@@ -1,11 +1,13 @@
 """Authenticated FinTrack statement-import API."""
 
-from datetime import timedelta\n\nfrom fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
+from datetime import timedelta
+from uuid import UUID
+
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from fastapi.responses import JSONResponse
 from sqlalchemy import select
 from sqlalchemy.exc import DBAPIError, IntegrityError
 from sqlalchemy.orm import Session
-from uuid import UUID
 
 from app.auth import get_current_user
 from app.database import engine, get_db
@@ -13,11 +15,18 @@ from app.models import User
 from app.domain.reconciliation_csv import (
     MAX_FILE_BYTES,
     StatementCsvError,
+    StatementRow,
     parse_statement_csv,
 )
-from app.domain.reconciliation_matching import (\n    LedgerMatchCandidate,\n    build_match_proposals,\n)\nfrom app.persistence.models import (
+from app.domain.reconciliation_matching import (
+    LedgerMatchCandidate,
+    build_match_proposals,
+)
+from app.persistence.models import (
     CurrencyDefinitionModel,
     FinancialAccountModel,
+    JournalEntryModel,
+    JournalPostingModel,
     ReconciliationImportBatchModel,
     ReconciliationStatementRowModel,
 )
@@ -27,7 +36,6 @@ from app.persistence.reconciliation_import_service import (
     ReconciliationCurrencyMismatch,
     persist_statement_import,
 )
-
 
 router = APIRouter(prefix="/v1/reconciliation", tags=["FinTrack Reconciliation"])
 
