@@ -131,7 +131,9 @@ def test_concurrent_replay_creates_only_one_batch_and_row_set(pg_factory):
     assert results[0].batch_id == results[1].batch_id
     with pg_factory() as session:
         assert session.scalar(select(func.count()).select_from(ReconciliationImportBatchModel).where(
-            ReconciliationImportBatchModel.file_sha256 == parsed.file_sha256
+            ReconciliationImportBatchModel.owner_id == owner_id,
+            ReconciliationImportBatchModel.account_id == account_id,
+            ReconciliationImportBatchModel.file_sha256 == parsed.file_sha256,
         )) == 1
         assert session.scalar(select(func.count()).select_from(ReconciliationStatementRowModel).where(
             ReconciliationStatementRowModel.batch_id == results[0].batch_id
