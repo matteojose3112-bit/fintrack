@@ -14,8 +14,9 @@
 - The provider-neutral adapter framework is merged in PR #25. Provider ingestion and FX reference adapters remain feature-branch work; no live production feed or paid data plan is configured.
 - Long-only portfolio lot accounting supports FIFO/LIFO/specific-lot allocation in the deterministic domain. PR #27 adds this domain slice; the current stacked feature branches add owner-scoped persistence tables and a PostgreSQL-only atomic execution service; the new service/concurrency suite passed PostgreSQL 16 CI run #410 (42 integration tests), along with backend and frontend validation.
 - PR #19–#24 and #26–#27 are not all merged; review each branch and its dependencies before integration. PR #25 is merged. The portfolio-lot persistence branch is separate and draft.
-- PR #38 is the active coordinator branch, stacked on PR #35 and its mapping/session-composition dependencies. It is draft and unmerged; CI and PostgreSQL cross-domain acceptance remain required before considering the milestone complete.
-- The public Aurelius showcase is a separate synthetic-data static site. The existing API/database and legacy authenticated FinTrack service are not being changed by this feature branch.
+- PR #38 remains the active atomic settlement coordinator branch, stacked on PR #35 and its mapping/session-composition dependencies. It is draft and unmerged.
+- Account reconciliation now has a strict bounded CSV parser, exact registry-backed minor-unit parsing, immutable statement evidence, file/parser-version idempotency, owner-scoped import/read APIs, deterministic match proposals, explicit confirmation/rejection/unmatch transitions, and append-only audit events. Reconciliation never creates or modifies journal postings.
+- The public FinTrack showcase is a separate synthetic-data static site. The existing API/database and legacy authenticated FinTrack service are not being changed by this feature branch.
 - No broker order execution, cash transfer, production financial write, or production database migration is enabled.
 - See [Money and Currency Contract](docs/finance/MONEY_CONTRACT.md), [Account and Ledger Contract](docs/finance/ACCOUNT_LEDGER_CONTRACT.md), [Global Markets Architecture](docs/architecture/FOUNDATION_0.3_GLOBAL_MARKETS.md), and [Portfolio Lot Persistence](docs/architecture/FOUNDATION_0.6_PORTFOLIO_LOT_PERSISTENCE.md).
 
@@ -28,9 +29,9 @@
 - Render API/static-site/database Blueprint as a deployment starting point, subject to lifecycle and security review.
 
 ### Current limitations to resolve
-- The default `main` branch remains the older FinTrack MVP. The separate integration hardening PR #12 and its component changes remain open draft work; the Aurelius planning merge did not merge or deploy them. Foundation 0.1 is being developed separately.
+- The default `main` branch currently preserves the CSV Studio application baseline; the financial-platform feature stack remains separate pending a safe integration plan. The separate integration hardening PR #12 and its component changes remain open draft work; the FinTrack planning merge did not merge or deploy them. Foundation 0.1 is being developed separately.
 - The UI is JavaScript (not TypeScript) and concentrated in a large App.jsx; component boundaries and domain-level state need to improve before the product expands.
-- The legacy application data model has users, transactions, budgets, and goals. Foundation 0.2 now defines domain-only accounts and ledger entries, but these are not yet persisted or exposed through the API; liabilities workflows, holdings, lots, dividends, trades, benchmarks, and reconciliation remain unimplemented.
+- The legacy application data model has users, transactions, budgets, and goals. Foundation 0.2 now defines domain-only accounts and ledger entries, but these are not yet persisted or exposed through the API; liabilities workflows, holdings valuation, dividends, benchmarks, and FX reporting remain incomplete; reconciliation import and manual matching are implemented on the feature branch.
 - The draft money work uses Numeric(14,2) but currently converts API amounts back to JSON floats. That is not a sufficient multi-currency precision contract. FinTrack must define currency-specific minor-unit precision and an exact API representation before portfolio features.
 - No market-data ingestion, source provenance, freshness tracking, AI orchestration, forecasting, paper-trading engine, scheduled research, or prediction ledger exists.
 - Existing tests are a useful MVP base, but do not constitute browser E2E, provider contract, accounting golden-case, model-evaluation, or production security coverage.
@@ -61,7 +62,7 @@ Do not introduce a distributed microservice fleet or a heavyweight agent framewo
 Every market datum and research claim should carry source/provider, instrument or series identifier, currency/unit, observation period, retrieval timestamp, market timestamp, delay/freshness status, and any transformation applied. Missing or stale data must be visible. AI-generated conclusions must link to the evidence they use. Forecasts must be timestamped and immutable once issued, with outcomes recorded separately.
 
 ### Safety boundary
-Aurelius is initially read-only with respect to external financial institutions. No brokerage execution, automated orders, money movement, or autonomous portfolio rebalancing. AI output is decision support and education—not a guarantee, regulated advisory service, or substitute for professional tax/legal advice.
+FinTrack is initially read-only with respect to external financial institutions. No brokerage execution, automated orders, money movement, or autonomous portfolio rebalancing. AI output is decision support and education—not a guarantee, regulated advisory service, or substitute for professional tax/legal advice.
 
 ---
 
@@ -334,14 +335,14 @@ Future AI integration can use the locally installed Ollama through a provider ad
 
 ## Global markets and internationalization
 
-Aurelius is being designed for international users and markets, not one country or base currency. Foundation 0.3 separates login identity, financial ownership, jurisdiction, ISO 4217 cash currencies, non-fiat asset units, instruments/listings, exchanges, FX observations, and reporting preferences. Account currencies are independent of an owner's reporting currency; historical currency definitions are versioned and immutable. See [Global Markets Architecture](docs/architecture/FOUNDATION_0.3_GLOBAL_MARKETS.md), [Auth/Database Inspection](docs/architecture/FOUNDATION_0.3_AUTH_DATABASE_INSPECTION.md), and the [Global PostgreSQL Schema/API](docs/architecture/FOUNDATION_0.3_POSTGRESQL_SCHEMA_API.md).
+FinTrack is being designed for international users and markets, not one country or base currency. Foundation 0.3 separates login identity, financial ownership, jurisdiction, ISO 4217 cash currencies, non-fiat asset units, instruments/listings, exchanges, FX observations, and reporting preferences. Account currencies are independent of an owner's reporting currency; historical currency definitions are versioned and immutable. See [Global Markets Architecture](docs/architecture/FOUNDATION_0.3_GLOBAL_MARKETS.md), [Auth/Database Inspection](docs/architecture/FOUNDATION_0.3_AUTH_DATABASE_INSPECTION.md), and the [Global PostgreSQL Schema/API](docs/architecture/FOUNDATION_0.3_POSTGRESQL_SCHEMA_API.md).
 
 
 ## Foundation 0.3 — Currency registry implementation
 
 The first executable Foundation 0.3 slice now replaces the former eight-currency hard-coded exponent map with a versioned registry snapshot derived from the official SIX ISO 4217 List One and List Three XML releases. The bundled release contains **178 current codes (165 with published minor-unit exponents)** and **152 historical code/withdrawal-date records covering 137 distinct historical codes**. Historical withdrawal dates are retained per jurisdiction (for example, the Russian ruble was withdrawn at different dates across former user jurisdictions). The refresh utility downloads SIX's official XML directly; the application itself has no runtime network dependency. See [currency registry domain](backend/app/domain/currency.py), [snapshot updater](backend/scripts/update_iso4217_snapshot.py), and [global asset coverage](docs/architecture/FOUNDATION_0.3_GLOBAL_ASSET_COVERAGE.md).
 
-`Money` now reads precision from the registry and supports current ISO entries with published exponents, including zero-, two-, three-, and four-decimal monetary units. ISO List Three does not publish historical exponents; Aurelius preserves those historical identifiers and withdrawal facts but deliberately does not guess their precision. Fund/reference codes and cash-account eligibility will be separated from the generic monetary-unit arithmetic contract. This implementation slice has tests added; CI validation is pending. SQLAlchemy persistence models, Alembic migrations, PostgreSQL persistence, and API integration remain outstanding.
+`Money` now reads precision from the registry and supports current ISO entries with published exponents, including zero-, two-, three-, and four-decimal monetary units. ISO List Three does not publish historical exponents; FinTrack preserves those historical identifiers and withdrawal facts but deliberately does not guess their precision. Fund/reference codes and cash-account eligibility will be separated from the generic monetary-unit arithmetic contract. This implementation slice has tests added; CI validation is pending. SQLAlchemy persistence models, Alembic migrations, PostgreSQL persistence, and API integration remain outstanding.
 
 
 ## Foundation 0.3 — isolated ledger persistence implementation
@@ -385,7 +386,7 @@ The latest PostgreSQL 16 API integration run passed **27 tests**, including a fa
 
 ## Foundation 0.4 — global asset and unit ontology
 
-Aurelius is expanding beyond cash accounting into a global multi-asset reference system. The first domain slice adds an open asset-class vocabulary, generic instrument definitions/identifiers, and an exact unit registry. The illustrative commodity catalog covers gold, silver, platinum, palladium, WTI/Brent crude, natural gas, copper, aluminium, wheat, corn, soybeans, coffee, cocoa, and electricity. Unit conversions use exact rational arithmetic; contextual units such as bushels cannot be converted without commodity/contract context.
+FinTrack is expanding beyond cash accounting into a global multi-asset reference system. The first domain slice adds an open asset-class vocabulary, generic instrument definitions/identifiers, and an exact unit registry. The illustrative commodity catalog covers gold, silver, platinum, palladium, WTI/Brent crude, natural gas, copper, aluminium, wheat, corn, soybeans, coffee, cocoa, and electricity. Unit conversions use exact rational arithmetic; contextual units such as bushels cannot be converted without commodity/contract context.
 
 This is domain groundwork, not yet a persisted instrument master or market-data feed. The next step is PostgreSQL persistence for assets, instruments, identifiers, venues/MICs, listings, and derivative/bond/prediction contract specifications. No market prices, listings, contract expiries, or trading access are fabricated.
 
@@ -393,7 +394,7 @@ The reference catalog also includes representative equity issuers, sovereign deb
 
 The domain now also defines MIC/timezone-aware market venues, time-bounded venue listings, and explicit futures/derivative, bond, and prediction-contract specifications. These contracts retain lifecycle dates, units, tick/contract terms, coupon/day-count terms, resolution sources, and settlement rules.
 
-Market observations and Aurelius forecasts are also separate domain records: observations retain source and observed/retrieved timestamps, while forecasts retain model/version, probability, horizon, evidence, and later resolution. Market-implied probabilities are not treated as ground truth or as Aurelius model forecasts.
+Market observations and FinTrack forecasts are also separate domain records: observations retain source and observed/retrieved timestamps, while forecasts retain model/version, probability, horizon, evidence, and later resolution. Market-implied probabilities are not treated as ground truth or as FinTrack model forecasts.
 
 
 ## Foundation 0.4 — global reference persistence
@@ -414,7 +415,7 @@ PostgreSQL 16 CI validates the instrument-master migration, temporal exclusion c
 
 ## Foundation 0.5 — provider adapter framework
 
-Aurelius now has provider-neutral contracts for global market/reference data, explicit coverage declarations, license policies, exact Decimal observations, and a PostgreSQL ingestion service. Ingestion checks provider identity/terms, purpose, geographic rights, instrument/type/time coverage, unit/currency references, and deduplicates immutable observations by provider record identity. Fetching occurs outside the database transaction; persistence is atomic.
+FinTrack now has provider-neutral contracts for global market/reference data, explicit coverage declarations, license policies, exact Decimal observations, and a PostgreSQL ingestion service. Ingestion checks provider identity/terms, purpose, geographic rights, instrument/type/time coverage, unit/currency references, and deduplicates immutable observations by provider record identity. Fetching occurs outside the database transaction; persistence is atomic.
 
 No live provider, API key, paid subscription, or market feed is configured. Provider-specific adapters will be added only after coverage and licensing are verified. See docs/architecture/FOUNDATION_0.5_PROVIDER_ADAPTER_FRAMEWORK.md.
 
@@ -425,7 +426,7 @@ Provider candidate research is documented in docs/architecture/FOUNDATION_0.5_PR
 
 ## Foundation 0.6 — portfolio lot persistence and transaction composition
 
-Aurelius now has owner-scoped investment portfolios, immutable trade-execution and acquisition-lot records, immutable disposal allocations, and position-lock rows for serialized long-only spot-style position updates. The execution service records already-executed fills only; it does not submit orders. It rebuilds lot state from immutable history and protects execution replay/concurrency in PostgreSQL.
+FinTrack now has owner-scoped investment portfolios, immutable trade-execution and acquisition-lot records, immutable disposal allocations, and position-lock rows for serialized long-only spot-style position updates. The execution service records already-executed fills only; it does not submit orders. It rebuilds lot state from immutable history and protects execution replay/concurrency in PostgreSQL.
 
 The ledger posting layer now also exposes `post_journal_in_session(session, command, idempotency_key)`. This composition primitive requires an active caller-owned transaction and never commits, rolls back, closes, or retries that session. The existing `post_journal(...)` API remains as a transaction-owning wrapper. This is the required foundation for a future trade-settlement service to persist holdings, cash journals, fees, FX legs, and audit records in one transaction.
 
