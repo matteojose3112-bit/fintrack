@@ -534,3 +534,21 @@ The legacy FinTrack transaction/budget/goal API remains in place and continues t
 - [x] Refactor portfolio execution to expose a caller-owned-session primitive while preserving the existing transaction-owning wrapper.
 - [x] Prove portfolio execution, acquisition lot, and audit event all roll back with the caller's outer transaction in PostgreSQL.
 - [ ] Build the transaction coordinator that invokes both session-bound primitives and writes the investment and cash sides atomically.
+
+
+## Foundation 0.6 — atomic trade settlement coordinator
+
+**Active draft:** PR #38 — `feat/aurelius-foundation-0.6-atomic-settlement-coordinator`
+
+- [x] Define BUY/SELL trade-date journal policy, fee treatment, account roles, and transaction/idempotency contract.
+- [x] Add explicit owner-scoped portfolio-to-ledger account mappings (PR #33).
+- [x] Add transaction-bound mapping resolution and deterministic account locks (PR #34).
+- [x] Add currency-exponent-aware minor-unit conversion and deterministic lot allocation (PR #35).
+- [x] Expose caller-owned-session primitives for portfolio execution and ledger posting (PRs #30–#31).
+- [x] Add the first coordinator composing both services inside one caller-owned PostgreSQL transaction (PR #38).
+- [x] Enforce a locked brokerage cash-balance check before a new BUY settlement.
+- [ ] Add PostgreSQL integration coverage for BUY/SELL journals, idempotent replay, insufficient-cash rejection, concurrent BUY serialization, and rollback after either sub-operation.
+- [ ] Verify the full CI suite on the coordinator head and reconcile all stacked PR dependencies before any merge.
+- [ ] Review lock ordering and historical precision-policy replay behavior across the complete stack.
+
+**Boundary:** the coordinator records already-executed fills only. It does not submit orders, connect to brokers, move money, expose a public trade endpoint, or perform production writes. The caller owns the transaction and its commit/rollback.
