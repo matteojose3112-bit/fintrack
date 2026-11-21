@@ -104,7 +104,7 @@ def persist_statement_import(
     if currency.registry_list != "one" or currency.minor_unit_exponent is None:
         raise ReconciliationAccountUnavailable("account currency is not a current monetary unit")
 
-    if any(row.currency != currency.code for row in parsed.rows):
+    if parsed.currency_exponent != currency.minor_unit_exponent:\n        raise ReconciliationCurrencyMismatch("parser precision does not match the account currency definition")\n    if any(row.currency != currency.code for row in parsed.rows):
         raise ReconciliationCurrencyMismatch("every statement row must match the account currency")
 
     batch_id = uuid4()
