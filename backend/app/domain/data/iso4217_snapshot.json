@@ -1,0 +1,3763 @@
+{
+  "schema_version": 1,
+  "registry_release": "SIX-ISO4217-L1-2026-09-17+L3-2026-01-01",
+  "source": {
+    "publisher": "SIX Group / SIX Interbank Clearing Ltd",
+    "authority": "ISO 4217 Maintenance Agency",
+    "official_page": "https://www.six-group.com/en/products-services/financial-information/market-reference-data/data-standards.html",
+    "list_one_url": "https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-one.xml",
+    "list_three_url": "https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-three.xml"
+  },
+  "current_published": "2026-09-17",
+  "historical_published": "2026-01-01",
+  "current": [
+    {
+      "code": "AED",
+      "numeric_code": "784",
+      "name": "UAE Dirham",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "UNITED ARAB EMIRATES (THE)"
+      ]
+    },
+    {
+      "code": "AFN",
+      "numeric_code": "971",
+      "name": "Afghani",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "AFGHANISTAN"
+      ]
+    },
+    {
+      "code": "ALL",
+      "numeric_code": "008",
+      "name": "Lek",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "ALBANIA"
+      ]
+    },
+    {
+      "code": "AMD",
+      "numeric_code": "051",
+      "name": "Armenian Dram",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "ARMENIA"
+      ]
+    },
+    {
+      "code": "AOA",
+      "numeric_code": "973",
+      "name": "Kwanza",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "ANGOLA"
+      ]
+    },
+    {
+      "code": "ARS",
+      "numeric_code": "032",
+      "name": "Argentine Peso",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "ARGENTINA"
+      ]
+    },
+    {
+      "code": "AUD",
+      "numeric_code": "036",
+      "name": "Australian Dollar",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "AUSTRALIA",
+        "CHRISTMAS ISLAND",
+        "COCOS (KEELING) ISLANDS (THE)",
+        "HEARD ISLAND AND McDONALD ISLANDS",
+        "KIRIBATI",
+        "NAURU",
+        "NORFOLK ISLAND",
+        "TUVALU"
+      ]
+    },
+    {
+      "code": "AWG",
+      "numeric_code": "533",
+      "name": "Aruban Florin",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "ARUBA"
+      ]
+    },
+    {
+      "code": "AZN",
+      "numeric_code": "944",
+      "name": "Azerbaijan Manat",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "AZERBAIJAN"
+      ]
+    },
+    {
+      "code": "BAM",
+      "numeric_code": "977",
+      "name": "Convertible Mark",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "BOSNIA AND HERZEGOVINA"
+      ]
+    },
+    {
+      "code": "BBD",
+      "numeric_code": "052",
+      "name": "Barbados Dollar",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "BARBADOS"
+      ]
+    },
+    {
+      "code": "BDT",
+      "numeric_code": "050",
+      "name": "Taka",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "BANGLADESH"
+      ]
+    },
+    {
+      "code": "BHD",
+      "numeric_code": "048",
+      "name": "Bahraini Dinar",
+      "minor_unit_exponent": 3,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "BAHRAIN"
+      ]
+    },
+    {
+      "code": "BIF",
+      "numeric_code": "108",
+      "name": "Burundi Franc",
+      "minor_unit_exponent": 0,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "BURUNDI"
+      ]
+    },
+    {
+      "code": "BMD",
+      "numeric_code": "060",
+      "name": "Bermudian Dollar",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "BERMUDA"
+      ]
+    },
+    {
+      "code": "BND",
+      "numeric_code": "096",
+      "name": "Brunei Dollar",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "BRUNEI DARUSSALAM"
+      ]
+    },
+    {
+      "code": "BOB",
+      "numeric_code": "068",
+      "name": "Boliviano",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "BOLIVIA (PLURINATIONAL STATE OF)"
+      ]
+    },
+    {
+      "code": "BOV",
+      "numeric_code": "984",
+      "name": "Mvdol",
+      "minor_unit_exponent": 2,
+      "fund": true,
+      "withdrawn": null,
+      "countries": [
+        "BOLIVIA (PLURINATIONAL STATE OF)"
+      ]
+    },
+    {
+      "code": "BRL",
+      "numeric_code": "986",
+      "name": "Brazilian Real",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "BRAZIL"
+      ]
+    },
+    {
+      "code": "BSD",
+      "numeric_code": "044",
+      "name": "Bahamian Dollar",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "BAHAMAS (THE)"
+      ]
+    },
+    {
+      "code": "BTN",
+      "numeric_code": "064",
+      "name": "Ngultrum",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "BHUTAN"
+      ]
+    },
+    {
+      "code": "BWP",
+      "numeric_code": "072",
+      "name": "Pula",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "BOTSWANA"
+      ]
+    },
+    {
+      "code": "BYN",
+      "numeric_code": "933",
+      "name": "Belarusian Ruble",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "BELARUS"
+      ]
+    },
+    {
+      "code": "BZD",
+      "numeric_code": "084",
+      "name": "Belize Dollar",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "BELIZE"
+      ]
+    },
+    {
+      "code": "CAD",
+      "numeric_code": "124",
+      "name": "Canadian Dollar",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "CANADA"
+      ]
+    },
+    {
+      "code": "CDF",
+      "numeric_code": "976",
+      "name": "Congolese Franc",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "CONGO (THE DEMOCRATIC REPUBLIC OF THE)"
+      ]
+    },
+    {
+      "code": "CHE",
+      "numeric_code": "947",
+      "name": "WIR Euro",
+      "minor_unit_exponent": 2,
+      "fund": true,
+      "withdrawn": null,
+      "countries": [
+        "SWITZERLAND"
+      ]
+    },
+    {
+      "code": "CHF",
+      "numeric_code": "756",
+      "name": "Swiss Franc",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "LIECHTENSTEIN",
+        "SWITZERLAND"
+      ]
+    },
+    {
+      "code": "CHW",
+      "numeric_code": "948",
+      "name": "WIR Franc",
+      "minor_unit_exponent": 2,
+      "fund": true,
+      "withdrawn": null,
+      "countries": [
+        "SWITZERLAND"
+      ]
+    },
+    {
+      "code": "CLF",
+      "numeric_code": "990",
+      "name": "Unidad de Fomento",
+      "minor_unit_exponent": 4,
+      "fund": true,
+      "withdrawn": null,
+      "countries": [
+        "CHILE"
+      ]
+    },
+    {
+      "code": "CLP",
+      "numeric_code": "152",
+      "name": "Chilean Peso",
+      "minor_unit_exponent": 0,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "CHILE"
+      ]
+    },
+    {
+      "code": "CNY",
+      "numeric_code": "156",
+      "name": "Yuan Renminbi",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "CHINA"
+      ]
+    },
+    {
+      "code": "COP",
+      "numeric_code": "170",
+      "name": "Colombian Peso",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "COLOMBIA"
+      ]
+    },
+    {
+      "code": "COU",
+      "numeric_code": "970",
+      "name": "Unidad de Valor Real",
+      "minor_unit_exponent": 2,
+      "fund": true,
+      "withdrawn": null,
+      "countries": [
+        "COLOMBIA"
+      ]
+    },
+    {
+      "code": "CRC",
+      "numeric_code": "188",
+      "name": "Costa Rican Colon",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "COSTA RICA"
+      ]
+    },
+    {
+      "code": "CUP",
+      "numeric_code": "192",
+      "name": "Cuban Peso",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "CUBA"
+      ]
+    },
+    {
+      "code": "CVE",
+      "numeric_code": "132",
+      "name": "Cabo Verde Escudo",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "CABO VERDE"
+      ]
+    },
+    {
+      "code": "CZK",
+      "numeric_code": "203",
+      "name": "Czech Koruna",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "CZECHIA"
+      ]
+    },
+    {
+      "code": "DJF",
+      "numeric_code": "262",
+      "name": "Djibouti Franc",
+      "minor_unit_exponent": 0,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "DJIBOUTI"
+      ]
+    },
+    {
+      "code": "DKK",
+      "numeric_code": "208",
+      "name": "Danish Krone",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "DENMARK",
+        "FAROE ISLANDS (THE)",
+        "GREENLAND"
+      ]
+    },
+    {
+      "code": "DOP",
+      "numeric_code": "214",
+      "name": "Dominican Peso",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "DOMINICAN REPUBLIC (THE)"
+      ]
+    },
+    {
+      "code": "DZD",
+      "numeric_code": "012",
+      "name": "Algerian Dinar",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "ALGERIA"
+      ]
+    },
+    {
+      "code": "EGP",
+      "numeric_code": "818",
+      "name": "Egyptian Pound",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "EGYPT"
+      ]
+    },
+    {
+      "code": "ERN",
+      "numeric_code": "232",
+      "name": "Nakfa",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "ERITREA"
+      ]
+    },
+    {
+      "code": "ETB",
+      "numeric_code": "230",
+      "name": "Ethiopian Birr",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "ETHIOPIA"
+      ]
+    },
+    {
+      "code": "EUR",
+      "numeric_code": "978",
+      "name": "Euro",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "ÅLAND ISLANDS",
+        "ANDORRA",
+        "AUSTRIA",
+        "BELGIUM",
+        "BULGARIA",
+        "CROATIA",
+        "CYPRUS",
+        "ESTONIA",
+        "EUROPEAN UNION",
+        "FINLAND",
+        "FRANCE",
+        "FRENCH GUIANA",
+        "FRENCH SOUTHERN TERRITORIES (THE)",
+        "GERMANY",
+        "GREECE",
+        "GUADELOUPE",
+        "HOLY SEE (THE)",
+        "IRELAND",
+        "ITALY",
+        "LATVIA",
+        "LITHUANIA",
+        "LUXEMBOURG",
+        "MALTA",
+        "MARTINIQUE",
+        "MAYOTTE",
+        "MONACO",
+        "MONTENEGRO",
+        "NETHERLANDS (THE)",
+        "PORTUGAL",
+        "RÉUNION",
+        "SAINT BARTHÉLEMY",
+        "SAINT MARTIN (FRENCH PART)",
+        "SAINT PIERRE AND MIQUELON",
+        "SAN MARINO",
+        "SLOVAKIA",
+        "SLOVENIA",
+        "SPAIN"
+      ]
+    },
+    {
+      "code": "FJD",
+      "numeric_code": "242",
+      "name": "Fiji Dollar",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "FIJI"
+      ]
+    },
+    {
+      "code": "FKP",
+      "numeric_code": "238",
+      "name": "Falkland Islands Pound",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "FALKLAND ISLANDS (THE) [MALVINAS]"
+      ]
+    },
+    {
+      "code": "GBP",
+      "numeric_code": "826",
+      "name": "Pound Sterling",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "GUERNSEY",
+        "ISLE OF MAN",
+        "JERSEY",
+        "UNITED KINGDOM OF GREAT BRITAIN AND NORTHERN IRELAND (THE)"
+      ]
+    },
+    {
+      "code": "GEL",
+      "numeric_code": "981",
+      "name": "Lari",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "GEORGIA"
+      ]
+    },
+    {
+      "code": "GHS",
+      "numeric_code": "936",
+      "name": "Ghana Cedi",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "GHANA"
+      ]
+    },
+    {
+      "code": "GIP",
+      "numeric_code": "292",
+      "name": "Gibraltar Pound",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "GIBRALTAR"
+      ]
+    },
+    {
+      "code": "GMD",
+      "numeric_code": "270",
+      "name": "Dalasi",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "GAMBIA (THE)"
+      ]
+    },
+    {
+      "code": "GNF",
+      "numeric_code": "324",
+      "name": "Guinean Franc",
+      "minor_unit_exponent": 0,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "GUINEA"
+      ]
+    },
+    {
+      "code": "GTQ",
+      "numeric_code": "320",
+      "name": "Quetzal",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "GUATEMALA"
+      ]
+    },
+    {
+      "code": "GYD",
+      "numeric_code": "328",
+      "name": "Guyana Dollar",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "GUYANA"
+      ]
+    },
+    {
+      "code": "HKD",
+      "numeric_code": "344",
+      "name": "Hong Kong Dollar",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "HONG KONG"
+      ]
+    },
+    {
+      "code": "HNL",
+      "numeric_code": "340",
+      "name": "Lempira",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "HONDURAS"
+      ]
+    },
+    {
+      "code": "HTG",
+      "numeric_code": "332",
+      "name": "Gourde",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "HAITI"
+      ]
+    },
+    {
+      "code": "HUF",
+      "numeric_code": "348",
+      "name": "Forint",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "HUNGARY"
+      ]
+    },
+    {
+      "code": "IDR",
+      "numeric_code": "360",
+      "name": "Rupiah",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "INDONESIA"
+      ]
+    },
+    {
+      "code": "ILS",
+      "numeric_code": "376",
+      "name": "New Israeli Sheqel",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "ISRAEL"
+      ]
+    },
+    {
+      "code": "INR",
+      "numeric_code": "356",
+      "name": "Indian Rupee",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "BHUTAN",
+        "INDIA"
+      ]
+    },
+    {
+      "code": "IQD",
+      "numeric_code": "368",
+      "name": "Iraqi Dinar",
+      "minor_unit_exponent": 3,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "IRAQ"
+      ]
+    },
+    {
+      "code": "IRR",
+      "numeric_code": "364",
+      "name": "Iranian Rial",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "IRAN (ISLAMIC REPUBLIC OF)"
+      ]
+    },
+    {
+      "code": "ISK",
+      "numeric_code": "352",
+      "name": "Iceland Krona",
+      "minor_unit_exponent": 0,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "ICELAND"
+      ]
+    },
+    {
+      "code": "JMD",
+      "numeric_code": "388",
+      "name": "Jamaican Dollar",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "JAMAICA"
+      ]
+    },
+    {
+      "code": "JOD",
+      "numeric_code": "400",
+      "name": "Jordanian Dinar",
+      "minor_unit_exponent": 3,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "JORDAN"
+      ]
+    },
+    {
+      "code": "JPY",
+      "numeric_code": "392",
+      "name": "Yen",
+      "minor_unit_exponent": 0,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "JAPAN"
+      ]
+    },
+    {
+      "code": "KES",
+      "numeric_code": "404",
+      "name": "Kenyan Shilling",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "KENYA"
+      ]
+    },
+    {
+      "code": "KGS",
+      "numeric_code": "417",
+      "name": "Som",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "KYRGYZSTAN"
+      ]
+    },
+    {
+      "code": "KHR",
+      "numeric_code": "116",
+      "name": "Riel",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "CAMBODIA"
+      ]
+    },
+    {
+      "code": "KMF",
+      "numeric_code": "174",
+      "name": "Comorian Franc",
+      "minor_unit_exponent": 0,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "COMOROS (THE)"
+      ]
+    },
+    {
+      "code": "KPW",
+      "numeric_code": "408",
+      "name": "North Korean Won",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "KOREA (THE DEMOCRATIC PEOPLE’S REPUBLIC OF)"
+      ]
+    },
+    {
+      "code": "KRW",
+      "numeric_code": "410",
+      "name": "Won",
+      "minor_unit_exponent": 0,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "KOREA (THE REPUBLIC OF)"
+      ]
+    },
+    {
+      "code": "KWD",
+      "numeric_code": "414",
+      "name": "Kuwaiti Dinar",
+      "minor_unit_exponent": 3,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "KUWAIT"
+      ]
+    },
+    {
+      "code": "KYD",
+      "numeric_code": "136",
+      "name": "Cayman Islands Dollar",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "CAYMAN ISLANDS (THE)"
+      ]
+    },
+    {
+      "code": "KZT",
+      "numeric_code": "398",
+      "name": "Tenge",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "KAZAKHSTAN"
+      ]
+    },
+    {
+      "code": "LAK",
+      "numeric_code": "418",
+      "name": "Lao Kip",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "LAO PEOPLE’S DEMOCRATIC REPUBLIC (THE)"
+      ]
+    },
+    {
+      "code": "LBP",
+      "numeric_code": "422",
+      "name": "Lebanese Pound",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "LEBANON"
+      ]
+    },
+    {
+      "code": "LKR",
+      "numeric_code": "144",
+      "name": "Sri Lanka Rupee",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "SRI LANKA"
+      ]
+    },
+    {
+      "code": "LRD",
+      "numeric_code": "430",
+      "name": "Liberian Dollar",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "LIBERIA"
+      ]
+    },
+    {
+      "code": "LSL",
+      "numeric_code": "426",
+      "name": "Loti",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "LESOTHO"
+      ]
+    },
+    {
+      "code": "LYD",
+      "numeric_code": "434",
+      "name": "Libyan Dinar",
+      "minor_unit_exponent": 3,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "LIBYA"
+      ]
+    },
+    {
+      "code": "MAD",
+      "numeric_code": "504",
+      "name": "Moroccan Dirham",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "MOROCCO",
+        "WESTERN SAHARA"
+      ]
+    },
+    {
+      "code": "MDL",
+      "numeric_code": "498",
+      "name": "Moldovan Leu",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "MOLDOVA (THE REPUBLIC OF)"
+      ]
+    },
+    {
+      "code": "MGA",
+      "numeric_code": "969",
+      "name": "Malagasy Ariary",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "MADAGASCAR"
+      ]
+    },
+    {
+      "code": "MKD",
+      "numeric_code": "807",
+      "name": "Denar",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "NORTH MACEDONIA"
+      ]
+    },
+    {
+      "code": "MMK",
+      "numeric_code": "104",
+      "name": "Kyat",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "MYANMAR"
+      ]
+    },
+    {
+      "code": "MNT",
+      "numeric_code": "496",
+      "name": "Tugrik",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "MONGOLIA"
+      ]
+    },
+    {
+      "code": "MOP",
+      "numeric_code": "446",
+      "name": "Pataca",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "MACAO"
+      ]
+    },
+    {
+      "code": "MRU",
+      "numeric_code": "929",
+      "name": "Ouguiya",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "MAURITANIA"
+      ]
+    },
+    {
+      "code": "MUR",
+      "numeric_code": "480",
+      "name": "Mauritius Rupee",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "MAURITIUS"
+      ]
+    },
+    {
+      "code": "MVR",
+      "numeric_code": "462",
+      "name": "Rufiyaa",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "MALDIVES"
+      ]
+    },
+    {
+      "code": "MWK",
+      "numeric_code": "454",
+      "name": "Malawi Kwacha",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "MALAWI"
+      ]
+    },
+    {
+      "code": "MXN",
+      "numeric_code": "484",
+      "name": "Mexican Peso",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "MEXICO"
+      ]
+    },
+    {
+      "code": "MXV",
+      "numeric_code": "979",
+      "name": "Mexican Unidad de Inversion (UDI)",
+      "minor_unit_exponent": 2,
+      "fund": true,
+      "withdrawn": null,
+      "countries": [
+        "MEXICO"
+      ]
+    },
+    {
+      "code": "MYR",
+      "numeric_code": "458",
+      "name": "Malaysian Ringgit",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "MALAYSIA"
+      ]
+    },
+    {
+      "code": "MZN",
+      "numeric_code": "943",
+      "name": "Mozambique Metical",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "MOZAMBIQUE"
+      ]
+    },
+    {
+      "code": "NAD",
+      "numeric_code": "516",
+      "name": "Namibia Dollar",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "NAMIBIA"
+      ]
+    },
+    {
+      "code": "NGN",
+      "numeric_code": "566",
+      "name": "Naira",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "NIGERIA"
+      ]
+    },
+    {
+      "code": "NIO",
+      "numeric_code": "558",
+      "name": "Cordoba Oro",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "NICARAGUA"
+      ]
+    },
+    {
+      "code": "NOK",
+      "numeric_code": "578",
+      "name": "Norwegian Krone",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "BOUVET ISLAND",
+        "NORWAY",
+        "SVALBARD AND JAN MAYEN"
+      ]
+    },
+    {
+      "code": "NPR",
+      "numeric_code": "524",
+      "name": "Nepalese Rupee",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "NEPAL"
+      ]
+    },
+    {
+      "code": "NZD",
+      "numeric_code": "554",
+      "name": "New Zealand Dollar",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "COOK ISLANDS (THE)",
+        "NEW ZEALAND",
+        "NIUE",
+        "PITCAIRN",
+        "TOKELAU"
+      ]
+    },
+    {
+      "code": "OMR",
+      "numeric_code": "512",
+      "name": "Rial Omani",
+      "minor_unit_exponent": 3,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "OMAN"
+      ]
+    },
+    {
+      "code": "PAB",
+      "numeric_code": "590",
+      "name": "Balboa",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "PANAMA"
+      ]
+    },
+    {
+      "code": "PEN",
+      "numeric_code": "604",
+      "name": "Sol",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "PERU"
+      ]
+    },
+    {
+      "code": "PGK",
+      "numeric_code": "598",
+      "name": "Kina",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "PAPUA NEW GUINEA"
+      ]
+    },
+    {
+      "code": "PHP",
+      "numeric_code": "608",
+      "name": "Philippine Peso",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "PHILIPPINES (THE)"
+      ]
+    },
+    {
+      "code": "PKR",
+      "numeric_code": "586",
+      "name": "Pakistan Rupee",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "PAKISTAN"
+      ]
+    },
+    {
+      "code": "PLN",
+      "numeric_code": "985",
+      "name": "Zloty",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "POLAND"
+      ]
+    },
+    {
+      "code": "PYG",
+      "numeric_code": "600",
+      "name": "Guarani",
+      "minor_unit_exponent": 0,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "PARAGUAY"
+      ]
+    },
+    {
+      "code": "QAR",
+      "numeric_code": "634",
+      "name": "Qatari Rial",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "QATAR"
+      ]
+    },
+    {
+      "code": "RON",
+      "numeric_code": "946",
+      "name": "Romanian Leu",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "ROMANIA"
+      ]
+    },
+    {
+      "code": "RSD",
+      "numeric_code": "941",
+      "name": "Serbian Dinar",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "SERBIA"
+      ]
+    },
+    {
+      "code": "RUB",
+      "numeric_code": "643",
+      "name": "Russian Ruble",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "RUSSIAN FEDERATION (THE)"
+      ]
+    },
+    {
+      "code": "RWF",
+      "numeric_code": "646",
+      "name": "Rwanda Franc",
+      "minor_unit_exponent": 0,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "RWANDA"
+      ]
+    },
+    {
+      "code": "SAR",
+      "numeric_code": "682",
+      "name": "Saudi Riyal",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "SAUDI ARABIA"
+      ]
+    },
+    {
+      "code": "SBD",
+      "numeric_code": "090",
+      "name": "Solomon Islands Dollar",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "SOLOMON ISLANDS"
+      ]
+    },
+    {
+      "code": "SCR",
+      "numeric_code": "690",
+      "name": "Seychelles Rupee",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "SEYCHELLES"
+      ]
+    },
+    {
+      "code": "SDG",
+      "numeric_code": "938",
+      "name": "Sudanese Pound",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "SUDAN (THE)"
+      ]
+    },
+    {
+      "code": "SEK",
+      "numeric_code": "752",
+      "name": "Swedish Krona",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "SWEDEN"
+      ]
+    },
+    {
+      "code": "SGD",
+      "numeric_code": "702",
+      "name": "Singapore Dollar",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "SINGAPORE"
+      ]
+    },
+    {
+      "code": "SHP",
+      "numeric_code": "654",
+      "name": "Saint Helena Pound",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "SAINT HELENA, ASCENSION AND TRISTAN DA CUNHA"
+      ]
+    },
+    {
+      "code": "SLE",
+      "numeric_code": "925",
+      "name": "Leone",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "SIERRA LEONE"
+      ]
+    },
+    {
+      "code": "SOS",
+      "numeric_code": "706",
+      "name": "Somali Shilling",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "SOMALIA"
+      ]
+    },
+    {
+      "code": "SRD",
+      "numeric_code": "968",
+      "name": "Surinam Dollar",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "SURINAME"
+      ]
+    },
+    {
+      "code": "SSP",
+      "numeric_code": "728",
+      "name": "South Sudanese Pound",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "SOUTH SUDAN"
+      ]
+    },
+    {
+      "code": "STN",
+      "numeric_code": "930",
+      "name": "Dobra",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "SAO TOME AND PRINCIPE"
+      ]
+    },
+    {
+      "code": "SVC",
+      "numeric_code": "222",
+      "name": "El Salvador Colon",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "EL SALVADOR"
+      ]
+    },
+    {
+      "code": "SYP",
+      "numeric_code": "760",
+      "name": "Syrian Pound",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "SYRIAN ARAB REPUBLIC"
+      ]
+    },
+    {
+      "code": "SZL",
+      "numeric_code": "748",
+      "name": "Lilangeni",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "ESWATINI"
+      ]
+    },
+    {
+      "code": "THB",
+      "numeric_code": "764",
+      "name": "Baht",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "THAILAND"
+      ]
+    },
+    {
+      "code": "TJS",
+      "numeric_code": "972",
+      "name": "Somoni",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "TAJIKISTAN"
+      ]
+    },
+    {
+      "code": "TMT",
+      "numeric_code": "934",
+      "name": "Turkmenistan New Manat",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "TURKMENISTAN"
+      ]
+    },
+    {
+      "code": "TND",
+      "numeric_code": "788",
+      "name": "Tunisian Dinar",
+      "minor_unit_exponent": 3,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "TUNISIA"
+      ]
+    },
+    {
+      "code": "TOP",
+      "numeric_code": "776",
+      "name": "Pa’anga",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "TONGA"
+      ]
+    },
+    {
+      "code": "TRY",
+      "numeric_code": "949",
+      "name": "Turkish Lira",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "TÜRKİYE"
+      ]
+    },
+    {
+      "code": "TTD",
+      "numeric_code": "780",
+      "name": "Trinidad and Tobago Dollar",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "TRINIDAD AND TOBAGO"
+      ]
+    },
+    {
+      "code": "TWD",
+      "numeric_code": "901",
+      "name": "New Taiwan Dollar",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "TAIWAN (PROVINCE OF CHINA)"
+      ]
+    },
+    {
+      "code": "TZS",
+      "numeric_code": "834",
+      "name": "Tanzanian Shilling",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "TANZANIA, UNITED REPUBLIC OF"
+      ]
+    },
+    {
+      "code": "UAH",
+      "numeric_code": "980",
+      "name": "Hryvnia",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "UKRAINE"
+      ]
+    },
+    {
+      "code": "UGX",
+      "numeric_code": "800",
+      "name": "Uganda Shilling",
+      "minor_unit_exponent": 0,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "UGANDA"
+      ]
+    },
+    {
+      "code": "USD",
+      "numeric_code": "840",
+      "name": "US Dollar",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "AMERICAN SAMOA",
+        "BONAIRE, SINT EUSTATIUS AND SABA",
+        "BRITISH INDIAN OCEAN TERRITORY (THE)",
+        "ECUADOR",
+        "EL SALVADOR",
+        "GUAM",
+        "HAITI",
+        "MARSHALL ISLANDS (THE)",
+        "MICRONESIA (FEDERATED STATES OF)",
+        "NORTHERN MARIANA ISLANDS (THE)",
+        "PALAU",
+        "PANAMA",
+        "PUERTO RICO",
+        "TIMOR-LESTE",
+        "TURKS AND CAICOS ISLANDS (THE)",
+        "UNITED STATES MINOR OUTLYING ISLANDS (THE)",
+        "UNITED STATES OF AMERICA (THE)",
+        "VIRGIN ISLANDS (BRITISH)",
+        "VIRGIN ISLANDS (U.S.)"
+      ]
+    },
+    {
+      "code": "USN",
+      "numeric_code": "997",
+      "name": "US Dollar (Next day)",
+      "minor_unit_exponent": 2,
+      "fund": true,
+      "withdrawn": null,
+      "countries": [
+        "UNITED STATES OF AMERICA (THE)"
+      ]
+    },
+    {
+      "code": "UYI",
+      "numeric_code": "940",
+      "name": "Uruguay Peso en Unidades Indexadas (UI)",
+      "minor_unit_exponent": 0,
+      "fund": true,
+      "withdrawn": null,
+      "countries": [
+        "URUGUAY"
+      ]
+    },
+    {
+      "code": "UYU",
+      "numeric_code": "858",
+      "name": "Peso Uruguayo",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "URUGUAY"
+      ]
+    },
+    {
+      "code": "UYW",
+      "numeric_code": "927",
+      "name": "Unidad Previsional",
+      "minor_unit_exponent": 4,
+      "fund": true,
+      "withdrawn": null,
+      "countries": [
+        "URUGUAY"
+      ]
+    },
+    {
+      "code": "UZS",
+      "numeric_code": "860",
+      "name": "Uzbekistan Sum",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "UZBEKISTAN"
+      ]
+    },
+    {
+      "code": "VED",
+      "numeric_code": "926",
+      "name": "Bolívar Soberano",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "VENEZUELA (BOLIVARIAN REPUBLIC OF)"
+      ]
+    },
+    {
+      "code": "VES",
+      "numeric_code": "928",
+      "name": "Bolívar Soberano",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "VENEZUELA (BOLIVARIAN REPUBLIC OF)"
+      ]
+    },
+    {
+      "code": "VND",
+      "numeric_code": "704",
+      "name": "Dong",
+      "minor_unit_exponent": 0,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "VIET NAM"
+      ]
+    },
+    {
+      "code": "VUV",
+      "numeric_code": "548",
+      "name": "Vatu",
+      "minor_unit_exponent": 0,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "VANUATU"
+      ]
+    },
+    {
+      "code": "WST",
+      "numeric_code": "882",
+      "name": "Tala",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "SAMOA"
+      ]
+    },
+    {
+      "code": "XAD",
+      "numeric_code": "396",
+      "name": "Arab Accounting Dinar",
+      "minor_unit_exponent": 2,
+      "fund": true,
+      "withdrawn": null,
+      "countries": [
+        "ARAB MONETARY FUND"
+      ]
+    },
+    {
+      "code": "XAF",
+      "numeric_code": "950",
+      "name": "CFA Franc BEAC",
+      "minor_unit_exponent": 0,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "CAMEROON",
+        "CENTRAL AFRICAN REPUBLIC (THE)",
+        "CHAD",
+        "CONGO (THE)",
+        "EQUATORIAL GUINEA",
+        "GABON"
+      ]
+    },
+    {
+      "code": "XAG",
+      "numeric_code": "961",
+      "name": "Silver",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "ZZ11_Silver"
+      ]
+    },
+    {
+      "code": "XAU",
+      "numeric_code": "959",
+      "name": "Gold",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "ZZ08_Gold"
+      ]
+    },
+    {
+      "code": "XBA",
+      "numeric_code": "955",
+      "name": "Bond Markets Unit European Composite Unit (EURCO)",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "ZZ01_Bond Markets Unit European_EURCO"
+      ]
+    },
+    {
+      "code": "XBB",
+      "numeric_code": "956",
+      "name": "Bond Markets Unit European Monetary Unit (E.M.U.-6)",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "ZZ02_Bond Markets Unit European_EMU-6"
+      ]
+    },
+    {
+      "code": "XBC",
+      "numeric_code": "957",
+      "name": "Bond Markets Unit European Unit of Account 9 (E.U.A.-9)",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "ZZ03_Bond Markets Unit European_EUA-9"
+      ]
+    },
+    {
+      "code": "XBD",
+      "numeric_code": "958",
+      "name": "Bond Markets Unit European Unit of Account 17 (E.U.A.-17)",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "ZZ04_Bond Markets Unit European_EUA-17"
+      ]
+    },
+    {
+      "code": "XCD",
+      "numeric_code": "951",
+      "name": "East Caribbean Dollar",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "ANGUILLA",
+        "ANTIGUA AND BARBUDA",
+        "DOMINICA",
+        "GRENADA",
+        "MONTSERRAT",
+        "SAINT KITTS AND NEVIS",
+        "SAINT LUCIA",
+        "SAINT VINCENT AND THE GRENADINES"
+      ]
+    },
+    {
+      "code": "XCG",
+      "numeric_code": "532",
+      "name": "Caribbean Guilder",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "CURAÇAO",
+        "SINT MAARTEN (DUTCH PART)"
+      ]
+    },
+    {
+      "code": "XDR",
+      "numeric_code": "960",
+      "name": "SDR (Special Drawing Right)",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "INTERNATIONAL MONETARY FUND (IMF)"
+      ]
+    },
+    {
+      "code": "XOF",
+      "numeric_code": "952",
+      "name": "CFA Franc BCEAO",
+      "minor_unit_exponent": 0,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "BENIN",
+        "BURKINA FASO",
+        "CÔTE D'IVOIRE",
+        "GUINEA-BISSAU",
+        "MALI",
+        "NIGER (THE)",
+        "SENEGAL",
+        "TOGO"
+      ]
+    },
+    {
+      "code": "XPD",
+      "numeric_code": "964",
+      "name": "Palladium",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "ZZ09_Palladium"
+      ]
+    },
+    {
+      "code": "XPF",
+      "numeric_code": "953",
+      "name": "CFP Franc",
+      "minor_unit_exponent": 0,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "FRENCH POLYNESIA",
+        "NEW CALEDONIA",
+        "WALLIS AND FUTUNA"
+      ]
+    },
+    {
+      "code": "XPT",
+      "numeric_code": "962",
+      "name": "Platinum",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "ZZ10_Platinum"
+      ]
+    },
+    {
+      "code": "XSU",
+      "numeric_code": "994",
+      "name": "Sucre",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "SISTEMA UNITARIO DE COMPENSACION REGIONAL DE PAGOS \"SUCRE\""
+      ]
+    },
+    {
+      "code": "XTS",
+      "numeric_code": "963",
+      "name": "Codes specifically reserved for testing purposes",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "ZZ06_Testing_Code"
+      ]
+    },
+    {
+      "code": "XUA",
+      "numeric_code": "965",
+      "name": "ADB Unit of Account",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "MEMBER COUNTRIES OF THE AFRICAN DEVELOPMENT BANK GROUP"
+      ]
+    },
+    {
+      "code": "XXX",
+      "numeric_code": "999",
+      "name": "The codes assigned for transactions where no currency is involved",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "ZZ07_No_Currency"
+      ]
+    },
+    {
+      "code": "YER",
+      "numeric_code": "886",
+      "name": "Yemeni Rial",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "YEMEN"
+      ]
+    },
+    {
+      "code": "ZAR",
+      "numeric_code": "710",
+      "name": "Rand",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "LESOTHO",
+        "NAMIBIA",
+        "SOUTH AFRICA"
+      ]
+    },
+    {
+      "code": "ZMW",
+      "numeric_code": "967",
+      "name": "Zambian Kwacha",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "ZAMBIA"
+      ]
+    },
+    {
+      "code": "ZWG",
+      "numeric_code": "924",
+      "name": "Zimbabwe Gold",
+      "minor_unit_exponent": 2,
+      "fund": false,
+      "withdrawn": null,
+      "countries": [
+        "ZIMBABWE"
+      ]
+    }
+  ],
+  "historical": [
+    {
+      "code": "ADP",
+      "numeric_code": "020",
+      "name": "Andorran Peseta",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2003-07",
+      "countries": [
+        "ANDORRA"
+      ]
+    },
+    {
+      "code": "AFA",
+      "numeric_code": "004",
+      "name": "Afghani",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2003-01",
+      "countries": [
+        "AFGHANISTAN"
+      ]
+    },
+    {
+      "code": "ALK",
+      "numeric_code": "008",
+      "name": "Old Lek",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1989-12",
+      "countries": [
+        "ALBANIA"
+      ]
+    },
+    {
+      "code": "ANG",
+      "numeric_code": "532",
+      "name": "Netherlands Antillean Guilder",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2010-10",
+      "countries": [
+        "NETHERLANDS ANTILLES"
+      ]
+    },
+    {
+      "code": "ANG",
+      "numeric_code": "532",
+      "name": "Netherlands Antillean Guilder",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2025-03",
+      "countries": [
+        "CURAÇAO",
+        "SINT MAARTEN (DUTCH PART)"
+      ]
+    },
+    {
+      "code": "AOK",
+      "numeric_code": "024",
+      "name": "Kwanza",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1991-03",
+      "countries": [
+        "ANGOLA"
+      ]
+    },
+    {
+      "code": "AON",
+      "numeric_code": "024",
+      "name": "New Kwanza",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2000-02",
+      "countries": [
+        "ANGOLA"
+      ]
+    },
+    {
+      "code": "AOR",
+      "numeric_code": "982",
+      "name": "Kwanza Reajustado",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2000-02",
+      "countries": [
+        "ANGOLA"
+      ]
+    },
+    {
+      "code": "ARA",
+      "numeric_code": "032",
+      "name": "Austral",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1992-01",
+      "countries": [
+        "ARGENTINA"
+      ]
+    },
+    {
+      "code": "ARP",
+      "numeric_code": "032",
+      "name": "Peso Argentino",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1985-07",
+      "countries": [
+        "ARGENTINA"
+      ]
+    },
+    {
+      "code": "ARY",
+      "numeric_code": "032",
+      "name": "Peso",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1989 to 1990",
+      "countries": [
+        "ARGENTINA"
+      ]
+    },
+    {
+      "code": "ATS",
+      "numeric_code": "040",
+      "name": "Schilling",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2002-03",
+      "countries": [
+        "AUSTRIA"
+      ]
+    },
+    {
+      "code": "AYM",
+      "numeric_code": "945",
+      "name": "Azerbaijan Manat",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2005-10",
+      "countries": [
+        "AZERBAIJAN"
+      ]
+    },
+    {
+      "code": "AZM",
+      "numeric_code": "031",
+      "name": "Azerbaijanian Manat",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2005-12",
+      "countries": [
+        "AZERBAIJAN"
+      ]
+    },
+    {
+      "code": "BAD",
+      "numeric_code": "070",
+      "name": "Dinar",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1998-07",
+      "countries": [
+        "BOSNIA AND HERZEGOVINA"
+      ]
+    },
+    {
+      "code": "BEC",
+      "numeric_code": "993",
+      "name": "Convertible Franc",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1990-03",
+      "countries": [
+        "BELGIUM"
+      ]
+    },
+    {
+      "code": "BEF",
+      "numeric_code": "056",
+      "name": "Belgian Franc",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2002-03",
+      "countries": [
+        "BELGIUM"
+      ]
+    },
+    {
+      "code": "BEL",
+      "numeric_code": "992",
+      "name": "Financial Franc",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1990-03",
+      "countries": [
+        "BELGIUM"
+      ]
+    },
+    {
+      "code": "BGJ",
+      "numeric_code": "100",
+      "name": "Lev A/52",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1989 to 1990",
+      "countries": [
+        "BULGARIA"
+      ]
+    },
+    {
+      "code": "BGK",
+      "numeric_code": "100",
+      "name": "Lev A/62",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1989 to 1990",
+      "countries": [
+        "BULGARIA"
+      ]
+    },
+    {
+      "code": "BGL",
+      "numeric_code": "100",
+      "name": "Lev",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2003-11",
+      "countries": [
+        "BULGARIA"
+      ]
+    },
+    {
+      "code": "BGN",
+      "numeric_code": "975",
+      "name": "Bulgarian Lev",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2026-01",
+      "countries": [
+        "BULGARIA"
+      ]
+    },
+    {
+      "code": "BOP",
+      "numeric_code": "068",
+      "name": "Peso boliviano",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1987-02",
+      "countries": [
+        "BOLIVIA"
+      ]
+    },
+    {
+      "code": "BRB",
+      "numeric_code": "076",
+      "name": "Cruzeiro",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1986-03",
+      "countries": [
+        "BRAZIL"
+      ]
+    },
+    {
+      "code": "BRC",
+      "numeric_code": "076",
+      "name": "Cruzado",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1989-02",
+      "countries": [
+        "BRAZIL"
+      ]
+    },
+    {
+      "code": "BRE",
+      "numeric_code": "076",
+      "name": "Cruzeiro",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1993-03",
+      "countries": [
+        "BRAZIL"
+      ]
+    },
+    {
+      "code": "BRN",
+      "numeric_code": "076",
+      "name": "New Cruzado",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1990-03",
+      "countries": [
+        "BRAZIL"
+      ]
+    },
+    {
+      "code": "BRR",
+      "numeric_code": "987",
+      "name": "Cruzeiro Real",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1994-07",
+      "countries": [
+        "BRAZIL"
+      ]
+    },
+    {
+      "code": "BUK",
+      "numeric_code": "104",
+      "name": "Kyat",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1990-02",
+      "countries": [
+        "BURMA"
+      ]
+    },
+    {
+      "code": "BYB",
+      "numeric_code": "112",
+      "name": "Belarusian Ruble",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2001-01",
+      "countries": [
+        "BELARUS"
+      ]
+    },
+    {
+      "code": "BYR",
+      "numeric_code": "974",
+      "name": "Belarusian Ruble",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2017-01",
+      "countries": [
+        "BELARUS"
+      ]
+    },
+    {
+      "code": "CHC",
+      "numeric_code": "948",
+      "name": "WIR Franc (for electronic)",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2004-11",
+      "countries": [
+        "SWITZERLAND"
+      ]
+    },
+    {
+      "code": "CSD",
+      "numeric_code": "891",
+      "name": "Serbian Dinar",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2006-10",
+      "countries": [
+        "SERBIA AND MONTENEGRO"
+      ]
+    },
+    {
+      "code": "CSJ",
+      "numeric_code": "203",
+      "name": "Krona A/53",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1989 to 1990",
+      "countries": [
+        "CZECHOSLOVAKIA"
+      ]
+    },
+    {
+      "code": "CSK",
+      "numeric_code": "200",
+      "name": "Koruna",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1993-03",
+      "countries": [
+        "CZECHOSLOVAKIA"
+      ]
+    },
+    {
+      "code": "CUC",
+      "numeric_code": "931",
+      "name": "Peso Convertible",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2021-06",
+      "countries": [
+        "CUBA"
+      ]
+    },
+    {
+      "code": "CYP",
+      "numeric_code": "196",
+      "name": "Cyprus Pound",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2008-01",
+      "countries": [
+        "CYPRUS"
+      ]
+    },
+    {
+      "code": "DDM",
+      "numeric_code": "278",
+      "name": "Mark der DDR",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1990-07 to 1990-09",
+      "countries": [
+        "GERMAN DEMOCRATIC REPUBLIC"
+      ]
+    },
+    {
+      "code": "DEM",
+      "numeric_code": "276",
+      "name": "Deutsche Mark",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2002-03",
+      "countries": [
+        "GERMANY"
+      ]
+    },
+    {
+      "code": "ECS",
+      "numeric_code": "218",
+      "name": "Sucre",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2000-09",
+      "countries": [
+        "ECUADOR"
+      ]
+    },
+    {
+      "code": "ECV",
+      "numeric_code": "983",
+      "name": "Unidad de Valor Constante (UVC)",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2000-09",
+      "countries": [
+        "ECUADOR"
+      ]
+    },
+    {
+      "code": "EEK",
+      "numeric_code": "233",
+      "name": "Kroon",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2011-01",
+      "countries": [
+        "ESTONIA"
+      ]
+    },
+    {
+      "code": "ESA",
+      "numeric_code": "996",
+      "name": "Spanish Peseta",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1978 to 1981",
+      "countries": [
+        "SPAIN"
+      ]
+    },
+    {
+      "code": "ESB",
+      "numeric_code": "995",
+      "name": "\"A\" Account (convertible Peseta Account)",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1994-12",
+      "countries": [
+        "SPAIN"
+      ]
+    },
+    {
+      "code": "ESP",
+      "numeric_code": "724",
+      "name": "Spanish Peseta",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2002-03",
+      "countries": [
+        "ANDORRA",
+        "SPAIN"
+      ]
+    },
+    {
+      "code": "EUR",
+      "numeric_code": "978",
+      "name": "Euro",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2006-10",
+      "countries": [
+        "SERBIA AND MONTENEGRO"
+      ]
+    },
+    {
+      "code": "FIM",
+      "numeric_code": "246",
+      "name": "Markka",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2002-03",
+      "countries": [
+        "ÅLAND ISLANDS",
+        "FINLAND"
+      ]
+    },
+    {
+      "code": "FRF",
+      "numeric_code": "250",
+      "name": "French Franc",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1999-01",
+      "countries": [
+        "SAINT MARTIN",
+        "SAINT-BARTHÉLEMY"
+      ]
+    },
+    {
+      "code": "FRF",
+      "numeric_code": "250",
+      "name": "French Franc",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2002-03",
+      "countries": [
+        "ANDORRA",
+        "FRANCE",
+        "FRENCH  GUIANA",
+        "FRENCH SOUTHERN TERRITORIES",
+        "GUADELOUPE",
+        "MARTINIQUE",
+        "MAYOTTE",
+        "MONACO",
+        "RÉUNION",
+        "SAINT PIERRE AND MIQUELON"
+      ]
+    },
+    {
+      "code": "GEK",
+      "numeric_code": "268",
+      "name": "Georgian Coupon",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1995-10",
+      "countries": [
+        "GEORGIA"
+      ]
+    },
+    {
+      "code": "GHC",
+      "numeric_code": "288",
+      "name": "Cedi",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2008-01",
+      "countries": [
+        "GHANA"
+      ]
+    },
+    {
+      "code": "GHP",
+      "numeric_code": "939",
+      "name": "Ghana Cedi",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2007-06",
+      "countries": [
+        "GHANA"
+      ]
+    },
+    {
+      "code": "GNE",
+      "numeric_code": "324",
+      "name": "Syli",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1989-12",
+      "countries": [
+        "GUINEA"
+      ]
+    },
+    {
+      "code": "GNS",
+      "numeric_code": "324",
+      "name": "Syli",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1986-02",
+      "countries": [
+        "GUINEA"
+      ]
+    },
+    {
+      "code": "GQE",
+      "numeric_code": "226",
+      "name": "Ekwele",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1986-06",
+      "countries": [
+        "EQUATORIAL GUINEA"
+      ]
+    },
+    {
+      "code": "GRD",
+      "numeric_code": "300",
+      "name": "Drachma",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2002-03",
+      "countries": [
+        "GREECE"
+      ]
+    },
+    {
+      "code": "GWE",
+      "numeric_code": "624",
+      "name": "Guinea Escudo",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1978 to 1981",
+      "countries": [
+        "GUINEA-BISSAU"
+      ]
+    },
+    {
+      "code": "GWP",
+      "numeric_code": "624",
+      "name": "Guinea-Bissau Peso",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1997-05",
+      "countries": [
+        "GUINEA-BISSAU"
+      ]
+    },
+    {
+      "code": "HRD",
+      "numeric_code": "191",
+      "name": "Croatian Dinar",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1995-01",
+      "countries": [
+        "CROATIA"
+      ]
+    },
+    {
+      "code": "HRK",
+      "numeric_code": "191",
+      "name": "Croatian Kuna",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2015-06",
+      "countries": [
+        "CROATIA"
+      ]
+    },
+    {
+      "code": "HRK",
+      "numeric_code": "191",
+      "name": "Kuna",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2023-01",
+      "countries": [
+        "CROATIA"
+      ]
+    },
+    {
+      "code": "IDR",
+      "numeric_code": "360",
+      "name": "Rupiah",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2002-07",
+      "countries": [
+        "TIMOR-LESTE"
+      ]
+    },
+    {
+      "code": "IEP",
+      "numeric_code": "372",
+      "name": "Irish Pound",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2002-03",
+      "countries": [
+        "IRELAND"
+      ]
+    },
+    {
+      "code": "ILP",
+      "numeric_code": "376",
+      "name": "Pound",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1978 to 1981",
+      "countries": [
+        "ISRAEL"
+      ]
+    },
+    {
+      "code": "ILR",
+      "numeric_code": "376",
+      "name": "Old Shekel",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1989 to 1990",
+      "countries": [
+        "ISRAEL"
+      ]
+    },
+    {
+      "code": "ISJ",
+      "numeric_code": "352",
+      "name": "Old Krona",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1989 to 1990",
+      "countries": [
+        "ICELAND"
+      ]
+    },
+    {
+      "code": "ITL",
+      "numeric_code": "380",
+      "name": "Italian Lira",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2002-03",
+      "countries": [
+        "HOLY SEE (VATICAN CITY STATE)",
+        "ITALY",
+        "SAN MARINO"
+      ]
+    },
+    {
+      "code": "LAJ",
+      "numeric_code": "418",
+      "name": "Pathet Lao Kip",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1979-12",
+      "countries": [
+        "LAO"
+      ]
+    },
+    {
+      "code": "LSM",
+      "numeric_code": "426",
+      "name": "Loti",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1985-05",
+      "countries": [
+        "LESOTHO"
+      ]
+    },
+    {
+      "code": "LTL",
+      "numeric_code": "440",
+      "name": "Lithuanian Litas",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2014-12",
+      "countries": [
+        "LITHUANIA"
+      ]
+    },
+    {
+      "code": "LTT",
+      "numeric_code": "440",
+      "name": "Talonas",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1993-07",
+      "countries": [
+        "LITHUANIA"
+      ]
+    },
+    {
+      "code": "LUC",
+      "numeric_code": "989",
+      "name": "Luxembourg Convertible Franc",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1990-03",
+      "countries": [
+        "LUXEMBOURG"
+      ]
+    },
+    {
+      "code": "LUF",
+      "numeric_code": "442",
+      "name": "Luxembourg Franc",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2002-03",
+      "countries": [
+        "LUXEMBOURG"
+      ]
+    },
+    {
+      "code": "LUL",
+      "numeric_code": "988",
+      "name": "Luxembourg Financial Franc",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1990-03",
+      "countries": [
+        "LUXEMBOURG"
+      ]
+    },
+    {
+      "code": "LVL",
+      "numeric_code": "428",
+      "name": "Latvian Lats",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2014-01",
+      "countries": [
+        "LATVIA"
+      ]
+    },
+    {
+      "code": "LVR",
+      "numeric_code": "428",
+      "name": "Latvian Ruble",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1994-12",
+      "countries": [
+        "LATVIA"
+      ]
+    },
+    {
+      "code": "MGF",
+      "numeric_code": "450",
+      "name": "Malagasy Franc",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2004-12",
+      "countries": [
+        "MADAGASCAR"
+      ]
+    },
+    {
+      "code": "MLF",
+      "numeric_code": "466",
+      "name": "Mali Franc",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1984-11",
+      "countries": [
+        "MALI"
+      ]
+    },
+    {
+      "code": "MRO",
+      "numeric_code": "478",
+      "name": "Ouguiya",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2017-12",
+      "countries": [
+        "MAURITANIA"
+      ]
+    },
+    {
+      "code": "MTL",
+      "numeric_code": "470",
+      "name": "Maltese Lira",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2008-01",
+      "countries": [
+        "MALTA"
+      ]
+    },
+    {
+      "code": "MTP",
+      "numeric_code": "470",
+      "name": "Maltese Pound",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1983-06",
+      "countries": [
+        "MALTA"
+      ]
+    },
+    {
+      "code": "MVQ",
+      "numeric_code": "462",
+      "name": "Maldive Rupee",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1989-12",
+      "countries": [
+        "MALDIVES"
+      ]
+    },
+    {
+      "code": "MWK",
+      "numeric_code": "454",
+      "name": "Kwacha",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2016-02",
+      "countries": [
+        "MALAWI"
+      ]
+    },
+    {
+      "code": "MXP",
+      "numeric_code": "484",
+      "name": "Mexican Peso",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1993-01",
+      "countries": [
+        "MEXICO"
+      ]
+    },
+    {
+      "code": "MZE",
+      "numeric_code": "508",
+      "name": "Mozambique Escudo",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1978 to 1981",
+      "countries": [
+        "MOZAMBIQUE"
+      ]
+    },
+    {
+      "code": "MZM",
+      "numeric_code": "508",
+      "name": "Mozambique Metical",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2006-06",
+      "countries": [
+        "MOZAMBIQUE"
+      ]
+    },
+    {
+      "code": "NIC",
+      "numeric_code": "558",
+      "name": "Cordoba",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1990-10",
+      "countries": [
+        "NICARAGUA"
+      ]
+    },
+    {
+      "code": "NLG",
+      "numeric_code": "528",
+      "name": "Netherlands Guilder",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2002-03",
+      "countries": [
+        "NETHERLANDS"
+      ]
+    },
+    {
+      "code": "PEH",
+      "numeric_code": "604",
+      "name": "Sol",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1989 to 1990",
+      "countries": [
+        "PERU"
+      ]
+    },
+    {
+      "code": "PEI",
+      "numeric_code": "604",
+      "name": "Inti",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1991-07",
+      "countries": [
+        "PERU"
+      ]
+    },
+    {
+      "code": "PEN",
+      "numeric_code": "604",
+      "name": "Nuevo Sol",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2015-12",
+      "countries": [
+        "PERU"
+      ]
+    },
+    {
+      "code": "PES",
+      "numeric_code": "604",
+      "name": "Sol",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1986-02",
+      "countries": [
+        "PERU"
+      ]
+    },
+    {
+      "code": "PLZ",
+      "numeric_code": "616",
+      "name": "Zloty",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1997-01",
+      "countries": [
+        "POLAND"
+      ]
+    },
+    {
+      "code": "PTE",
+      "numeric_code": "620",
+      "name": "Portuguese Escudo",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2002-03",
+      "countries": [
+        "PORTUGAL"
+      ]
+    },
+    {
+      "code": "RHD",
+      "numeric_code": "716",
+      "name": "Rhodesian Dollar",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1978 to 1981",
+      "countries": [
+        "SOUTHERN RHODESIA"
+      ]
+    },
+    {
+      "code": "ROK",
+      "numeric_code": "642",
+      "name": "Leu A/52",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1989 to 1990",
+      "countries": [
+        "ROMANIA"
+      ]
+    },
+    {
+      "code": "ROL",
+      "numeric_code": "642",
+      "name": "Old Leu",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2005-06",
+      "countries": [
+        "ROMANIA"
+      ]
+    },
+    {
+      "code": "RON",
+      "numeric_code": "946",
+      "name": "New Romanian Leu",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2015-06",
+      "countries": [
+        "ROMANIA"
+      ]
+    },
+    {
+      "code": "RUR",
+      "numeric_code": "810",
+      "name": "Russian Ruble",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1993-01",
+      "countries": [
+        "KYRGYZSTAN"
+      ]
+    },
+    {
+      "code": "RUR",
+      "numeric_code": "810",
+      "name": "Russian Ruble",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1993-10",
+      "countries": [
+        "TURKMENISTAN"
+      ]
+    },
+    {
+      "code": "RUR",
+      "numeric_code": "810",
+      "name": "Russian Ruble",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1993-12",
+      "countries": [
+        "MOLDOVA, REPUBLIC OF"
+      ]
+    },
+    {
+      "code": "RUR",
+      "numeric_code": "810",
+      "name": "Russian Ruble",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1994-04",
+      "countries": [
+        "GEORGIA"
+      ]
+    },
+    {
+      "code": "RUR",
+      "numeric_code": "810",
+      "name": "Russian Ruble",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1994-05",
+      "countries": [
+        "KAZAKHSTAN"
+      ]
+    },
+    {
+      "code": "RUR",
+      "numeric_code": "810",
+      "name": "Russian Ruble",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1994-06",
+      "countries": [
+        "BELARUS"
+      ]
+    },
+    {
+      "code": "RUR",
+      "numeric_code": "810",
+      "name": "Russian Ruble",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1994-07",
+      "countries": [
+        "UZBEKISTAN"
+      ]
+    },
+    {
+      "code": "RUR",
+      "numeric_code": "810",
+      "name": "Russian Ruble",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1994-08",
+      "countries": [
+        "ARMENIA",
+        "AZERBAIJAN"
+      ]
+    },
+    {
+      "code": "RUR",
+      "numeric_code": "810",
+      "name": "Russian Ruble",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1995-05",
+      "countries": [
+        "TAJIKISTAN"
+      ]
+    },
+    {
+      "code": "RUR",
+      "numeric_code": "810",
+      "name": "Russian Ruble",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2004-01",
+      "countries": [
+        "RUSSIAN FEDERATION"
+      ]
+    },
+    {
+      "code": "SDD",
+      "numeric_code": "736",
+      "name": "Sudanese Dinar",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2007-07",
+      "countries": [
+        "SUDAN"
+      ]
+    },
+    {
+      "code": "SDG",
+      "numeric_code": "938",
+      "name": "Sudanese Pound",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2012-09",
+      "countries": [
+        "SOUTH SUDAN"
+      ]
+    },
+    {
+      "code": "SDP",
+      "numeric_code": "736",
+      "name": "Sudanese Pound",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1998-06",
+      "countries": [
+        "SUDAN"
+      ]
+    },
+    {
+      "code": "SIT",
+      "numeric_code": "705",
+      "name": "Tolar",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2007-01",
+      "countries": [
+        "SLOVENIA"
+      ]
+    },
+    {
+      "code": "SKK",
+      "numeric_code": "703",
+      "name": "Slovak Koruna",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2009-01",
+      "countries": [
+        "SLOVAKIA"
+      ]
+    },
+    {
+      "code": "SLL",
+      "numeric_code": "694",
+      "name": "Leone",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2023-12",
+      "countries": [
+        "SIERRA LEONE"
+      ]
+    },
+    {
+      "code": "SRG",
+      "numeric_code": "740",
+      "name": "Surinam Guilder",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2003-12",
+      "countries": [
+        "SURINAME"
+      ]
+    },
+    {
+      "code": "STD",
+      "numeric_code": "678",
+      "name": "Dobra",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2017-12",
+      "countries": [
+        "SAO TOME AND PRINCIPE"
+      ]
+    },
+    {
+      "code": "SUR",
+      "numeric_code": "810",
+      "name": "Rouble",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1990-12",
+      "countries": [
+        "UNION OF SOVIET SOCIALIST REPUBLICS"
+      ]
+    },
+    {
+      "code": "SZL",
+      "numeric_code": "748",
+      "name": "Lilangeni",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2018-08",
+      "countries": [
+        "SWAZILAND"
+      ]
+    },
+    {
+      "code": "TJR",
+      "numeric_code": "762",
+      "name": "Tajik Ruble",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2001-04",
+      "countries": [
+        "TAJIKISTAN"
+      ]
+    },
+    {
+      "code": "TMM",
+      "numeric_code": "795",
+      "name": "Turkmenistan Manat",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2009-01",
+      "countries": [
+        "TURKMENISTAN"
+      ]
+    },
+    {
+      "code": "TPE",
+      "numeric_code": "626",
+      "name": "Timor Escudo",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2002-11",
+      "countries": [
+        "TIMOR-LESTE"
+      ]
+    },
+    {
+      "code": "TRL",
+      "numeric_code": "792",
+      "name": "Old Turkish Lira",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2005-12",
+      "countries": [
+        "TURKEY"
+      ]
+    },
+    {
+      "code": "TRY",
+      "numeric_code": "949",
+      "name": "New Turkish Lira",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2009-01",
+      "countries": [
+        "TURKEY"
+      ]
+    },
+    {
+      "code": "UAK",
+      "numeric_code": "804",
+      "name": "Karbovanet",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1996-09",
+      "countries": [
+        "UKRAINE"
+      ]
+    },
+    {
+      "code": "UGS",
+      "numeric_code": "800",
+      "name": "Uganda Shilling",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1987-05",
+      "countries": [
+        "UGANDA"
+      ]
+    },
+    {
+      "code": "UGW",
+      "numeric_code": "800",
+      "name": "Old Shilling",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1989 to 1990",
+      "countries": [
+        "UGANDA"
+      ]
+    },
+    {
+      "code": "USS",
+      "numeric_code": "998",
+      "name": "US Dollar (Same day)",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2014-03",
+      "countries": [
+        "UNITED STATES"
+      ]
+    },
+    {
+      "code": "UYN",
+      "numeric_code": "858",
+      "name": "Old Uruguay Peso",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1989-12",
+      "countries": [
+        "URUGUAY"
+      ]
+    },
+    {
+      "code": "UYP",
+      "numeric_code": "858",
+      "name": "Uruguayan Peso",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1993-03",
+      "countries": [
+        "URUGUAY"
+      ]
+    },
+    {
+      "code": "VEB",
+      "numeric_code": "862",
+      "name": "Bolivar",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2008-01",
+      "countries": [
+        "VENEZUELA"
+      ]
+    },
+    {
+      "code": "VEF",
+      "numeric_code": "937",
+      "name": "Bolivar Fuerte",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2011-12",
+      "countries": [
+        "VENEZUELA"
+      ]
+    },
+    {
+      "code": "VEF",
+      "numeric_code": "937",
+      "name": "Bolivar",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2016-02",
+      "countries": [
+        "VENEZUELA (BOLIVARIAN REPUBLIC OF)"
+      ]
+    },
+    {
+      "code": "VEF",
+      "numeric_code": "937",
+      "name": "Bolívar",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2018-08",
+      "countries": [
+        "VENEZUELA (BOLIVARIAN REPUBLIC OF)"
+      ]
+    },
+    {
+      "code": "VNC",
+      "numeric_code": "704",
+      "name": "Old Dong",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1989-1990",
+      "countries": [
+        "VIETNAM"
+      ]
+    },
+    {
+      "code": "XEU",
+      "numeric_code": "954",
+      "name": "European Currency Unit (E.C.U)",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1999-01",
+      "countries": [
+        "EUROPEAN MONETARY CO-OPERATION FUND (EMCF)"
+      ]
+    },
+    {
+      "code": "XFO",
+      "numeric_code": null,
+      "name": "Gold-Franc",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2006-10",
+      "countries": [
+        "ZZ01_Gold-Franc"
+      ]
+    },
+    {
+      "code": "XFU",
+      "numeric_code": null,
+      "name": "UIC-Franc",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2013-11",
+      "countries": [
+        "ZZ05_UIC-Franc"
+      ]
+    },
+    {
+      "code": "XRE",
+      "numeric_code": null,
+      "name": "RINET Funds Code",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1999-11",
+      "countries": [
+        "ZZ02_RINET Funds Code"
+      ]
+    },
+    {
+      "code": "YDD",
+      "numeric_code": "720",
+      "name": "Yemeni Dinar",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1991-09",
+      "countries": [
+        "YEMEN, DEMOCRATIC"
+      ]
+    },
+    {
+      "code": "YUD",
+      "numeric_code": "890",
+      "name": "New Yugoslavian Dinar",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1990-01",
+      "countries": [
+        "YUGOSLAVIA"
+      ]
+    },
+    {
+      "code": "YUM",
+      "numeric_code": "891",
+      "name": "New Dinar",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2003-07",
+      "countries": [
+        "YUGOSLAVIA"
+      ]
+    },
+    {
+      "code": "YUN",
+      "numeric_code": "890",
+      "name": "Yugoslavian Dinar",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1995-11",
+      "countries": [
+        "YUGOSLAVIA"
+      ]
+    },
+    {
+      "code": "ZAL",
+      "numeric_code": "991",
+      "name": "Financial Rand",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1995-03",
+      "countries": [
+        "LESOTHO",
+        "SOUTH AFRICA"
+      ]
+    },
+    {
+      "code": "ZMK",
+      "numeric_code": "894",
+      "name": "Zambian Kwacha",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2012-12",
+      "countries": [
+        "ZAMBIA"
+      ]
+    },
+    {
+      "code": "ZRN",
+      "numeric_code": "180",
+      "name": "New Zaire",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1999-06",
+      "countries": [
+        "ZAIRE"
+      ]
+    },
+    {
+      "code": "ZRZ",
+      "numeric_code": "180",
+      "name": "Zaire",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1994-02",
+      "countries": [
+        "ZAIRE"
+      ]
+    },
+    {
+      "code": "ZWC",
+      "numeric_code": "716",
+      "name": "Rhodesian Dollar",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "1989-12",
+      "countries": [
+        "ZIMBABWE"
+      ]
+    },
+    {
+      "code": "ZWD",
+      "numeric_code": "716",
+      "name": "Zimbabwe Dollar (old)",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2006-08",
+      "countries": [
+        "ZIMBABWE"
+      ]
+    },
+    {
+      "code": "ZWD",
+      "numeric_code": "716",
+      "name": "Zimbabwe Dollar",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2008-08",
+      "countries": [
+        "ZIMBABWE"
+      ]
+    },
+    {
+      "code": "ZWL",
+      "numeric_code": "932",
+      "name": "Zimbabwe Dollar",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2024-09",
+      "countries": [
+        "ZIMBABWE"
+      ]
+    },
+    {
+      "code": "ZWN",
+      "numeric_code": "942",
+      "name": "Zimbabwe Dollar (new)",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2006-09",
+      "countries": [
+        "ZIMBABWE"
+      ]
+    },
+    {
+      "code": "ZWR",
+      "numeric_code": "935",
+      "name": "Zimbabwe Dollar",
+      "minor_unit_exponent": null,
+      "fund": false,
+      "withdrawn": "2009-06",
+      "countries": [
+        "ZIMBABWE"
+      ]
+    }
+  ]
+}
