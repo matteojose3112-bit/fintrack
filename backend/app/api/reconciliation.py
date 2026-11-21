@@ -1,6 +1,6 @@
 """Authenticated FinTrack statement-import API."""
 
-from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
+from datetime import timedelta\n\nfrom fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from fastapi.responses import JSONResponse
 from sqlalchemy import select
 from sqlalchemy.exc import DBAPIError, IntegrityError
@@ -15,7 +15,7 @@ from app.domain.reconciliation_csv import (
     StatementCsvError,
     parse_statement_csv,
 )
-from app.persistence.models import (
+from app.domain.reconciliation_matching import (\n    LedgerMatchCandidate,\n    build_match_proposals,\n)\nfrom app.persistence.models import (
     CurrencyDefinitionModel,
     FinancialAccountModel,
     ReconciliationImportBatchModel,
@@ -222,5 +222,136 @@ def get_statement_import(
                 "source_payload": row.source_payload,
             }
             for row in rows
+        ],
+    }
+
+
+
+@router.get("/imports/{batch_id}/proposals")
+def preview_statement_match_proposals(
+    batch_id: UUID,
+    date_window_days: int = 3,
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user),
+):
+    """Compute deterministic, read-only match proposals for one import batch."""
+    if engine.dialect.name != "postgresql":
+        raise HTTPException(status_code=503, detail="Reconciliation proposals require PostgreSQL.")
+    if date_window_days < 0 or date_window_days > 31:
+        raise HTTPException(status_code=422, detail="date_window_days must be between 0 and 31.")
+
+    batch = db.scalar(
+        select(ReconciliationImportBatchModel).where(
+            ReconciliationImportBatchModel.id == batch_id,
+            ReconciliationImportBatchModel.owner_id == user.id,
+        )
+    )
+    if batch is None:
+        raise HTTPException(status_code=404, detail="Statement import not found")
+
+    account_row = db.execute(
+        select(FinancialAccountModel, CurrencyDefinitionModel)
+        .join(
+            CurrencyDefinitionModel,
+            CurrencyDefinitionModel.id == FinancialAccountModel.currency_definition_id,
+        )
+        .where(
+            FinancialAccountModel.id == batch.account_id,
+            FinancialAccountModel.owner_id == user.id,
+        )
+    ).one_or_none()
+    if account_row is None:
+        raise HTTPException(status_code=404, detail="Financial account not found")
+    account, currency = account_row
+    if account.account_type != "ASSET":
+        raise HTTPException(status_code=422, detail="Only asset accounts can be reconciled.")
+
+    statement_models = db.scalars(
+        select(ReconciliationStatementRowModel)
+        .where(
+            ReconciliationStatementRowModel.batch_id == batch.id,
+            ReconciliationStatementRowModel.owner_id == user.id,
+        )
+        .order_by(ReconciliationStatementRowModel.row_number)
+    ).all()
+    if not statement_models:
+        return {"batch_id": str(batch.id), "proposals": []}
+
+    statement_rows = tuple(
+        StatementRow(
+            row_number=item.row_number,
+            booking_date=item.booking_date,
+            amount_minor_units=int(item.amount_minor),
+            currency=item.currency_code,
+            description=item.description,
+            source_transaction_id=item.source_transaction_id,
+            value_date=item.value_date,
+            counterparty=item.counterparty,
+            reference=item.reference,
+        )
+        for item in statement_models
+    )
+    lower_date = min(item.booking_date for item in statement_rows) - timedelta(days=date_window_days)
+    upper_date = max(item.booking_date for item in statement_rows) + timedelta(days=date_window_days)
+    postings = db.execute(
+        select(JournalPostingModel, JournalEntryModel)
+        .join(
+            JournalEntryModel,
+            JournalEntryModel.id == JournalPostingModel.journal_entry_id,
+        )
+        .where(
+            JournalPostingModel.owner_id == user.id,
+            JournalPostingModel.account_id == batch.account_id,
+            JournalPostingModel.currency_definition_id == batch.currency_definition_id,
+            JournalEntryModel.owner_id == user.id,
+            JournalEntryModel.effective_date >= lower_date,
+            JournalEntryModel.effective_date <= upper_date,
+        )
+        .order_by(JournalEntryModel.effective_date, JournalPostingModel.id)
+    ).all()
+    candidates = tuple(
+        LedgerMatchCandidate(
+            candidate_id=posting.id,
+            journal_id=journal.id,
+            owner_id=user.id,
+            account_id=batch.account_id,
+            effective_date=journal.effective_date,
+            amount_minor=(
+                int(posting.amount_minor)
+                if posting.side == "DEBIT"
+                else -int(posting.amount_minor)
+            ),
+            currency_code=currency.code,
+            description=journal.description,
+        )
+        for posting, journal in postings
+    )
+    decisions = build_match_proposals(
+        statement_rows,
+        candidates,
+        owner_id=user.id,
+        account_id=batch.account_id,
+        currency_code=currency.code,
+        date_window_days=date_window_days,
+    )
+    return {
+        "batch_id": str(batch.id),
+        "date_window_days": date_window_days,
+        "proposals": [
+            {
+                "row_number": decision.row_number,
+                "status": decision.status.value,
+                "proposal": (
+                    {
+                        "candidate_posting_id": str(decision.proposal.candidate_id),
+                        "journal_id": str(decision.proposal.journal_id),
+                        "strategy": decision.proposal.strategy.value,
+                        "date_difference_days": decision.proposal.date_difference_days,
+                    }
+                    if decision.proposal else None
+                ),
+                "candidate_posting_ids": [str(item) for item in decision.candidate_ids],
+            }
+            for decision in decisions
         ],
     }
