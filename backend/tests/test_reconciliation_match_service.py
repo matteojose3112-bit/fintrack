@@ -30,7 +30,7 @@ from app.persistence.reconciliation_match_service import (
 def fixture():
     engine = create_engine("sqlite://")
     Base.metadata.create_all(engine)
-    session = Session(engine)
+    session = Session(engine, expire_on_commit=False)
     owner = User(email=f"{uuid4()}@matches.test", password_hash="test")
     other = User(email=f"{uuid4()}@matches.test", password_hash="test")
     session.add_all([owner, other])
@@ -136,6 +136,7 @@ def test_confirm_unmatch_and_reconfirm_are_audited_without_ledger_mutation():
         match = session.scalar(select(ReconciliationMatchModel).where(
             ReconciliationMatchModel.statement_row_id == rows[0].id
         ))
+        session.commit()
         with session.begin():
             confirmed = confirm_reconciliation_match(
                 session, owner_id=owner.id, actor_id=owner.id, match_id=match.id,
@@ -188,6 +189,7 @@ def test_confirmed_posting_cannot_be_assigned_to_two_statement_rows():
         second = session.scalar(select(ReconciliationMatchModel).where(
             ReconciliationMatchModel.statement_row_id == rows[1].id
         ))
+        session.commit()
         with session.begin(), pytest.raises(IntegrityError):
             confirm_reconciliation_match(
                 session, owner_id=owner.id, actor_id=owner.id, match_id=second.id,
