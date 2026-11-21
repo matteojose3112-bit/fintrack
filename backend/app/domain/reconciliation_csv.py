@@ -57,6 +57,7 @@ class CsvParseResult:
     errors: tuple[RowError, ...]
     headers: tuple[str, ...]
     total_data_rows: int
+    currency_exponent: int
 
     @property
     def is_valid(self) -> bool:
@@ -238,10 +239,14 @@ def parse_statement_csv(
     except csv.Error as exc:
         raise StatementCsvError("malformed_csv", "CSV structure is malformed") from exc
 
+    if total == 0:
+        raise StatementCsvError("no_data_rows", "CSV must contain at least one statement row")
+
     return CsvParseResult(
         file_sha256=digest,
         rows=tuple(rows),
         errors=tuple(errors),
         headers=headers,
         total_data_rows=total,
+        currency_exponent=currency_exponent,
     )
