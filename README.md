@@ -1,12 +1,12 @@
-# Aurelius — AI Financial Intelligence & Investment Operating System
+# FinTrack — Personal Finance & Investment Intelligence
 
-> **Formerly FinTrack.** Aurelius is being developed as an evidence-first financial partner for personal finance, accounting, market research, portfolio analysis, risk assessment, and financial education. The existing FinTrack application is the starting foundation—not a completed Aurelius product.
+> FinTrack is evolving into an evidence-first financial platform for personal finance, accounting, investment management, market research, portfolio analysis, risk assessment, and financial education. The existing application remains the product foundation.
 
-**Transformation status (2026-11-21):** Aurelius has progressed through Foundations 0.1–0.7. The ISO 4217 registry, durable ledger, authenticated posting API, provider-neutral market-data framework, global instrument/observation foundations, and long-only portfolio lot engine are implemented across the reviewed branch stack. Foundation 0.6 now includes owner-scoped portfolio-to-ledger account mappings (PR #33), transaction-bound mapping resolution (PR #34), currency-scale lot allocation (PR #35), and the first atomic trade-settlement coordinator (draft PR #38). The public read-only Aurelius showcase is deployed separately; it uses synthetic data and is disconnected from accounts, APIs, brokers, and live market data. No broker orders, real-money execution, cash transfers, or production financial writes are enabled.
+**Development status (2026-11-21):** FinTrack's financial foundation has progressed through Foundations 0.1–0.7. The ISO 4217 registry, durable ledger, authenticated posting API, provider-neutral market-data framework, global instrument/observation foundations, and long-only portfolio lot engine are implemented across the reviewed branch stack. Foundation 0.6 now includes owner-scoped portfolio-to-ledger account mappings (PR #33), transaction-bound mapping resolution (PR #34), currency-scale lot allocation (PR #35), and the first atomic trade-settlement coordinator (draft PR #38). The public read-only FinTrack showcase is deployed separately; it uses synthetic data and is disconnected from accounts, APIs, brokers, and live market data. No broker orders, real-money execution, cash transfers, or production financial writes are enabled.
 
 **Operating principle:** deterministic financial calculations and traceable source data come first; AI interprets and challenges evidence, but never invents facts or silently executes financial actions.
 
-## Current Aurelius development status — 2026-11-21
+## Current FinTrack development status — 2026-11-21
 
 - The ISO 4217 registry replaced the original eight-code hard-coded money map and preserves current and historical definitions from the SIX Maintenance Agency snapshot.
 - The first authenticated ledger API uses exact integer-minor-unit strings, owner-derived authorization, idempotent posting, derived balances, and exact reversals.
@@ -19,7 +19,7 @@
 - No broker order execution, cash transfer, production financial write, or production database migration is enabled.
 - See [Money and Currency Contract](docs/finance/MONEY_CONTRACT.md), [Account and Ledger Contract](docs/finance/ACCOUNT_LEDGER_CONTRACT.md), [Global Markets Architecture](docs/architecture/FOUNDATION_0.3_GLOBAL_MARKETS.md), and [Portfolio Lot Persistence](docs/architecture/FOUNDATION_0.6_PORTFOLIO_LOT_PERSISTENCE.md).
 
-## Aurelius transformation — assessment baseline
+## FinTrack platform evolution — assessment baseline
 
 ### What is reusable
 - React/Vite/Tailwind dashboard and existing transaction, budget, goal, and chart workflows.
@@ -31,7 +31,7 @@
 - The default `main` branch remains the older FinTrack MVP. The separate integration hardening PR #12 and its component changes remain open draft work; the Aurelius planning merge did not merge or deploy them. Foundation 0.1 is being developed separately.
 - The UI is JavaScript (not TypeScript) and concentrated in a large App.jsx; component boundaries and domain-level state need to improve before the product expands.
 - The legacy application data model has users, transactions, budgets, and goals. Foundation 0.2 now defines domain-only accounts and ledger entries, but these are not yet persisted or exposed through the API; liabilities workflows, holdings, lots, dividends, trades, benchmarks, and reconciliation remain unimplemented.
-- The draft money work uses Numeric(14,2) but currently converts API amounts back to JSON floats. That is not a sufficient multi-currency precision contract. Aurelius must define currency-specific minor-unit precision and an exact API representation before portfolio features.
+- The draft money work uses Numeric(14,2) but currently converts API amounts back to JSON floats. That is not a sufficient multi-currency precision contract. FinTrack must define currency-specific minor-unit precision and an exact API representation before portfolio features.
 - No market-data ingestion, source provenance, freshness tracking, AI orchestration, forecasting, paper-trading engine, scheduled research, or prediction ledger exists.
 - Existing tests are a useful MVP base, but do not constitute browser E2E, provider contract, accounting golden-case, model-evaluation, or production security coverage.
 
@@ -55,7 +55,7 @@ Do not introduce a distributed microservice fleet or a heavyweight agent framewo
 - **Alpha Vantage:** useful prototype alternative; free access is 25 requests/day, and real-time/15-minute delayed U.S. data is premium-only. Not sufficient alone for broad autonomous monitoring on the free tier: https://www.alphavantage.co/support/api-key/ and https://www.alphavantage.co/premium/.
 - **Massive (formerly Polygon):** strong U.S. market-data candidate. Its current individual Stocks tiers list Basic free (5 calls/minute, 2 years EOD), Starter $29/month (15-minute delayed), Developer $79/month, and Advanced $199/month (real-time). Individual-use plans are explicitly distinguished from business plans; verify commercial/display rights before any product use: https://massive.com/pricing.
 
-**Initial recommendation:** build provider-neutral adapters; prototype with SEC + FRED + one free EOD market-data tier using synthetic/demo fixtures first. Do not purchase a subscription or commit to a provider until coverage, exchange licensing, display/redistribution rights, latency, reliability, and total cost are tested against Aurelius's actual use cases.
+**Initial recommendation:** build provider-neutral adapters; prototype with SEC + FRED + one free EOD market-data tier using synthetic/demo fixtures first. Do not purchase a subscription or commit to a provider until coverage, exchange licensing, display/redistribution rights, latency, reliability, and total cost are tested against FinTrack's actual use cases.
 
 ### Reliability contract
 Every market datum and research claim should carry source/provider, instrument or series identifier, currency/unit, observation period, retrieval timestamp, market timestamp, delay/freshness status, and any transformation applied. Missing or stale data must be visible. AI-generated conclusions must link to the evidence they use. Forecasts must be timestamped and immutable once issued, with outcomes recorded separately.
