@@ -2,6 +2,7 @@ import { addMoney, subtractMoney } from "./money.js";
 
 const ACCOUNT_TYPES = new Set(["checking", "savings", "cash", "credit", "investment", "other"]);
 const TRANSACTION_TYPES = new Set(["income", "expense"]);
+const CATEGORY_KINDS = new Set(["income", "expense", "both"]);
 const FREQUENCIES = new Set(["daily", "weekly", "biweekly", "monthly", "yearly"]);
 const CURRENCIES = new Set(["USD", "COP", "CAD", "EUR", "GBP"]);
 
@@ -40,10 +41,12 @@ export function createAccount(input, idFactory = () => crypto.randomUUID()) {
 }
 
 export function createCategory(input, idFactory = () => crypto.randomUUID()) {
+  const kind = input?.kind ?? "expense";
+  if (!CATEGORY_KINDS.has(kind)) throw new RangeError("Category kind must be income, expense or both.");
   return {
     id: makeId("cat", idFactory),
     name: requireText(input?.name, "Category name"),
-    kind: input?.kind ?? "expense",
+    kind,
     color: input?.color ?? "neutral",
     archived: false
   };
@@ -132,7 +135,7 @@ export function nextOccurrence(date, frequency) {
 export function materializeRecurringTransaction(rule, occurrenceDate, idFactory = () => crypto.randomUUID()) {
   if (!rule || !rule.active) throw new RangeError("Recurring rule is not active.");
   const date = requireDate(occurrenceDate);
-  if (date < rule.startDate || date > rule.nextDate || (rule.endDate && date > rule.endDate)) {
+  if (date !== rule.nextDate || date < rule.startDate || (rule.endDate && date > rule.endDate)) {
     throw new RangeError("Occurrence date is outside the due window.");
   }
   const transaction = createTransaction({
