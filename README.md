@@ -16,6 +16,7 @@ The public-facing dashboard uses illustrative sample data. No bank, brokerage or
 - Savings goals and contributions.
 - Multi-account and investment holdings views.
 - USD/COP display toggle for the demo workspace.
+- Versioned browser-local persistence for demo workspace collections.
 - Responsive desktop and mobile navigation.
 
 ## Run locally
