@@ -47,3 +47,5 @@ Vanilla JavaScript, HTML5, CSS3, Vite and Vitest.
 
 ## Data portability
 The Transactions screen can export the demo transaction collection as a CSV file. Text cells are escaped and spreadsheet formula prefixes are neutralized. The export contains illustrative workspace data only; it is not a bank statement or a verified financial record.
+
+- CSV imports are processed locally in the browser demo, limited to 5 MB / 5,000 rows, and require ISO dates and explicit income/expense types.
