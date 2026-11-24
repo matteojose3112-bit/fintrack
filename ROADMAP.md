@@ -9,10 +9,10 @@
 - [x] Verify production build and publish GitHub Pages.
 
 ## 0.2 — Frontend quality
-- [ ] Add interaction tests for navigation, transactions, budgets and goals.
+- [ ] Add interaction tests for navigation, transactions, budgets, goals and recurring rules.
 - [ ] Improve chart accessibility and empty states.
 - [x] Add versioned local browser storage for demo transactions, budgets, goals, holdings and accounts.
-- [ ] Add portfolio screenshots and project presentation.
+- [ ] Add portfolio screenshots and project presentation.\n- [x] Publish the live GitHub Pages demo URL in the README.
 
 ## 0.3 — API integration
 - [ ] Connect authentication and owner-scoped financial data.
@@ -25,7 +25,7 @@
 - [x] Add balanced paired-entry transfers with integrity validation.
 - [x] Add recurring transaction rules with safe calendar scheduling.
 - [x] Add currency-scoped account balance and cash-flow reporting.
-- [ ] Add user-facing transfer and recurring transaction screens.
+- [ ] Add user-facing transfer management with paired-entry creation and account-balance integration.\n- [x] Add recurring transaction rule management with pause/resume controls in the demo UI (reminder-only; no automatic posting).
 - [x] Add CSV reconciliation review with conservative possible-match detection and explicit per-row import/skip decisions.
 - [x] Add integer minor-unit money parsing and arithmetic for USD, COP, CAD, EUR and GBP.
 - [ ] Add persisted currency-aware multi-currency reporting.

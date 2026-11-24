@@ -1,6 +1,6 @@
 const STORAGE_KEY = "fintrack.workspace.v1";
 const STORAGE_VERSION = 1;
-const PERSISTED_KEYS = ["tx", "budgets", "goals", "holdings", "accounts", "auditLog"];
+const PERSISTED_KEYS = ["tx", "budgets", "goals", "holdings", "accounts", "auditLog", "recurring"];
 
 function browserStorage() {
   try { return globalThis.localStorage; } catch { return null; }

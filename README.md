@@ -4,9 +4,11 @@
 
 A responsive personal finance dashboard concept for cash flow, transactions, budgets, savings goals, accounts and investment holdings.
 
-## Demo
+## Live demo
 
-The public-facing dashboard uses illustrative sample data. No bank, brokerage or payment account is connected.
+**[Open FinTrack](https://matteojose3112-bit.github.io/fintrack/)**
+
+The GitHub Pages demo is live. It runs with illustrative sample data in your browser; no bank, brokerage or payment account is connected.
 
 ## Features
 - Financial overview with balance, income, expenses and savings-rate cards.
@@ -15,6 +17,7 @@ The public-facing dashboard uses illustrative sample data. No bank, brokerage or
 - Import column mapping, row validation preview, exact duplicate detection and explicit confirmation before adding transactions.
 - Conservative reconciliation flags possible matches with the same date, amount, type and currency plus similar normalized descriptions. Each candidate is held for review; users can import it as a separate record or skip it. Existing records are never overwritten or merged.
 - Local import activity log records imported rows, explicit possible-match decisions, exact duplicates and invalid rows with timestamps and source filenames.
+- Recurring transaction rules for tracking repeating bills and income, with pause/resume controls. Rules are reminders only and do not automatically post transactions.
 - Spreadsheet-safe CSV serialization with quoted-field escaping.
 - Budget categories and spending progress.
 - Savings goals and contributions.
@@ -32,7 +35,7 @@ npm run build
 ```
 
 ## Product boundaries
-This frontend currently runs in demo mode with illustrative sample data persisted locally in the browser. It does not claim live bank balances, live market prices, authenticated account storage, brokerage connectivity or trade execution. API integration is a subsequent milestone.
+This frontend currently runs in demo mode with illustrative sample data persisted locally in the browser. It does not provide production authentication, hosted user-specific persistence, live bank balances, live market prices, brokerage connectivity or trade execution. Recurring rules are planning reminders, not automated payment instructions. API integration is a subsequent milestone.
 
 ## Financial domain layer
 - `src/domain.js` defines validated account, category, income/expense transaction, transfer and recurring-rule records.
@@ -45,12 +48,9 @@ This frontend currently runs in demo mode with illustrative sample data persiste
 - `src/money.js` provides exact-precision parsing, formatting, addition and subtraction using integer minor units.
 - Supported currencies: USD, COP, CAD, EUR and GBP. COP is treated as zero-decimal; other listed currencies use two decimals.
 
-## Technology
-Vanilla JavaScript, HTML5, CSS3, Vite and Vitest.
-
-
 ## Data portability
 - CSV imports are processed locally in the browser demo, limited to 5 MB / 5,000 rows, and require ISO dates and explicit income/expense types.
-The Transactions screen can export the demo transaction collection as a CSV file. Text cells are escaped and spreadsheet formula prefixes are neutralized. The export contains illustrative workspace data only; it is not a bank statement or a verified financial record.
+- The Transactions screen can export the demo transaction collection as a CSV file. Text cells are escaped and spreadsheet formula prefixes are neutralized. The export contains illustrative workspace data only; it is not a bank statement or a verified financial record.
 
-- CSV imports are processed locally in the browser demo, limited to 5 MB / 5,000 rows, and require ISO dates and explicit income/expense types.
+## Technology
+Vanilla JavaScript, HTML5, CSS3, Vite and Vitest.
