@@ -28,7 +28,7 @@ npm run build
 ```
 
 ## Product boundaries
-This frontend currently runs in demo mode with browser-memory sample data. It does not claim live bank balances, live market prices, authenticated account storage, brokerage connectivity or trade execution. API integration is a subsequent milestone.
+This frontend currently runs in demo mode with illustrative sample data persisted locally in the browser. It does not claim live bank balances, live market prices, authenticated account storage, brokerage connectivity or trade execution. API integration is a subsequent milestone.
 
 ## Financial domain layer
 - `src/domain.js` defines validated account, category, income/expense transaction, transfer and recurring-rule records.
