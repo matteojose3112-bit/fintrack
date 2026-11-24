@@ -30,6 +30,13 @@ npm run build
 ## Product boundaries
 This frontend currently runs in demo mode with browser-memory sample data. It does not claim live bank balances, live market prices, authenticated account storage, brokerage connectivity or trade execution. API integration is a subsequent milestone.
 
+## Financial domain layer
+- `src/domain.js` defines validated account, category, income/expense transaction, transfer and recurring-rule records.
+- Transfers are represented as paired entries sharing a transfer ID, with validation for matching amount, currency and date.
+- Recurring rules support daily, weekly, biweekly, monthly and yearly schedules, including end-of-month date clamping.
+- Account balances and cash-flow summaries are computed from integer minor-unit values; internal transfers are excluded from income/expense reporting.
+- Domain behavior is covered by `tests/domain.test.js`.
+
 ## Financial domain utilities
 - `src/money.js` provides exact-precision parsing, formatting, addition and subtraction using integer minor units.
 - Supported currencies: USD, COP, CAD, EUR and GBP. COP is treated as zero-decimal; other listed currencies use two decimals.
