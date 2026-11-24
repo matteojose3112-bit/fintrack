@@ -1,4 +1,4 @@
-import { addMoney } from "./money.js";
+import { addMoney, subtractMoney } from "./money.js";
 
 const ACCOUNT_TYPES = new Set(["checking", "savings", "cash", "credit", "investment", "other"]);
 const TRANSACTION_TYPES = new Set(["income", "expense"]);
@@ -14,9 +14,9 @@ function requirePositiveInteger(value, field) {
   return value;
 }
 function requireDate(value, field = "date") {
-  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value) || Number.isNaN(Date.parse(value + "T00:00:00Z"))) {
-    throw new TypeError(field + " must use YYYY-MM-DD.");
-  }
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) throw new TypeError(field + " must use YYYY-MM-DD.");
+  const parsed = new Date(value + "T00:00:00Z");
+  if (Number.isNaN(parsed.getTime()) || parsed.toISOString().slice(0, 10) !== value) throw new TypeError(field + " must be a real calendar date.");
   return value;
 }
 function requireCurrency(value) {
@@ -154,7 +154,7 @@ export function summarizeCashFlow(transactions, { from, to, currency } = {}) {
     else if (tx.type === "expense") summary.expenseMinor = addMoney(summary.expenseMinor, tx.amountMinor);
     return summary;
   }, { incomeMinor: 0, expenseMinor: 0, transactionCount: filtered.length });
-  summary.netMinor = summary.incomeMinor - summary.expenseMinor;
+  summary.netMinor = subtractMoney(summary.incomeMinor, summary.expenseMinor);
   return summary;
 }
 
