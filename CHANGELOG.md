@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.8 — Account-linked transaction ledger
+- Added account selection, transaction type and date to manual transaction entry.
+- Assigned existing USD demo transactions to Main checking without discarding saved records.
+- Calculated account and total balances from opening amounts, assigned income/expenses and paired transfers.
+- Kept non-USD transactions out of USD account balances until matching-currency accounts are supported.
+- Added tests for per-account balance calculations and transaction account-assignment persistence.
+
 ## 0.4.7 — Internal transfer management
 - Added a Transfers screen with account selection, date, amount and description.
 - Created balanced paired ledger entries with shared transfer IDs and integrity validation.

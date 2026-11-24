@@ -26,6 +26,12 @@ describe("workspace storage", () => {
     });
   });
 
+  it("persists transaction account assignments", () => {
+    const transactions = [["Groceries", "Food", "2026-11-24", 25.5, "expense", "USD", "Main checking"]];
+    expect(saveWorkspace({ tx: transactions }, storage)).toBe(true);
+    expect(loadWorkspace(storage)).toEqual({ tx: transactions });
+  });
+
   it("persists paired transfer ledger entries", () => {
     const pair = [
       { id: "txn_out", transferId: "trf_1", accountId: "Main checking", type: "expense", amountMinor: 12500, currency: "USD", date: "2026-11-24", transferSide: "out" },

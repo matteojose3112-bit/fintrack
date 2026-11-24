@@ -19,6 +19,7 @@ The GitHub Pages demo is live. It runs with illustrative sample data in your bro
 - Local import activity log records imported rows, explicit possible-match decisions, exact duplicates and invalid rows with timestamps and source filenames.
 - Recurring transaction rules for tracking repeating bills and income, with pause/resume controls. Rules are reminders only and do not automatically post transactions.
 - Internal transfers with paired ledger entries, transfer integrity checks and account-balance updates. Transfers are excluded from income/expense totals.
+- Account-linked income and expense transactions; balances combine opening amounts, assigned transactions and internal transfers.
 - Spreadsheet-safe CSV serialization with quoted-field escaping.
 - Budget categories and spending progress.
 - Savings goals and contributions.

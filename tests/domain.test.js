@@ -44,6 +44,22 @@ describe("financial domain", () => {
     expect(accountBalances(accounts, transactions)[0].balanceMinor).toBe(12100);
   });
 
+  it("calculates separate account balances from assigned transactions and transfers", () => {
+    const accounts = [
+      { id: "checking", currency: "USD", openingBalanceMinor: 100000 },
+      { id: "savings", currency: "USD", openingBalanceMinor: 50000 }
+    ];
+    const pair = createTransfer({ fromAccountId: "checking", toAccountId: "savings", amountMinor: 20000, currency: "USD", date: "2026-11-24" }, ids);
+    const transactions = [
+      { accountId: "checking", currency: "USD", type: "income", amountMinor: 30000 },
+      { accountId: "checking", currency: "USD", type: "expense", amountMinor: 10000 }
+    ];
+    expect(accountBalances(accounts, [...transactions, ...pair])).toEqual([
+      { accountId: "checking", currency: "USD", balanceMinor: 100000 },
+      { accountId: "savings", currency: "USD", balanceMinor: 70000 }
+    ]);
+  });
+
   it("reports cash flow while excluding internal transfers", () => {
     const rows = [
       { type: "income", amountMinor: 10000, currency: "USD", date: "2026-11-01" },
