@@ -1,4 +1,11 @@
-# Changelog\n\n## 0.4.7 — Internal transfer management\n- Added a Transfers screen with account selection, date, amount and description.\n- Created balanced paired ledger entries with shared transfer IDs and integrity validation.\n- Persisted transfer pairs locally and incorporated them into demo account balances.\n- Kept internal transfers out of income and expense totals.\n- Fixed recurring screen routing and date validation.\n\n# Changelog
+# Changelog
+
+## 0.4.7 — Internal transfer management
+- Added a Transfers screen with account selection, date, amount and description.
+- Created balanced paired ledger entries with shared transfer IDs and integrity validation.
+- Persisted transfer pairs locally and incorporated them into demo account balances.
+- Kept internal transfers out of income and expense totals.
+- Fixed recurring screen routing and date validation.
 
 ## 0.4.5 — Import audit trail
 - Added a local activity log for completed CSV reviews, including imported rows, explicit possible-match decisions, duplicates and invalid rows.

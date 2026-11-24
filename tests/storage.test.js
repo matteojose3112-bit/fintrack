@@ -26,6 +26,15 @@ describe("workspace storage", () => {
     });
   });
 
+  it("persists paired transfer ledger entries", () => {
+    const pair = [
+      { id: "txn_out", transferId: "trf_1", accountId: "Main checking", type: "expense", amountMinor: 12500, currency: "USD", date: "2026-11-24", transferSide: "out" },
+      { id: "txn_in", transferId: "trf_1", accountId: "Savings account", type: "income", amountMinor: 12500, currency: "USD", date: "2026-11-24", transferSide: "in" }
+    ];
+    expect(saveWorkspace({ transfers: [pair] }, storage)).toBe(true);
+    expect(loadWorkspace(storage)).toEqual({ transfers: [pair] });
+  });
+
   it("ignores unknown schema versions and malformed JSON", () => {
     storage.setItem(workspaceStorageKey, JSON.stringify({ version: 99, data: { tx: [["bad"]] } }));
     expect(loadWorkspace(storage)).toEqual({});
