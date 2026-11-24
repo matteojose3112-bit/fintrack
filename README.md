@@ -30,5 +30,9 @@ npm run build
 ## Product boundaries
 This frontend currently runs in demo mode with browser-memory sample data. It does not claim live bank balances, live market prices, authenticated account storage, brokerage connectivity or trade execution. API integration is a subsequent milestone.
 
+## Financial domain utilities
+- `src/money.js` provides exact-precision parsing, formatting, addition and subtraction using integer minor units.
+- Supported currencies: USD, COP, CAD, EUR and GBP. COP is treated as zero-decimal; other listed currencies use two decimals.
+
 ## Technology
 Vanilla JavaScript, HTML5, CSS3, Vite and Vitest.
