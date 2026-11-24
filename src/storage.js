@@ -2,6 +2,10 @@ const STORAGE_KEY = "fintrack.workspace.v1";
 const STORAGE_VERSION = 1;
 const PERSISTED_KEYS = ["tx", "budgets", "goals", "holdings", "accounts"];
 
+function browserStorage() {
+  try { return globalThis.localStorage; } catch { return null; }
+}
+
 function isRecord(value) {
   return value !== null && typeof value === "object" && !Array.isArray(value);
 }
@@ -10,7 +14,7 @@ function validCollection(value) {
   return Array.isArray(value) && value.every((item) => Array.isArray(item));
 }
 
-export function loadWorkspace(storage = globalThis.localStorage) {
+export function loadWorkspace(storage = browserStorage()) {
   try {
     const raw = storage?.getItem(STORAGE_KEY);
     if (!raw) return {};
