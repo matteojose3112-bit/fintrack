@@ -6,12 +6,12 @@
 - [x] Add overview, transactions, budgets, savings goals, investments and accounts.
 - [x] Add interactive demo transactions, budget creation and savings contributions.
 - [x] Disclose sample data and unavailable live integrations.
-- [ ] Verify production build and publish GitHub Pages.
+- [x] Verify production build and publish GitHub Pages.
 
 ## 0.2 — Frontend quality
 - [ ] Add interaction tests for navigation, transactions, budgets and goals.
 - [ ] Improve chart accessibility and empty states.
-- [ ] Add persistent demo workspace storage.
+- [x] Add versioned local browser storage for demo transactions, budgets, goals, holdings and accounts.
 - [ ] Add portfolio screenshots and project presentation.
 
 ## 0.3 — API integration
