@@ -21,10 +21,15 @@
 - [ ] Verify production CORS and API configuration.
 
 ## 0.4 — Full personal finance
-- [ ] Accounts, transfers and reconciliation workflows.
+- [x] Add validated account, category and transaction domain models.
+- [x] Add balanced paired-entry transfers with integrity validation.
+- [x] Add recurring transaction rules with safe calendar scheduling.
+- [x] Add currency-scoped account balance and cash-flow reporting.
+- [ ] Add user-facing transfer, reconciliation and recurring transaction screens.
 - [x] Add integer minor-unit money parsing and arithmetic for USD, COP, CAD, EUR and GBP.
 - [ ] Add persisted currency-aware multi-currency reporting.
-- [ ] Cash-flow analysis, budgets, goals and reports.
+- [x] Add a reusable cash-flow reporting primitive with internal transfers excluded.
+- [ ] Add interactive cash-flow reports, budgets and goal analytics.
 - [ ] CSV import/export and audit history.
 
 ## 0.5 — Investments
