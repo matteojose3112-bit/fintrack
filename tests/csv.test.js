@@ -4,37 +4,47 @@ import { previewTransactionImport, suggestColumnMapping } from "../src/import.js
 
 describe("parseCSV", () => {
   it("parses headers and rows", () => {
-    expect(parseCSV("name,city\nAda,London")).toEqual({
+    expect(parseCSV("name,city
+Ada,London")).toEqual({
       headers: ["name", "city"],
       rows: [["Ada", "London"]],
     });
   });
 
   it("supports commas and newlines inside quoted fields", () => {
-    expect(parseCSV('name,note\nAda,"London, UK"\nGrace,"First line\nSecond line"').rows).toEqual([
+    expect(parseCSV('name,note
+Ada,"London, UK"
+Grace,"First line
+Second line"').rows).toEqual([
       ["Ada", "London, UK"],
-      ["Grace", "First line\nSecond line"],
+      ["Grace", "First line
+Second line"],
     ]);
   });
 
   it("supports escaped quote characters", () => {
-    expect(parseCSV('name,quote\nAda,"She said ""hello"""').rows).toEqual([
+    expect(parseCSV('name,quote
+Ada,"She said ""hello"""').rows).toEqual([
       ["Ada", 'She said "hello"'],
     ]);
   });
 
   it("fills missing trailing values and names blank columns", () => {
-    expect(parseCSV("name,\nAda").rows).toEqual([["Ada", ""]]);
-    expect(parseCSV("name,\nAda").headers).toEqual(["name", "Column 2"]);
+    expect(parseCSV("name,
+Ada").rows).toEqual([["Ada", ""]]);
+    expect(parseCSV("name,
+Ada").headers).toEqual(["name", "Column 2"]);
   });
 
   it("handles a byte order mark and empty input", () => {
-    expect(parseCSV("\uFEFFname\nAda").headers).toEqual(["name"]);
+    expect(parseCSV("\uFEFFname
+Ada").headers).toEqual(["name"]);
     expect(parseCSV("")).toEqual({ headers: [], rows: [] });
   });
 
   it("rejects unclosed quoted fields", () => {
-    expect(() => parseCSV('name,note\nAda,"unfinished')).toThrow(/unclosed/i);
+    expect(() => parseCSV('name,note
+Ada,"unfinished')).toThrow(/unclosed/i);
   });
 });
 
@@ -62,17 +72,26 @@ describe("dataset helpers", () => {
 
 describe("serializeCSV", () => {
   it("escapes commas, quotes and embedded line breaks", () => {
-    expect(serializeCSV(["name", "note"], [["Ada", 'Said "hello", twice'], ["Grace", "line 1\nline 2"]])).toBe(
-      'name,note\r\nAda,"Said ""hello"", twice"\r\nGrace,"line 1\nline 2"\r\n'
+    expect(serializeCSV(["name", "note"], [["Ada", 'Said "hello", twice'], ["Grace", "line 1
+line 2"]])).toBe(
+      'name,note\r
+Ada,"Said ""hello"", twice"\r
+Grace,"line 1
+line 2"\r
+'
     );
   });
   it("neutralizes formula-like text while preserving numeric negatives", () => {
     expect(serializeCSV(["description", "amount"], [["=HYPERLINK(1)", -1250], ["  @SUM(A1)", 20]])).toBe(
-      "description,amount\r\n'=HYPERLINK(1),-1250\r\n'  @SUM(A1),20\r\n"
+      "description,amount\r
+'=HYPERLINK(1),-1250\r
+'  @SUM(A1),20\r
+"
     );
   });
   it("handles empty data and rejects invalid input", () => {
-    expect(serializeCSV(["name"], [])).toBe("name\r\n");
+    expect(serializeCSV(["name"], [])).toBe("name\r
+");
     expect(() => serializeCSV("name", [])).toThrow(TypeError);
     expect(() => serializeCSV(["name"], [null])).toThrow(TypeError);
   });
@@ -88,7 +107,10 @@ describe("transaction CSV import", () => {
  it("rejects unsupported currency and non-positive amounts",()=>{const result=previewTransactionImport(headers,[["2026-11-20","Test","Food","expense","-2","XYZ"]],suggestColumnMapping(headers));expect(result.invalid[0].errors).toHaveLength(2)});
 });
 
-describe("transaction reconciliation",()=>{const headers=["Date","Description","Category","Type","Amount","Currency"];\nconst mapping=suggestColumnMapping(headers);\nit("holds a same-financial-shape record with a similar changed description for review",()=>{const result=previewTransactionImport(headers,[["2026-11-20","Whole Foods Market","Food","expense","125.50","USD"]],suggestColumnMapping(headers),[["Whole Foods","Food","2026-11-20",125.5,"expense","USD"]]);expect(result.valid).toHaveLength(0);expect(result.possibleMatches).toHaveLength(1);expect(result.possibleMatches[0].match[0]).toBe("Whole Foods");expect(result.possibleMatches[0].reason).toMatch(/same date, amount, type and currency/i)});
+describe("transaction reconciliation",()=>{const headers=["Date","Description","Category","Type","Amount","Currency"];
+const mapping=suggestColumnMapping(headers);
+it("holds a same-financial-shape record with a similar changed description for review",()=>{const result=previewTransactionImport(headers,[["2026-11-20","Whole Foods Market","Food","expense","125.50","USD"]],suggestColumnMapping(headers),[["Whole Foods","Food","2026-11-20",125.5,"expense","USD"]]);expect(result.valid).toHaveLength(0);expect(result.possibleMatches).toHaveLength(1);expect(result.possibleMatches[0].match[0]).toBe("Whole Foods");expect(result.possibleMatches[0].reason).toMatch(/same date, amount, type and currency/i)});
 it("does not flag a likely match when a financial attribute differs",()=>{const existing=[["Whole Foods","Food","2026-11-20",125.5,"expense","USD"]];const rows=[["2026-11-20","Whole Foods Market","Food","expense","126","USD"],["2026-11-21","Whole Foods Market","Food","expense","125.5","USD"],["2026-11-20","Whole Foods Market","Food","income","125.5","USD"],["2026-11-20","Whole Foods Market","Food","expense","125.5","CAD"]];for(const row of rows){const result=previewTransactionImport(headers,[row],suggestColumnMapping(headers),existing);expect(result.possibleMatches).toHaveLength(0);expect(result.valid).toHaveLength(1)}});
 it("keeps exact duplicates separate from possible matches",()=>{const result=previewTransactionImport(headers,[["2026-11-20","Whole Foods","Food","expense","125.50","USD"]],suggestColumnMapping(headers),[["Whole Foods","Food","2026-11-20",125.5,"expense","USD"]]);expect(result.duplicates).toHaveLength(1);expect(result.possibleMatches).toHaveLength(0)});
-\n});\n
+
+});
