@@ -22,7 +22,8 @@
 
 ## 0.4 — Full personal finance
 - [ ] Accounts, transfers and reconciliation workflows.
-- [ ] Exact-precision money handling and multi-currency reporting.
+- [x] Add integer minor-unit money parsing and arithmetic for USD, COP, CAD, EUR and GBP.
+- [ ] Add persisted currency-aware multi-currency reporting.
 - [ ] Cash-flow analysis, budgets, goals and reports.
 - [ ] CSV import/export and audit history.
 
