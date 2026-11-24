@@ -1,3 +1,8 @@
+## 0.4.1 — Test corrections
+
+- Corrected the cash-flow expectation to reflect income minus expenses.
+- Verified recurring duplicate prevention against the advanced rule state returned after materialization.
+
 # Changelog
 
 ## 0.4.0 — Financial domain foundation
