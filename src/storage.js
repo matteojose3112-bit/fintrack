@@ -45,7 +45,7 @@ export function saveWorkspace(state, storage = browserStorage()) {
   }
 }
 
-export function clearWorkspace(storage = globalThis.localStorage) {
+export function clearWorkspace(storage = browserStorage()) {
   try {
     storage?.removeItem(STORAGE_KEY);
     return true;
