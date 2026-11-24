@@ -1,9 +1,15 @@
+# Changelog
+
+## 0.4.4 — Transaction reconciliation review
+- Added conservative possible-match detection using matching date, amount, transaction type and currency plus normalized description similarity.
+- Added per-row review decisions; possible matches default to Skip and can be explicitly imported as separate records.
+- Kept exact duplicates excluded and protected existing transactions from automatic edits, merges or overwrites.
+- Added tests for likely matches, financial-attribute mismatches and exact-duplicate precedence.
+
 ## 0.4.1 — Test corrections
 
 - Corrected the cash-flow expectation to reflect income minus expenses.
 - Verified recurring duplicate prevention against the advanced rule state returned after materialization.
-
-# Changelog
 
 ## 0.4.3 — Reviewed transaction CSV import
 - Added local CSV file selection with 5 MB and 5,000-row limits.

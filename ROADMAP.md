@@ -25,7 +25,8 @@
 - [x] Add balanced paired-entry transfers with integrity validation.
 - [x] Add recurring transaction rules with safe calendar scheduling.
 - [x] Add currency-scoped account balance and cash-flow reporting.
-- [ ] Add user-facing transfer, reconciliation and recurring transaction screens.
+- [ ] Add user-facing transfer and recurring transaction screens.
+- [x] Add CSV reconciliation review with conservative possible-match detection and explicit per-row import/skip decisions.
 - [x] Add integer minor-unit money parsing and arithmetic for USD, COP, CAD, EUR and GBP.
 - [ ] Add persisted currency-aware multi-currency reporting.
 - [x] Add a reusable cash-flow reporting primitive with internal transfers excluded.

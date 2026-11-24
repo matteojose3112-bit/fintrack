@@ -12,7 +12,8 @@ The public-facing dashboard uses illustrative sample data. No bank, brokerage or
 - Financial overview with balance, income, expenses and savings-rate cards.
 - Cash-flow and spending visualizations.
 - Searchable transaction list, add-transaction interaction, CSV import and export.
-- Import column mapping, row validation preview, duplicate detection and explicit confirmation before adding transactions.
+- Import column mapping, row validation preview, exact duplicate detection and explicit confirmation before adding transactions.
+- Conservative reconciliation flags possible matches with the same date, amount, type and currency plus similar normalized descriptions. Each candidate is held for review; users can import it as a separate record or skip it. Existing records are never overwritten or merged.
 - Spreadsheet-safe CSV serialization with quoted-field escaping.
 - Budget categories and spending progress.
 - Savings goals and contributions.
