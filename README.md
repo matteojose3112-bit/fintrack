@@ -18,6 +18,7 @@ The GitHub Pages demo is live. It runs with illustrative sample data in your bro
 - Conservative reconciliation flags possible matches with the same date, amount, type and currency plus similar normalized descriptions. Each candidate is held for review; users can import it as a separate record or skip it. Existing records are never overwritten or merged.
 - Local import activity log records imported rows, explicit possible-match decisions, exact duplicates and invalid rows with timestamps and source filenames.
 - Recurring transaction rules for tracking repeating bills and income, with pause/resume controls. Rules are reminders only and do not automatically post transactions.
+- Internal transfers with paired ledger entries, transfer integrity checks and account-balance updates. Transfers are excluded from income/expense totals.
 - Spreadsheet-safe CSV serialization with quoted-field escaping.
 - Budget categories and spending progress.
 - Savings goals and contributions.
@@ -35,11 +36,11 @@ npm run build
 ```
 
 ## Product boundaries
-This frontend currently runs in demo mode with illustrative sample data persisted locally in the browser. It does not provide production authentication, hosted user-specific persistence, live bank balances, live market prices, brokerage connectivity or trade execution. Recurring rules are planning reminders, not automated payment instructions. API integration is a subsequent milestone.
+This frontend currently runs in demo mode with illustrative sample data persisted locally in the browser. It does not provide production authentication, hosted user-specific persistence, live bank balances, live market prices, brokerage connectivity or trade execution. Recurring rules are planning reminders, not automated payment instructions. Internal transfers update demo account balances only; they do not move real money. API integration is a subsequent milestone.
 
 ## Financial domain layer
 - `src/domain.js` defines validated account, category, income/expense transaction, transfer and recurring-rule records.
-- Transfers are represented as paired entries sharing a transfer ID, with validation for matching amount, currency and date.
+- Transfers are represented as paired entries sharing a transfer ID, with validation for matching amount, currency and date. The Transfers screen creates these pairs and updates the demo account balances; transfer records are persisted locally.
 - Recurring rules support daily, weekly, biweekly, monthly and yearly schedules, including end-of-month date clamping.
 - Account balances and cash-flow summaries are computed from integer minor-unit values; internal transfers are excluded from income/expense reporting.
 - Domain behavior is covered by `tests/domain.test.js`.
