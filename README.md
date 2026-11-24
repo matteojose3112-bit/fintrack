@@ -11,7 +11,7 @@ The public-facing dashboard uses illustrative sample data. No bank, brokerage or
 ## Features
 - Financial overview with balance, income, expenses and savings-rate cards.
 - Cash-flow and spending visualizations.
-- Searchable transaction list and add-transaction interaction.
+- Searchable transaction list, add-transaction interaction and CSV export.\n- Spreadsheet-safe CSV serialization with quoted-field escaping.
 - Budget categories and spending progress.
 - Savings goals and contributions.
 - Multi-account and investment holdings views.
@@ -43,3 +43,7 @@ This frontend currently runs in demo mode with illustrative sample data persiste
 
 ## Technology
 Vanilla JavaScript, HTML5, CSS3, Vite and Vitest.
+
+
+## Data portability
+The Transactions screen can export the demo transaction collection as a CSV file. Text cells are escaped and spreadsheet formula prefixes are neutralized. The export contains illustrative workspace data only; it is not a bank statement or a verified financial record.

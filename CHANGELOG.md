@@ -3,7 +3,7 @@
 - Corrected the cash-flow expectation to reflect income minus expenses.
 - Verified recurring duplicate prevention against the advanced rule state returned after materialization.
 
-# Changelog
+# Changelog\n\n## 0.4.2 — Transaction CSV export\n- Added CSV export from the Transactions screen for the full demo transaction collection.\n- Added escaping for commas, quotes and embedded line breaks.\n- Neutralized formula-like text cells to reduce spreadsheet formula-injection risk.\n- Added automated serializer tests for escaping, formula protection and invalid input.\n
 
 ## 0.4.0 — Financial domain foundation
 - Added validated account, category, income/expense transaction and recurring-rule models.

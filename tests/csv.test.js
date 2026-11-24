@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getDatasetStats, parseCSV, searchRows } from "../src/csv.js";
+import { getDatasetStats, parseCSV, searchRows, serializeCSV } from "../src/csv.js";
 
 describe("parseCSV", () => {
   it("parses headers and rows", () => {
@@ -55,5 +55,24 @@ describe("dataset helpers", () => {
   it("returns all rows for an empty search", () => {
     const rows = [["Ada"], ["Grace"]];
     expect(searchRows(rows, "  ")).toBe(rows);
+  });
+});
+
+
+describe("serializeCSV", () => {
+  it("escapes commas, quotes and embedded line breaks", () => {
+    expect(serializeCSV(["name", "note"], [["Ada", 'Said "hello", twice'], ["Grace", "line 1\\nline 2"]])).toBe(
+      'name,note\\r\\nAda,"Said ""hello"", twice"\\r\\nGrace,"line 1\\nline 2"\\r\\n'
+    );
+  });
+  it("neutralizes formula-like text while preserving numeric negatives", () => {
+    expect(serializeCSV(["description", "amount"], [["=HYPERLINK(1)", -1250], ["  @SUM(A1)", 20]])).toBe(
+      "description,amount\\r\\n'=HYPERLINK(1),-1250\\r\\n'  @SUM(A1),20\\r\\n"
+    );
+  });
+  it("handles empty data and rejects invalid input", () => {
+    expect(serializeCSV(["name"], [])).toBe("name\\r\\n");
+    expect(() => serializeCSV("name", [])).toThrow(TypeError);
+    expect(() => serializeCSV(["name"], [null])).toThrow(TypeError);
   });
 });

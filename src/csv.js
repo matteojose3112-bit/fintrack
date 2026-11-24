@@ -85,3 +85,23 @@ export function searchRows(rows, query) {
     row.some((value) => value.toLocaleLowerCase().includes(normalizedQuery))
   );
 }
+
+
+/**
+ * Serialize tabular data as CSV and neutralize formula-like text cells.
+ */
+export function serializeCSV(headers, rows) {
+  if (!Array.isArray(headers) || !Array.isArray(rows)) {
+    throw new TypeError("CSV headers and rows must be arrays.");
+  }
+  const encodeCell = (value) => {
+    let text = value == null ? "" : String(value);
+    if (typeof value === "string" && /^\\s*[=+@-]/.test(text)) text = "'" + text;
+    if (/[",\\r\\n]/.test(text)) text = '"' + text.replace(/"/g, '""') + '"';
+    return text;
+  };
+  return [headers, ...rows].map((row) => {
+    if (!Array.isArray(row)) throw new TypeError("Each CSV row must be an array.");
+    return row.map(encodeCell).join(",");
+  }).join("\\r\\n") + "\\r\\n";
+}
