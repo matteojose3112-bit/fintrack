@@ -52,7 +52,7 @@ describe("financial domain", () => {
       { type: "expense", amountMinor: 100, currency: "COP", date: "2026-11-02" }
     ];
     const result = summarizeCashFlow(rows, { from: "2026-11-01", to: "2026-11-30", currency: "USD" });
-    expect(result).toEqual({ incomeMinor: 10000, expenseMinor: 2500, netMinor: 0, transactionCount: 2 });
+    expect(result).toEqual({ incomeMinor: 10000, expenseMinor: 2500, netMinor: 7500, transactionCount: 2 });
     expect(result.incomeMinor - result.expenseMinor).toBe(7500);
   });
 
@@ -71,7 +71,7 @@ describe("financial domain", () => {
     const result = materializeRecurringTransaction(rule, "2026-11-01", ids);
     expect(result.transaction.recurringRuleId).toBe(rule.id);
     expect(result.updatedRule.nextDate).toBe("2026-12-01");
-    expect(() => materializeRecurringTransaction(rule, "2026-11-01", ids)).toThrow(RangeError);
+    expect(() => materializeRecurringTransaction(result.updatedRule, "2026-11-01", ids)).toThrow(RangeError);
   });
 
   it("rejects invalid dates, cross-account transfers and malformed recurrence", () => {
