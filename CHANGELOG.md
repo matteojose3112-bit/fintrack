@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.0 — Financial domain foundation
+- Added validated account, category, income/expense transaction and recurring-rule models.
+- Added paired transfer entries and transfer integrity validation to avoid counting internal movement as income or spending.
+- Added daily, weekly, biweekly, monthly and yearly recurrence scheduling with month-end clamping.
+- Added account balance and date-/currency-filtered cash-flow reporting primitives.
+- Added automated domain tests for validation, transfers, balances, recurrence and reporting.
+- Hardened browser storage defaults for restricted storage environments.
+
 ## 0.3.0 — Persistent demo workspace and money primitives
 - Added exact-precision money utilities using integer minor units, avoiding floating-point arithmetic drift.
 - Added supported-currency handling for USD, COP, CAD, EUR and GBP with strict decimal precision validation.
