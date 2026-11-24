@@ -61,17 +61,17 @@ describe("dataset helpers", () => {
 
 describe("serializeCSV", () => {
   it("escapes commas, quotes and embedded line breaks", () => {
-    expect(serializeCSV(["name", "note"], [["Ada", 'Said "hello", twice'], ["Grace", "line 1\\nline 2"]])).toBe(
-      'name,note\\r\\nAda,"Said ""hello"", twice"\\r\\nGrace,"line 1\\nline 2"\\r\\n'
+    expect(serializeCSV(["name", "note"], [["Ada", 'Said "hello", twice'], ["Grace", "line 1\nline 2"]])).toBe(
+      'name,note\r\nAda,"Said ""hello"", twice"\r\nGrace,"line 1\nline 2"\r\n'
     );
   });
   it("neutralizes formula-like text while preserving numeric negatives", () => {
     expect(serializeCSV(["description", "amount"], [["=HYPERLINK(1)", -1250], ["  @SUM(A1)", 20]])).toBe(
-      "description,amount\\r\\n'=HYPERLINK(1),-1250\\r\\n'  @SUM(A1),20\\r\\n"
+      "description,amount\r\n'=HYPERLINK(1),-1250\r\n'  @SUM(A1),20\r\n"
     );
   });
   it("handles empty data and rejects invalid input", () => {
-    expect(serializeCSV(["name"], [])).toBe("name\\r\\n");
+    expect(serializeCSV(["name"], [])).toBe("name\r\n");
     expect(() => serializeCSV("name", [])).toThrow(TypeError);
     expect(() => serializeCSV(["name"], [null])).toThrow(TypeError);
   });

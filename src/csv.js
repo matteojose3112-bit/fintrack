@@ -96,12 +96,12 @@ export function serializeCSV(headers, rows) {
   }
   const encodeCell = (value) => {
     let text = value == null ? "" : String(value);
-    if (typeof value === "string" && /^\\s*[=+@-]/.test(text)) text = "'" + text;
-    if (/[",\\r\\n]/.test(text)) text = '"' + text.replace(/"/g, '""') + '"';
+    if (typeof value === "string" && /^\s*[=+@-]/.test(text)) text = "'" + text;
+    if (/[",\r\n]/.test(text)) text = '"' + text.replace(/"/g, '""') + '"';
     return text;
   };
   return [headers, ...rows].map((row) => {
     if (!Array.isArray(row)) throw new TypeError("Each CSV row must be an array.");
     return row.map(encodeCell).join(",");
-  }).join("\\r\\n") + "\\r\\n";
+  }).join("\r\n") + "\r\n";
 }
