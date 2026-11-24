@@ -1,2 +1,2 @@
 import { defineConfig } from "vite";
-export default defineConfig({base:"/FinTrack/",test:{environment:"node",coverage:{reporter:["text","html"]}}});
+export default defineConfig({base:"/fintrack/",test:{environment:"node",coverage:{reporter:["text","html"]}}});
