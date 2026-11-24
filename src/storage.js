@@ -30,7 +30,7 @@ export function loadWorkspace(storage = browserStorage()) {
   }
 }
 
-export function saveWorkspace(state, storage = globalThis.localStorage) {
+export function saveWorkspace(state, storage = browserStorage()) {
   if (!isRecord(state) || !storage) return false;
   const data = Object.fromEntries(
     PERSISTED_KEYS
