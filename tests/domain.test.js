@@ -71,10 +71,12 @@ describe("financial domain", () => {
     const result = materializeRecurringTransaction(rule, "2026-11-01", ids);
     expect(result.transaction.recurringRuleId).toBe(rule.id);
     expect(result.updatedRule.nextDate).toBe("2026-12-01");
+    expect(() => materializeRecurringTransaction(rule, "2026-11-01", ids)).toThrow(RangeError);
   });
 
   it("rejects invalid dates, cross-account transfers and malformed recurrence", () => {
     expect(() => createTransfer({ fromAccountId: "a", toAccountId: "a", amountMinor: 10, date: "2026-11-01" }, ids)).toThrow(RangeError);
+    expect(() => createCategory({ name: "Bad", kind: "transfer" }, ids)).toThrow(RangeError);
     expect(() => createRecurringRule({ accountId: "a", description: "Rent", type: "expense", amountMinor: 100, frequency: "hourly", startDate: "2026-11-01" }, ids)).toThrow(RangeError);
     expect(() => createTransaction({ accountId: "a", description: "Bad", type: "expense", amountMinor: 10, date: "not-a-date" }, ids)).toThrow(TypeError);
   });
