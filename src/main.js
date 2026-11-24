@@ -1,135 +1,29 @@
-import { getDatasetStats, parseCSV, searchRows } from "./csv.js";
 import "./styles.css";
-
-const elements = {
-  dropZone: document.querySelector("#drop-zone"),
-  fileInput: document.querySelector("#file-input"),
-  dataPanel: document.querySelector("#data-panel"),
-  fileName: document.querySelector("#file-name"),
-  rowCount: document.querySelector("#row-count"),
-  columnCount: document.querySelector("#column-count"),
-  emptyCount: document.querySelector("#empty-count"),
-  searchInput: document.querySelector("#search-input"),
-  resultCount: document.querySelector("#result-count"),
-  tableHead: document.querySelector("#table-head"),
-  tableBody: document.querySelector("#table-body"),
-  tableFootnote: document.querySelector("#table-footnote"),
-  clearButton: document.querySelector("#clear-button"),
-  errorMessage: document.querySelector("#error-message"),
-};
-
-const state = { headers: [], rows: [], fileName: "" };
-const PREVIEW_LIMIT = 100;
-
-elements.fileInput.addEventListener("change", (event) => {
-  const [file] = event.target.files ?? [];
-  if (file) loadFile(file);
-});
-
-elements.dropZone.addEventListener("dragover", (event) => {
-  event.preventDefault();
-  elements.dropZone.classList.add("is-dragging");
-});
-
-elements.dropZone.addEventListener("dragleave", () => {
-  elements.dropZone.classList.remove("is-dragging");
-});
-
-elements.dropZone.addEventListener("drop", (event) => {
-  event.preventDefault();
-  elements.dropZone.classList.remove("is-dragging");
-  const [file] = event.dataTransfer.files ?? [];
-  if (file) loadFile(file);
-});
-
-elements.searchInput.addEventListener("input", renderTable);
-elements.clearButton.addEventListener("click", resetWorkspace);
-
-async function loadFile(file) {
-  hideError();
-
-  if (!file.name.toLowerCase().endsWith(".csv") && file.type !== "text/csv") {
-    showError("Please choose a CSV file.");
-    return;
-  }
-
-  try {
-    const content = await file.text();
-    const dataset = parseCSV(content);
-
-    if (!dataset.headers.length) {
-      showError("This file appears to be empty.");
-      return;
-    }
-
-    state.headers = dataset.headers;
-    state.rows = dataset.rows;
-    state.fileName = file.name;
-    elements.fileName.textContent = file.name;
-    elements.dropZone.hidden = true;
-    elements.dataPanel.hidden = false;
-
-    const stats = getDatasetStats(state.rows, state.headers.length);
-    elements.rowCount.textContent = stats.rowCount.toLocaleString();
-    elements.columnCount.textContent = stats.columnCount.toLocaleString();
-    elements.emptyCount.textContent = stats.emptyCells.toLocaleString();
-    elements.searchInput.value = "";
-    renderTable();
-  } catch (error) {
-    showError(error instanceof Error ? error.message : "Unable to read this CSV file.");
-  }
+const $=s=>document.querySelector(s), money=(n,c)=>new Intl.NumberFormat("en-US",{style:"currency",currency:c,maximumFractionDigits:0}).format(n);
+const S={page:"Overview",currency:"USD",query:"",tx:[["Monthly salary","Income","Nov 22",3200,"income"],["Apartment rent","Housing","Nov 21",950,"expense"],["Grocery store","Food","Nov 20",126,"expense"],["Freelance project","Income","Nov 19",480,"income"],["Internet & phone","Utilities","Nov 18",68,"expense"],["Coffee shop","Food","Nov 17",18,"expense"],["Transport","Transport","Nov 16",42,"expense"]],budgets:[["Housing",950,1200,"mint"],["Food",420,600,"violet"],["Transport",145,250,"blue"],["Subscriptions",58,100,"orange"]],goals:[["Emergency fund",4200,6000],["Travel",850,2000]],holdings:[["Global equity ETF","VTI","12.4 shares",3120,4.8],["S&P 500 ETF","VOO","4.2 shares",2210,3.2],["Bitcoin","BTC","0.018 BTC",1640,-1.4]],accounts:[["Main checking","Checking account",6240],["Everyday card","Debit card",840],["Savings account","Savings",4200]]};
+const nav=[["Overview","◫"],["Transactions","↕"],["Budgets","▤"],["Savings goals","◎"],["Investments","⌁"],["Accounts","▣"]];
+const fmt=n=>money(n*(S.currency==="COP"?4000:1),S.currency), total=t=>S.tx.filter(x=>x[4]===t).reduce((a,x)=>a+x[3],0), safe=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function heading(k,t,d,btn){return '<div class="heading"><div><div class="eyebrow">'+k+'</div><h1>'+t+'</h1><p>'+d+'</p></div>'+(btn||"")+'</div>'}
+function metric(k,v,n,i,t){return '<article class="metric"><div class="metric-top">'+k+'<i class="'+t+'">'+i+'</i></div><strong>'+v+'</strong><small>'+n+'</small></article>'}
+function budgetLine(b){let p=Math.min(100,b[1]/b[2]*100);return '<div class="budget-item"><div class="budget-label"><b>'+b[0]+'</b><span>'+fmt(b[1])+' <i>/ '+fmt(b[2])+'</i></span></div><div class="progress"><span class="'+b[3]+'" style="width:'+p+'%"></span></div><small>'+Math.round(p)+'% used</small></div>'}
+function txRows(rows){return '<div class="tx-list">'+rows.map(x=>'<div class="tx-row"><i class="'+x[4]+'">'+(x[4]==="income"?"↙":"↗")+'</i><div><b>'+safe(x[0])+'</b><small>'+x[1]+' · '+x[2]+'</small></div><strong class="'+x[4]+'">'+(x[4]==="income"?"+":"−")+fmt(x[3])+'</strong></div>').join("")+'</div>'}
+function overview(){let income=total("income"),expense=total("expense"),bars=[42,58,48,72,61,82,67,90,73,95,76,88];return heading("MONDAY, NOVEMBER 24, 2026","Your financial overview","A calm, clear picture of your money.")+
+'<div class="welcome"><div><b>Good things happen when you know your numbers.</b><p>Your demo workspace is ready. Explore the dashboard and try adding a transaction.</p></div><span>✳</span></div><section class="metrics">'+metric("TOTAL BALANCE",fmt(11280+income-expense),"Across your accounts","◈","mint")+metric("INCOME",fmt(income),"+ This month","↙","green")+metric("EXPENSES",fmt(expense),"This month","↗","orange")+metric("SAVINGS RATE",Math.round((income-expense)/income*100)+"%","Income less expenses","◎","blue")+'</section><section class="overview-grid"><article class="panel"><div class="panel-head"><div><h2>Cash flow</h2><p>Income and expenses · Last 6 months</p></div><span class="select">Last 6 months⌄</span></div><div class="legend"><span>● Income</span><span>● Expenses</span></div><div class="chart">'+bars.map((h,i)=>'<div class="bar-pair"><i style="height:'+h+'%"></i><b style="height:'+Math.max(12,h-25+(i%3)*7)+'%"></b></div>').join("")+'</div><div class="months"><span>JUN</span><span>JUL</span><span>AUG</span><span>SEP</span><span>OCT</span><span>NOV</span></div></article><article class="panel"><div class="panel-head"><div><h2>Spending breakdown</h2><p>Where your money goes</p></div><span>···</span></div><div class="donut"><div><b>'+fmt(expense)+'</b><small>Total spent</small></div></div><div class="allocation"><div>● Housing <b>'+fmt(950)+'</b></div><div>● Food <b>'+fmt(420)+'</b></div><div>● Transport <b>'+fmt(145)+'</b></div><div>● Other <b>'+fmt(126)+'</b></div></div></article></section><section class="lower-grid"><article class="panel"><div class="panel-head"><div><h2>Recent transactions</h2><p>Your latest activity</p></div><button class="link" data-page="Transactions">View all ↗</button></div>'+txRows(S.tx.slice(0,5))+'</article><article class="panel"><div class="panel-head"><div><h2>Budget overview</h2><p>Monthly spending limits</p></div><button class="link" data-page="Budgets">Manage ↗</button></div>'+S.budgets.map(budgetLine).join("")+'</article></section><div class="note">✦ <div><b>You are exploring a demo workspace</b><p>All figures are illustrative. Add, search and explore without connecting a real bank account.</p></div></div>'}
+function transactions(){let rows=S.tx.filter(x=>(x.join(" ").toLowerCase()).includes(S.query.toLowerCase()));return heading("YOUR ACTIVITY","Transactions","Keep track of money coming in and going out.",'<button class="primary" id="add-tx">＋ Add transaction</button>')+'<article class="panel table-panel"><div class="toolbar"><input id="search" placeholder="⌕  Search transactions..." value="'+safe(S.query)+'"><span>'+rows.length+' records</span></div><div class="scroll"><table><thead><tr><th>DESCRIPTION</th><th>CATEGORY</th><th>DATE</th><th class="right">AMOUNT</th></tr></thead><tbody>'+rows.map(x=>'<tr><td><b>'+safe(x[0])+'</b></td><td>'+x[1]+'</td><td>'+x[2]+'</td><td class="right '+x[4]+'">'+(x[4]==="income"?"+":"−")+fmt(x[3])+'</td></tr>').join("")+'</tbody></table></div></article>'}
+function budgets(){return heading("PLAN WITH INTENTION","Budgets","Set thoughtful limits and stay ahead of your spending.",'<button class="primary" id="add-budget">＋ Create budget</button>')+'<section class="cards">'+S.budgets.map(b=>'<article class="panel budget-card"><span class="badge '+b[3]+'">◈</span><h3>'+b[0]+'</h3><strong>'+fmt(b[1])+' <small>of '+fmt(b[2])+'</small></strong>'+budgetLine(b)+'</article>').join("")+'</section>'}
+function goals(){return heading("SAVE FOR WHAT MATTERS","Savings goals","Small, consistent steps add up to meaningful progress.",'<button class="primary" id="add-goal">＋ New savings goal</button>')+'<section class="cards">'+S.goals.map(g=>'<article class="panel goal-card"><span class="badge mint">✳</span><h3>'+g[0]+'</h3><strong>'+fmt(g[1])+' <small>of '+fmt(g[2])+'</small></strong><div class="progress"><span class="mint" style="width:'+Math.min(100,g[1]/g[2]*100)+'%"></span></div><small>'+Math.round(g[1]/g[2]*100)+'% complete</small><button class="link contribute" data-goal="'+safe(g[0])+'">Add funds ↗</button></article>').join("")+'</section>'}
+function investments(){return heading("GROW YOUR PICTURE","Investments","A consolidated view of your investment holdings.")+'<section class="metrics">'+metric("PORTFOLIO VALUE",fmt(6970),"Illustrative market value","⌁","mint")+metric("TOTAL HOLDINGS",S.holdings.length,"Across asset classes","▦","blue")+metric("DAY'S CHANGE","+2.4%","Illustrative performance","↗","green")+metric("CASH ALLOCATION","18%","Of total portfolio","◉","orange")+'</section><article class="panel table-panel"><div class="panel-head"><div><h2>Your holdings</h2><p>Example portfolio · Not live market prices</p></div><span class="sample">SAMPLE</span></div><div class="scroll"><table><thead><tr><th>ASSET</th><th>SYMBOL</th><th>POSITION</th><th class="right">VALUE</th><th class="right">CHANGE</th></tr></thead><tbody>'+S.holdings.map(x=>'<tr><td><b>'+x[0]+'</b></td><td>'+x[1]+'</td><td>'+x[2]+'</td><td class="right">'+fmt(x[3])+'</td><td class="right '+(x[4]>0?"income":"expense")+'">'+(x[4]>0?"+":"")+x[4]+'%</td></tr>').join("")+'</tbody></table></div></article><p class="disclaimer">Illustrative holdings and valuations only. No brokerage connection, trade execution or investment advice.</p>'}
+function accounts(){return heading("YOUR FINANCIAL HUB","Accounts","See your cash accounts and cards in one place.")+'<section class="cards">'+S.accounts.map(a=>'<article class="panel account"><span class="badge mint">▣</span><small>'+a[1]+'</small><h3>'+a[0]+'</h3><strong>'+fmt(a[2])+'</strong><small>Available balance · Demo data</small></article>').join("")+'</section>'}
+function content(){return ({Overview:overview,Transactions:transactions,Budgets:budgets,"Savings goals":goals,Investments:investments,Accounts:accounts}[S.page]||overview)()}
+function render(){ $("#app").innerHTML='<aside class="sidebar" id="sidebar"><a class="brand"><span class="brand-mark">F</span><b>fintrack<span>.</span></b></a><div class="side-label">WORKSPACE</div><nav>'+nav.map(n=>'<button class="nav '+(S.page===n[0]?"active":"")+'" data-page="'+n[0]+'"><i>'+n[1]+'</i>'+n[0]+'</button>').join("")+'</nav><div class="side-bottom"><div class="promo"><span>✦</span><b>Your money, in focus.</b><p>Build better habits with a clearer financial picture.</p></div><div class="profile"><i>M</i><div><b>Demo workspace</b><small>Personal account</small></div></div></div></aside><main class="main"><header class="topbar"><div class="crumb"><button id="menu">☰</button>Workspace <i>/</i> <b>'+S.page+'</b></div><div class="actions"><span class="demo">● DEMO MODE</span><button id="currency">'+S.currency+'⌄</button><span class="avatar">M</span></div></header><div class="content">'+content()+'</div><footer><span>FinTrack · Personal finance, made clearer.</span><span>Sample data · No bank connection</span></footer></main><div id="modal"></div>';
+ document.querySelectorAll("[data-page]").forEach(b=>b.onclick=()=>{S.page=b.dataset.page;render()});$("#currency").onclick=()=>{S.currency=S.currency==="USD"?"COP":"USD";render()};$("#menu").onclick=()=>$("#sidebar").classList.toggle("open");
+ $("#search")?.addEventListener("input",e=>{S.query=e.target.value;let p=e.target.selectionStart;$("#app .content").innerHTML=transactions();$("#search").focus();$("#search").setSelectionRange(p,p);wire()});wire();}
+function modal(title,fields,save){$("#modal").innerHTML='<div class="shade"><form class="dialog"><div class="dialog-head"><h2>'+title+'</h2><button type="button" id="close">×</button></div>'+fields+'<div class="dialog-actions"><button type="button" class="secondary" id="cancel">Cancel</button><button class="primary">Save</button></div></form></div>';$("#close").onclick=$("#cancel").onclick=()=>$("#modal").innerHTML="";$(".shade").onclick=e=>{if(e.target.className==="shade")$("#modal").innerHTML=""};$(".dialog").onsubmit=e=>{e.preventDefault();save(Object.fromEntries(new FormData(e.currentTarget)));render()}}
+function field(label,name,placeholder,type){return '<label>'+label+'<input name="'+name+'" type="'+(type||"text")+'" placeholder="'+(placeholder||"")+'" required></label>'}
+function wire(){
+ $("#add-tx")?.addEventListener("click",()=>modal("Add transaction",field("Description","name","e.g. Groceries")+field("Amount","amount","0.00","number")+field("Category","category","General"),d=>S.tx.unshift([d.name,d.category,"Today",Number(d.amount),"expense"])));
+ $("#add-budget")?.addEventListener("click",()=>modal("Create budget",field("Category","name","e.g. Dining")+field("Monthly limit","limit","0","number"),d=>S.budgets.push([d.name,0,Number(d.limit),"mint"])));
+ $("#add-goal")?.addEventListener("click",()=>modal("New savings goal",field("Goal name","name","e.g. New laptop")+field("Target amount","target","0","number"),d=>S.goals.push([d.name,0,Number(d.target)])));
+ document.querySelectorAll(".contribute").forEach(b=>b.onclick=()=>{let g=S.goals.find(x=>x[0]===b.dataset.goal);modal("Add to "+g[0],field("Contribution amount","amount","0","number"),d=>g[1]+=Number(d.amount))});
 }
-
-function renderTable() {
-  const filteredRows = searchRows(state.rows, elements.searchInput.value);
-  const visibleRows = filteredRows.slice(0, PREVIEW_LIMIT);
-
-  elements.tableHead.replaceChildren();
-  elements.tableBody.replaceChildren();
-
-  const headerRow = document.createElement("tr");
-  for (const header of state.headers) {
-    const cell = document.createElement("th");
-    cell.scope = "col";
-    cell.textContent = header;
-    headerRow.append(cell);
-  }
-  elements.tableHead.append(headerRow);
-
-  for (const row of visibleRows) {
-    const tableRow = document.createElement("tr");
-    for (const value of row) {
-      const cell = document.createElement("td");
-      cell.textContent = value;
-      tableRow.append(cell);
-    }
-    elements.tableBody.append(tableRow);
-  }
-
-  elements.resultCount.textContent = `${filteredRows.length.toLocaleString()} records`;
-  elements.tableFootnote.textContent =
-    filteredRows.length > PREVIEW_LIMIT
-      ? `Showing the first ${PREVIEW_LIMIT} matching rows.`
-      : `Showing all ${filteredRows.length} matching rows.`;
-}
-
-function resetWorkspace() {
-  state.headers = [];
-  state.rows = [];
-  state.fileName = "";
-  elements.fileInput.value = "";
-  elements.searchInput.value = "";
-  elements.dataPanel.hidden = true;
-  elements.dropZone.hidden = false;
-  hideError();
-}
-
-function showError(message) {
-  elements.errorMessage.textContent = message;
-  elements.errorMessage.hidden = false;
-}
-
-function hideError() {
-  elements.errorMessage.hidden = true;
-  elements.errorMessage.textContent = "";
-}
+render();

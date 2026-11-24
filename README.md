@@ -1,61 +1,33 @@
-# FinTrack — CSV Studio
+# FinTrack
 
-A lightweight CSV inspection and cleaning workspace built primarily with vanilla JavaScript.
+**Personal finance, made clearer.**
 
-**Status:** Fresh rebuild in progress  
-**Application:** CSV Studio  
-**Approach:** Browser-first, privacy-conscious, no backend required for the MVP.
+A responsive personal finance dashboard concept for cash flow, transactions, budgets, savings goals, accounts and investment holdings.
 
-## What it does
+## Demo
 
-- Import CSV files from your device.
-- Parse quoted fields, escaped quotes, commas, and embedded newlines.
-- Preview tabular data.
-- Search across all columns.
-- Inspect row, column, and empty-cell counts.
-- Keep file processing inside the browser.
+The public-facing dashboard uses illustrative sample data. No bank, brokerage or payment account is connected.
 
-## Technology
-
-- JavaScript (ES modules)
-- HTML5
-- CSS3
-- Vite
-- Vitest
+## Features
+- Financial overview with balance, income, expenses and savings-rate cards.
+- Cash-flow and spending visualizations.
+- Searchable transaction list and add-transaction interaction.
+- Budget categories and spending progress.
+- Savings goals and contributions.
+- Multi-account and investment holdings views.
+- USD/COP display toggle for the demo workspace.
+- Responsive desktop and mobile navigation.
 
 ## Run locally
-
 ```bash
 npm install
 npm run dev
-```
-
-Run tests and production build:
-
-```bash
 npm test
 npm run build
 ```
 
-## Privacy
+## Product boundaries
+This frontend currently runs in demo mode with browser-memory sample data. It does not claim live bank balances, live market prices, authenticated account storage, brokerage connectivity or trade execution. API integration is a subsequent milestone.
 
-CSV files are read locally in the browser. This project does not upload imported data to a server.
-
-## Project structure
-
-```text
-fintrack/
-├── index.html
-├── src/
-│   ├── csv.js
-│   ├── main.js
-│   └── styles.css
-├── tests/
-│   └── csv.test.js
-├── package.json
-└── vite.config.js
-```
-
-## Roadmap
-
-See [ROADMAP.md](./ROADMAP.md) for the planned milestones and [CHANGELOG.md](./CHANGELOG.md) for implementation history.
+## Technology
+Vanilla JavaScript, HTML5, CSS3, Vite and Vitest.

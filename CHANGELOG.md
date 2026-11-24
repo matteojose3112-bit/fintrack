@@ -1,11 +1,8 @@
 # Changelog
 
-## 0.1.0 — JavaScript rebuild foundation
-
-- Replaced the prior application tree on the dedicated `rebuild/fintrack-javascript-reset` branch.
-- Started a vanilla JavaScript ES module application with Vite.
-- Added browser-local CSV import and parsing.
-- Added quoted-field, escaped-quote, comma, and multiline-field support.
-- Added dataset counts, table preview, and cross-column search.
-- Added responsive dark interface and privacy messaging.
-- Added Vitest coverage for CSV parsing and dataset helpers.
+## 0.2.0 — FinTrack public dashboard
+- Replaced the temporary CSV Studio entry screen with the FinTrack personal-finance dashboard.
+- Added overview, transactions, budgets, savings goals, investments and accounts screens.
+- Added responsive navigation and Aster-aligned dark styling.
+- Added demo interactions for transaction creation, budgets and savings contributions.
+- Added USD/COP display toggle and sample-data disclosures.

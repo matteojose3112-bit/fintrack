@@ -1,45 +1,33 @@
-# FinTrack — CSV Studio Roadmap
+# FinTrack Roadmap
 
-## Product direction
+## 0.1 — Public portfolio experience
+- [x] Replace the temporary CSV Studio entry experience with the FinTrack dashboard.
+- [x] Establish Aster-aligned dark styling and responsive layout.
+- [x] Add overview, transactions, budgets, savings goals, investments and accounts.
+- [x] Add interactive demo transactions, budget creation and savings contributions.
+- [x] Disclose sample data and unavailable live integrations.
+- [ ] Verify production build and publish GitHub Pages.
 
-Build a polished, useful CSV workspace that demonstrates practical JavaScript proficiency through real browser functionality, data processing, modular code, and automated tests.
+## 0.2 — Frontend quality
+- [ ] Add interaction tests for navigation, transactions, budgets and goals.
+- [ ] Improve chart accessibility and empty states.
+- [ ] Add persistent demo workspace storage.
+- [ ] Add portfolio screenshots and project presentation.
 
-## Milestone 0.1 — Foundation
+## 0.3 — API integration
+- [ ] Connect authentication and owner-scoped financial data.
+- [ ] Replace sample transactions, budgets and goals with API-backed records.
+- [ ] Add loading, error, retry and session-expiry states.
+- [ ] Verify production CORS and API configuration.
 
-- [x] Replace the previous application baseline on a dedicated rebuild branch.
-- [x] Establish a vanilla JavaScript + Vite project.
-- [x] Create responsive application shell.
-- [x] Import and parse CSV files locally.
-- [x] Preview records and search across columns.
-- [x] Display basic dataset statistics.
-- [x] Add unit tests for parsing and data helpers.
-- [ ] Run tests and production build in CI.
+## 0.4 — Full personal finance
+- [ ] Accounts, transfers and reconciliation workflows.
+- [ ] Exact-precision money handling and multi-currency reporting.
+- [ ] Cash-flow analysis, budgets, goals and reports.
+- [ ] CSV import/export and audit history.
 
-## Milestone 0.2 — Data quality
-
-- [ ] Detect duplicate rows.
-- [ ] Identify missing values by column.
-- [ ] Add column-level summaries and type hints.
-- [ ] Add sorting and filtering controls.
-
-## Milestone 0.3 — Cleaning and export
-
-- [ ] Remove duplicate rows.
-- [ ] Trim whitespace and normalize empty values.
-- [ ] Rename and reorder columns.
-- [ ] Export cleaned CSV safely.
-
-## Milestone 0.4 — Finish and publish
-
-- [ ] Improve accessibility and keyboard navigation.
-- [ ] Add representative sample datasets.
-- [ ] Add comprehensive tests for edge cases.
-- [ ] Publish a static demo.
-- [ ] Add screenshots and usage documentation.
-
-## Non-goals for the MVP
-
-- No accounts or authentication.
-- No database or backend.
-- No third-party data processing.
-- No brokerage, banking, or financial execution features.
+## 0.5 — Investments
+- [ ] Persist portfolios, holdings and instrument metadata.
+- [ ] Connect appropriately licensed market/reference data providers.
+- [ ] Show timestamped valuations and source attribution.
+- [ ] No brokerage execution without a separately approved design.
