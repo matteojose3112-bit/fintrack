@@ -30,7 +30,9 @@
 - [ ] Add persisted currency-aware multi-currency reporting.
 - [x] Add a reusable cash-flow reporting primitive with internal transfers excluded.
 - [ ] Add interactive cash-flow reports, budgets and goal analytics.
-- [x] CSV export for demo transactions with spreadsheet-formula injection protection.\n- [ ] CSV import with column mapping, validation preview and duplicate detection.\n- [ ] Audit history.
+- [x] CSV export for demo transactions with spreadsheet-formula injection protection.
+- [x] CSV import with column mapping, validation preview, duplicate detection and explicit confirmation.
+- [ ] Audit history.
 
 ## 0.5 — Investments
 - [ ] Persist portfolios, holdings and instrument metadata.

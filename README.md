@@ -11,7 +11,9 @@ The public-facing dashboard uses illustrative sample data. No bank, brokerage or
 ## Features
 - Financial overview with balance, income, expenses and savings-rate cards.
 - Cash-flow and spending visualizations.
-- Searchable transaction list, add-transaction interaction and CSV export.\n- Spreadsheet-safe CSV serialization with quoted-field escaping.
+- Searchable transaction list, add-transaction interaction, CSV import and export.
+- Import column mapping, row validation preview, duplicate detection and explicit confirmation before adding transactions.
+- Spreadsheet-safe CSV serialization with quoted-field escaping.
 - Budget categories and spending progress.
 - Savings goals and contributions.
 - Multi-account and investment holdings views.
@@ -46,6 +48,7 @@ Vanilla JavaScript, HTML5, CSS3, Vite and Vitest.
 
 
 ## Data portability
+- CSV imports are processed locally in the browser demo, limited to 5 MB / 5,000 rows, and require ISO dates and explicit income/expense types.
 The Transactions screen can export the demo transaction collection as a CSV file. Text cells are escaped and spreadsheet formula prefixes are neutralized. The export contains illustrative workspace data only; it is not a bank statement or a verified financial record.
 
 - CSV imports are processed locally in the browser demo, limited to 5 MB / 5,000 rows, and require ISO dates and explicit income/expense types.

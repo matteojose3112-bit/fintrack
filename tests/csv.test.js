@@ -81,9 +81,9 @@ describe("serializeCSV", () => {
 
 describe("transaction CSV import", () => {
  const headers=["Date","Description","Category","Type","Amount","Currency"];
- const rows=[["2026-11-20","Groceries","Food","expense","125.50","USD"],["2026-11-21","Salary","Income","income","2400","USD"],["2026-11-22","Bad date","Other","expense","10","USD"],["2026-11-23","Groceries","Food","expense","125.50","USD"]];
+ const rows=[["2026-11-20","Groceries","Food","expense","125.50","USD"],["2026-11-21","Salary","Income","income","2400","USD"],["not-a-date","Bad date","Other","expense","10","USD"]];
  it("suggests columns by common header names",()=>expect(suggestColumnMapping(headers)).toEqual({description:"1",category:"2",date:"0",type:"3",amount:"4",currency:"5"}));
- it("validates rows and separates duplicate transactions",()=>{const result=previewTransactionImport(headers,rows,suggestColumnMapping(headers),[["Groceries","Food","2026-11-20",125.5,"expense","USD"]]);expect(result.valid).toHaveLength(1);expect(result.valid[0].transaction).toEqual(["Salary","Income","2026-11-21",2400,"income","USD"]);expect(result.duplicates).toHaveLength(1);expect(result.invalid).toHaveLength(2);expect(result.invalid[0].errors.join(" ")).toMatch(/real date/i)});
+ it("validates rows and separates duplicate transactions",()=>{const result=previewTransactionImport(headers,rows,suggestColumnMapping(headers),[["Groceries","Food","2026-11-20",125.5,"expense","USD"]]);expect(result.valid).toHaveLength(1);expect(result.valid[0].transaction).toEqual(["Salary","Income","2026-11-21",2400,"income","USD"]);expect(result.duplicates).toHaveLength(1);expect(result.invalid).toHaveLength(1);expect(result.invalid[0].errors.join(" ")).toMatch(/real date/i)});
  it("requires mandatory columns to be mapped",()=>{const result=previewTransactionImport(headers,rows,{description:"1"});expect(result.valid).toHaveLength(0);expect(result.invalid[0].row).toBe(0);expect(result.invalid[0].message).toMatch(/map a csv column/i)});
  it("rejects unsupported currency and non-positive amounts",()=>{const result=previewTransactionImport(headers,[["2026-11-20","Test","Food","expense","-2","XYZ"]],suggestColumnMapping(headers));expect(result.invalid[0].errors).toHaveLength(2)});
 });
