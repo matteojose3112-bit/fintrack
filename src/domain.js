@@ -149,11 +149,13 @@ export function summarizeCashFlow(transactions, { from, to, currency } = {}) {
     (!from || tx.date >= from) && (!to || tx.date <= to) &&
     (!currency || tx.currency === currency) && !tx.transferId
   );
-  return filtered.reduce((summary, tx) => {
+  const summary = filtered.reduce((summary, tx) => {
     if (tx.type === "income") summary.incomeMinor = addMoney(summary.incomeMinor, tx.amountMinor);
     else if (tx.type === "expense") summary.expenseMinor = addMoney(summary.expenseMinor, tx.amountMinor);
     return summary;
-  }, { incomeMinor: 0, expenseMinor: 0, netMinor: 0, transactionCount: filtered.length });
+  }, { incomeMinor: 0, expenseMinor: 0, transactionCount: filtered.length });
+  summary.netMinor = summary.incomeMinor - summary.expenseMinor;
+  return summary;
 }
 
 export function accountBalances(accounts, transactions) {
