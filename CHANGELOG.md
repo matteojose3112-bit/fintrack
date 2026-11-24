@@ -1,6 +1,8 @@
 # Changelog
 
-## 0.3.0 — Persistent demo workspace
+## 0.3.0 — Persistent demo workspace and money primitives
+- Added exact-precision money utilities using integer minor units, avoiding floating-point arithmetic drift.
+- Added supported-currency handling for USD, COP, CAD, EUR and GBP with strict decimal precision validation.
 - Added versioned browser-local persistence for transactions, budgets, savings goals, holdings and accounts.
 - Added safe recovery for unavailable storage, malformed saved data and unknown schema versions.
 - Added automated storage tests.
