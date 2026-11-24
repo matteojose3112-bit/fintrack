@@ -33,7 +33,8 @@
 - [ ] Add interactive cash-flow reports, budgets and goal analytics.
 - [x] CSV export for demo transactions with spreadsheet-formula injection protection.
 - [x] CSV import with column mapping, validation preview, duplicate detection and explicit confirmation.
-- [ ] Audit history.
+- [x] Local append-only import audit trail with row outcomes, timestamps and source filenames.
+- [ ] Server-side tamper-resistant audit history and transaction change history.
 
 ## 0.5 — Investments
 - [ ] Persist portfolios, holdings and instrument metadata.

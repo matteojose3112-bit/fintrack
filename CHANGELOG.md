@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.5 — Import audit trail
+- Added a local activity log for completed CSV reviews, including imported rows, explicit possible-match decisions, duplicates and invalid rows.
+- Recorded review timestamps, source filenames, row numbers and outcomes.
+- Added a completion action so users can finish a review even when every candidate is skipped.
+- Persisted the audit log with the browser demo workspace and documented its local-only, non-tamper-proof boundary.
+- Added automated tests for audit entry coverage and validation.
+
 ## 0.4.4 — Transaction reconciliation review
 - Added conservative possible-match detection using matching date, amount, transaction type and currency plus normalized description similarity.
 - Added per-row review decisions; possible matches default to Skip and can be explicitly imported as separate records.
