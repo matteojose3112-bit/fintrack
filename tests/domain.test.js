@@ -97,3 +97,21 @@ describe("financial domain", () => {
     expect(() => createTransaction({ accountId: "a", description: "Bad", type: "expense", amountMinor: 10, date: "not-a-date" }, ids)).toThrow(TypeError);
   });
 });
+
+
+describe("transfer pair integrity edge cases", () => {
+  const pair = [
+    { id: "out", transferId: "trf_edge", accountId: "checking", transferSide: "out", type: "expense", amountMinor: 500, currency: "USD", date: "2026-11-27" },
+    { id: "in", transferId: "trf_edge", accountId: "savings", transferSide: "in", type: "income", amountMinor: 500, currency: "USD", date: "2026-11-27" },
+  ];
+
+  it("rejects a pair that posts to the same account", () => {
+    expect(validateTransferPair([pair[0], { ...pair[1], accountId: "checking" }])).toBe(false);
+  });
+
+  it("rejects zero, negative, and unsafe transfer amounts", () => {
+    expect(validateTransferPair([{ ...pair[0], amountMinor: 0 }, pair[1]])).toBe(false);
+    expect(validateTransferPair([{ ...pair[0], amountMinor: -1 }, { ...pair[1], amountMinor: -1 }])).toBe(false);
+    expect(validateTransferPair([pair[0], { ...pair[1], amountMinor: Number.MAX_SAFE_INTEGER + 1 }])).toBe(false);
+  });
+});
