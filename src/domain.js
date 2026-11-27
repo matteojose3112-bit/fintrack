@@ -188,11 +188,6 @@ export function validateTransferPair(transactions) {
     pair[0].amountMinor > 0 &&
     Number.isSafeInteger(pair[1].amountMinor) &&
     pair[1].amountMinor > 0 &&
-    pair[0].accountId !== pair[1].accountId &&
-    Number.isSafeInteger(pair[0].amountMinor) &&
-    pair[0].amountMinor > 0 &&
-    Number.isSafeInteger(pair[1].amountMinor) &&
-    pair[1].amountMinor > 0 &&
     pair[0].amountMinor === pair[1].amountMinor &&
     pair[0].currency === pair[1].currency &&
     pair[0].date === pair[1].date
