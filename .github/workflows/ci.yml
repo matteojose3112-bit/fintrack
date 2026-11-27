@@ -21,8 +21,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Report dependency advisories
-        run: npm audit --json || true
+      - name: Audit dependencies
+        run: npm audit --audit-level=high
       - name: Run unit tests
         run: npm test
       - name: Build production bundle
