@@ -163,3 +163,32 @@ describe("strict CSV validation", () => {
     expect(() => parseCSV("name,amount\nAda,10,unexpected")).toThrow(/more fields than the header/i);
   });
 });
+
+
+describe("currency precision in transaction imports", () => {
+  const headers = ["Date", "Description", "Category", "Type", "Amount", "Currency"];
+  const mapping = suggestColumnMapping(headers);
+
+  it("rejects decimal places unsupported by the selected currency", () => {
+    const result = previewTransactionImport(headers, [
+      ["2026-11-20", "Over-precision USD", "Food", "expense", "12.345", "USD"],
+      ["2026-11-21", "Fractional COP", "Food", "expense", "100.50", "COP"],
+    ], mapping);
+
+    expect(result.valid).toHaveLength(0);
+    expect(result.invalid).toHaveLength(2);
+    expect(result.invalid.every((item) => item.errors.some((error) => /supported decimal precision/i.test(error)))).toBe(true);
+  });
+
+  it("accepts exact minor-unit precision and grouped thousands", () => {
+    const result = previewTransactionImport(headers, [
+      ["2026-11-20", "USD amount", "Food", "expense", "1,234.56", "USD"],
+      ["2026-11-21", "COP amount", "Food", "expense", "125000", "COP"],
+    ], mapping);
+
+    expect(result.invalid).toHaveLength(0);
+    expect(result.valid).toHaveLength(2);
+    expect(result.valid[0].transaction[3]).toBe(1234.56);
+    expect(result.valid[1].transaction[3]).toBe(125000);
+  });
+});
