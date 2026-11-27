@@ -1,5 +1,12 @@
 # Changelog
 
+## [Unreleased] — Documentation maintenance — 2026-11-27
+
+- Reconciled current feature descriptions with the implemented browser-local finance domain and CSV workflows.
+- Preserved explicit boundaries: illustrative data, local-only persistence, reminder-only recurring rules, and no live bank/brokerage or trade execution.
+- Identified hosted persistence, server-side audit history, richer analytics, and licensed investment data as future work.
+
+
 ## 0.4.8 — Account-linked transaction ledger
 - Added account selection, transaction type and date to manual transaction entry.
 - Assigned existing USD demo transactions to Main checking without discarding saved records.
