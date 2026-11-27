@@ -5,8 +5,8 @@ const ALLOWED_CURRENCIES=new Set(["USD","COP","CAD","EUR","GBP"]);
 const normalize=value=>String(value??"").trim().toLocaleLowerCase();
 function validDate(value){if(!/^\d{4}-\d{2}-\d{2}$/.test(value))return false;const date=new Date(value+"T00:00:00Z");return !Number.isNaN(date.getTime())&&date.toISOString().slice(0,10)===value}
 function parseAmount(value,currency){
- const cleaned=String(value??"").trim().replace(/[$€£\\s]/g,"");
- if(!/^[+-]?(?:\\d+|\\d{1,3}(?:,\\d{3})+)(?:\\.\\d+)?$/.test(cleaned))return NaN;
+ const cleaned=String(value??"").trim().replace(/[$€£\s]/g,"");
+ if(!/^[+-]?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?$/.test(cleaned))return NaN;
  try{
   const minorUnits=parseMoney(cleaned.replace(/,/g,""),currency);
   return minorUnits/(currency==="COP"?1:100);
