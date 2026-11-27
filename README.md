@@ -56,3 +56,8 @@ This frontend currently runs in demo mode with illustrative sample data persiste
 
 ## Technology
 Vanilla JavaScript, HTML5, CSS3, Vite and Vitest.
+
+
+## Documentation maintenance — 2026-11-27
+
+FinTrack remains a browser-local portfolio demo using illustrative data. Account-linked ledger calculations, exact-precision money utilities, paired transfers, recurring-rule reminders, reviewed CSV import/reconciliation, local import audit history, and spreadsheet-safe export are implemented. Production authentication, hosted user-specific persistence, live bank/brokerage feeds, market pricing, and trade execution are not provided. Recurring rules do not post transactions automatically.
