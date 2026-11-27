@@ -45,3 +45,8 @@
 - [ ] Connect appropriately licensed market/reference data providers.
 - [ ] Show timestamped valuations and source attribution.
 - [ ] No brokerage execution without a separately approved design.
+
+
+## Maintenance review — 2026-11-27
+
+The current 0.4.x domain and transaction-import milestones are implemented in the browser demo. Remaining work is clearly separated into API-backed persistence, multi-currency reporting, richer analytics, tamper-resistant server-side audit history, and investment data integration. These are future milestones, not current capabilities. No production financial integration is implied.
