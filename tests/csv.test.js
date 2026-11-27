@@ -148,3 +148,18 @@ describe("transaction reconciliation", () => {
     expect(result.possibleMatches).toHaveLength(0);
   });
 });
+
+
+describe("strict CSV validation", () => {
+  it("rejects quotes embedded in an unquoted field", () => {
+    expect(() => parseCSV('name,note\\nAl"ice,test')).toThrow(/quote may only begin/i);
+  });
+
+  it("rejects characters after a closing quote", () => {
+    expect(() => parseCSV('name,note\\nAda,"valid"x')).toThrow(/after a closing/i);
+  });
+
+  it("rejects rows wider than the header instead of silently truncating cells", () => {
+    expect(() => parseCSV("name,amount\\nAda,10,unexpected")).toThrow(/more fields than the header/i);
+  });
+});
