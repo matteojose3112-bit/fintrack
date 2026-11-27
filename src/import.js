@@ -4,7 +4,14 @@ const OPTIONAL_FIELDS=["category","currency"];
 const ALLOWED_CURRENCIES=new Set(["USD","COP","CAD","EUR","GBP"]);
 const normalize=value=>String(value??"").trim().toLocaleLowerCase();
 function validDate(value){if(!/^\d{4}-\d{2}-\d{2}$/.test(value))return false;const date=new Date(value+"T00:00:00Z");return !Number.isNaN(date.getTime())&&date.toISOString().slice(0,10)===value}
-function parseAmount(value){const cleaned=String(value??"").trim().replace(/[$€£\s]/g,"");if(!/^-?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?$/.test(cleaned))return NaN;return Number(cleaned.replace(/,/g,""))}
+function parseAmount(value,currency){
+ const cleaned=String(value??"").trim().replace(/[$€£\\s]/g,"");
+ if(!/^[+-]?(?:\\d+|\\d{1,3}(?:,\\d{3})+)(?:\\.\\d+)?$/.test(cleaned))return NaN;
+ try{
+  const minorUnits=parseMoney(cleaned.replace(/,/g,""),currency);
+  return minorUnits/(currency==="COP"?1:100);
+ }catch{return NaN}
+}
 function fingerprint(tx){return[normalize(tx[0]),normalize(tx[1]),normalize(tx[2]),String(Number(tx[3])),normalize(tx[4]),normalize(tx[5]||"USD")].join("|")}
 function similarity(left,right){const clean=value=>normalize(value).normalize("NFKD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim();const a=clean(left),b=clean(right);if(!a||!b)return 0;if(a===b)return 1;const aa=new Set(a.split(/\s+/).filter(x=>x.length>1)),bb=new Set(b.split(/\s+/).filter(x=>x.length>1));if(!aa.size||!bb.size)return 0;return[...aa].filter(x=>bb.has(x)).length/Math.min(aa.size,bb.size)}
 function sameShape(a,b){return a[2]===b[2]&&a[4]===b[4]&&Number(a[3])===Number(b[3])&&(a[5]||"USD")===(b[5]||"USD")}
