@@ -20,6 +20,9 @@ jobs:
           node-version: 20
       - name: Install dependencies
         run: npm install
+
+      - name: Report dependency advisories
+        run: npm audit --json || true
       - name: Run unit tests
         run: npm test
       - name: Build production bundle
